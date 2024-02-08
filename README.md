@@ -18,10 +18,9 @@ This project is aimed at developing an internal school management system that ca
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your/repository.git`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Set up the database: `python manage.py migrate`
-4. Run the server: `python manage.py runserver`
+1. Clone the repository: `git clone https://github.com/NurzhauganovA/Diploma.git`
+2. Open Docker directory: `cd docker/prod`
+3. Docker compose: `docker compose -f docker-compose-prod.yml up --build`
 
 ## Usage
 
