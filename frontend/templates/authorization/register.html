@@ -1,0 +1,87 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'authorization/css/register.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SmartSchool - Login</title>
+</head>
+<body>
+    <section>
+        <div class="background_container">
+        </div>
+        <div class="main_container">
+            <div class="logo_container">
+                <h1>Logo</h1>
+            </div>
+            <div class="login_container">
+                <div class="title_block_login_container">
+                    <h1>Sign up</h1>
+                </div>
+                <div class="form_block_login_container">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="text" name="role" value="1" hidden>
+                        <div class="input_block_login_container">
+                            <input type="text" name="full_name" required>
+                            <div class="labelline">Full name</div>
+                        </div>
+                        <div class="input_block_login_container">
+                            <input type="text" name="mobile_phone" required>
+                            <div class="labelline">Mobile number</div>
+                        </div>
+                        <div class="input_block_login_container">
+                            <input type="password" name="password" required>
+                            <div class="labelline">Password</div>
+                        </div>
+                        <div class="input_block_login_container">
+                            <input type="password" name="confirm_password" required>
+                            <div class="labelline">Confirm password</div>
+                        </div>
+<!--                        <div class="input_block_login_container">-->
+<!--                            <select name="role" id="select-role" required>-->
+<!--                                <option value="" disabled selected>Select role</option>-->
+<!--                                <option value="employee">Employee</option>-->
+<!--                                <option value="parent">Parent</option>-->
+<!--                                <option value="student">Student</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+                        <div class="remember_me_login_container">
+                            <input type="checkbox" name="remember_me" id="">
+                            <h1>Remember me</h1>
+                        </div>
+                        <div class="button_block_login_container">
+                            <button type="submit">Sign up</button>
+                        </div>
+                        <div class="not_account_container">
+                            <h1>Already have an account? <a href="{% url 'login' %}">Login</a></h1>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="change_language_container">
+                    <div class="main_change_language_container">
+                        <div class="flag_block_change_language_container">
+                            <img src="{% static 'authorization/images/flag_english.png' %}" alt="">
+                        </div>
+                        <div class="title_block_change_language_container">
+                            <h1>English</h1>
+                            <i>
+                                <svg width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 0.86617L6.5 7.13403L0.999999 0.86617" stroke="#838383"/>
+                                </svg>
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'authorization/js/login.js' %}"></script>
+</body>
+</html>

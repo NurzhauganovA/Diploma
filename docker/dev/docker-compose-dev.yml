@@ -13,12 +13,14 @@ services:
       - ../../backend:/app
       - static:/app/static
       - media:/app/media
+      - ../../frontend:/frontend
+      - ../../frontend/static:/app/frontend/static
     ports:
-      - "7777:8000"
+      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
-    command: python manage.py runserver
+    command: sh -c "/entrypoint.sh"
 
   db:
     build:
@@ -31,8 +33,6 @@ services:
       - envs/.env_db_dev
     healthcheck:
       test: ["CMD", "pg_isready", "-q"]
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
