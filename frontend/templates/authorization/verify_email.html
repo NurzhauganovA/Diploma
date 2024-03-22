@@ -1,0 +1,93 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'authorization/css/verify_email.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SmartSchool - Enter email</title>
+</head>
+<body>
+    <section>
+        <div class="background_container">
+        </div>
+        <div class="main_container">
+            <div class="logo_container">
+                <h1>Logo</h1>
+            </div>
+            <div class="login_container">
+                <div class="title_block_login_container">
+                    <h1>Verify your email</h1>
+                </div>
+                <div class="enter_email_description_text">
+                    <h1>We sent code to <span>{{ email }}</span></h1>
+                </div>
+                <div class="form_block_login_container">
+                    <div class="otp-card-inputs">
+                        <input type="text" name="otp1" maxlength="1" autofocus>
+                        <input type="text" name="otp2" maxlength="1">
+                        <input type="text" name="otp3" maxlength="1">
+                        <input type="text" name="otp4" maxlength="1">
+                    </div>
+
+                    <div class="enter_email_description_text">
+                        <h1>Didn't get a code? <a href="{% url 'enter-email' %}">Click to resend</a></h1>
+                    </div>
+                    <div class="button_block_login_container">
+                        <button type="button" disabled onclick="sendVerificationCode()">Submit</button>
+                    </div>
+                    <div class="change_language_container">
+                        <div class="main_change_language_container">
+                            <div class="flag_block_change_language_container">
+                                <img src="{% static 'authorization/images/flag_english.png' %}" alt="">
+                            </div>
+                            <div class="title_block_change_language_container">
+                                <h1>English</h1>
+                                <i>
+                                    <svg width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 0.86617L6.5 7.13403L0.999999 0.86617" stroke="#838383"/>
+                                    </svg>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function sendVerificationCode() {
+            let inputs = document.querySelectorAll('.otp-card-inputs input');
+            let verification_code = '';
+
+            for (let i = 0; i < inputs.length; i++) {
+                verification_code += inputs[i].value;
+            }
+
+            fetch('/auth/verify-email/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({
+                    'verification_code': verification_code,
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+    <script src="{% static 'authorization/js/verify_email.js' %}"></script>
+</body>
+</html>

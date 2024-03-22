@@ -44,7 +44,7 @@ table {
   border-spacing: 0;
 }
 body {
-    font-family: Gilroy, sans-serif
+    font-family: Gilroy, sans-serif;
 }
 
 
@@ -153,18 +153,20 @@ input:valid + .labelline {
     z-index: 1111;
     background-color: #FFF;
     font-size: 16px;
+    padding: 0 5px;
 }
 
 .remember_me_login_container {
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: flex-start;
-    margin-top: 23px;
+    margin-top: 20px;
 }
 
 .remember_me_login_container h1 {
     color: #838383;
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 500;
     font-family: Gilroy, sans-serif;
     margin-left: 8px;
@@ -179,10 +181,10 @@ input:valid + .labelline {
 .button_block_login_container button {
     cursor: pointer;
     border-radius: 7px;
-    padding: 17px 50px;
+    padding: 15px 50px;
     background-color: #d9d9d9;
     border: none;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
     color: #fff;
 }
@@ -247,4 +249,36 @@ input:valid + .labelline {
 
 .title_block_change_language_container i {
     margin-left: 8px;
+}
+
+.dropdown_menu_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown_menu_list_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 18px;
+}
+
+.dropdown_menu {
+    width: 100px;
+    height: 8px;
+    border-radius: 5px;
+    background-color: gray;
+    opacity: 0.4;
+}
+
+.dropdown_menu.active {
+    background-color: green;
+}
+
+.dropdown_menu_text_container {
+    max-width: 400px;
+    color: #838383;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 20px;
 }
