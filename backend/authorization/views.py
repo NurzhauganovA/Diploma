@@ -1,8 +1,12 @@
+import json
+
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
 
 from .models import User
+from .services import random_generated_code
 
 
 def login(request):
@@ -48,9 +52,32 @@ def register(request):
         )
 
         messages.success(request, 'User created successfully!')
-        return redirect('login')
+        return redirect('enter-email')
 
     return render(request, 'authorization/register.html')
+
+
+def enter_email(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        code = random_generated_code(email)
+        send_mail(
+            subject='SmartSchool - Verify email',
+            message=f'Your verification code is: {code}',
+            from_email='',
+            recipient_list=[email],
+        )
+
+        return redirect('verify-email')
+    return render(request, 'authorization/enter_email.html')
+
+
+def verify_email(request):
+    if request.method == 'POST':
+        verification_code = json.loads(request.body).get('verification_code')
+
+        return JsonResponse({'message': 'Email verified successfully!', 'verification_code': verification_code})
+    return render(request, 'authorization/verify_email.html')
 
 
 def logout(request):

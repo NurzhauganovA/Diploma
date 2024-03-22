@@ -1,0 +1,59 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'authorization/css/enter_email.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SmartSchool - Enter email</title>
+</head>
+<body>
+    <section>
+        <div class="background_container">
+        </div>
+        <div class="main_container">
+            <div class="logo_container">
+                <h1>Logo</h1>
+            </div>
+            <div class="login_container">
+                <div class="title_block_login_container">
+                    <h1>Almost done!</h1>
+                </div>
+                <div class="enter_email_description_text">
+                    <h1>Please enter your email to authenticate your account</h1>
+                </div>
+                <div class="form_block_login_container">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="input_block_login_container">
+                            <input type="email" name="email" required>
+                            <div class="labelline">Enter your email</div>
+                        </div>
+                        <div class="button_block_login_container">
+                            <button type="submit">Continue</button>
+                        </div>
+                    </form>
+                    <div class="change_language_container">
+                        <div class="main_change_language_container">
+                            <div class="flag_block_change_language_container">
+                                <img src="{% static 'authorization/images/flag_english.png' %}" alt="">
+                            </div>
+                            <div class="title_block_change_language_container">
+                                <h1>English</h1>
+                                <i>
+                                    <svg width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 0.86617L6.5 7.13403L0.999999 0.86617" stroke="#838383"/>
+                                    </svg>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
