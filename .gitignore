@@ -2,3 +2,8 @@ backend/venv
 
 docker/dev/envs
 docker/prod/envs
+
+__pycache__/
+*.py[cod]
+.DS_Store
+venv/
