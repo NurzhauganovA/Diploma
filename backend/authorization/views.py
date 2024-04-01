@@ -20,7 +20,7 @@ def login(request):
             messages.error(request, 'User with this phone number does not exist!')
             return redirect('login')
 
-        if user.password != password:
+        if not user.check_password(password):
             messages.error(request, 'Password is incorrect!')
             return redirect('login')
 
@@ -101,9 +101,9 @@ def verify_email(request):
 
             auth.login(request, user)
 
-            return JsonResponse({'message': 'User verified successfully!'}, status=200)
+            return JsonResponse({'message': 'User verified successfully!', 'status': 200})
 
-        return JsonResponse({'message': 'Verification code is incorrect!'}, status=400)
+        return JsonResponse({'message': 'Verification code is incorrect!', 'status': 400})
 
     return render(request, 'authorization/verify_email.html', context)
 

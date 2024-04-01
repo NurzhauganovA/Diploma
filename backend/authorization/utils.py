@@ -38,7 +38,7 @@ def verify_account(email, code):
     cache_code = cache.get(f'verify_{email}')
     print(cache_code)
 
-    if cache_code is not None and cache_code == code:
+    if cache_code is not None and int(cache_code) == int(code):
         return True
 
     return False
