@@ -1,4 +1,4 @@
-import random
+from random import randint
 from django.core.mail import send_mail
 from django.core.cache import cache
 from django.db import transaction
@@ -6,21 +6,16 @@ from django.db import transaction
 from diploma import settings
 
 
-def generate_random_code():
-    random_code = random.randint(1000, 9999)
-
-    return random_code
+def _generate_random_code():
+    return randint(1000, 9999)
 
 
-def save_generated_code_to_cache(cache_key, email, code):
-    cache.set(f'{cache_key}_{email}', code, timeout=60 * 5)
-    print(cache.get(f'{cache_key}_{email}'))
-
-    return email
+def save_generated_code_to_cache(email, cache_key:str, code: int):
+    cache.set(f'{cache_key}_{email}', code, timeout=300)
 
 
 def send_email(email, subject, message):
-    random_code = generate_random_code()
+    random_code = _generate_random_code()
 
     # send_mail(
     #     subject=subject,
@@ -29,13 +24,11 @@ def send_email(email, subject, message):
     #     recipient_list=[email]
     # )
 
-    saved = save_generated_code_to_cache('verify', email, random_code)
-
-    return saved
+    save_generated_code_to_cache(email, 'activate_account', random_code)
 
 
 def verify_account(email, code):
-    cache_code = cache.get(f'verify_{email}')
+    cache_code = cache.get(f'activate_account_{email}')
     print(cache_code)
 
     if cache_code is not None and int(cache_code) == int(code):

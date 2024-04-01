@@ -35,6 +35,9 @@ class User(PermissionsMixin, AbstractBaseUser):
     def clean(self):
         pass
 
+    def get_photo(self):
+        return self.user_info.photo_avatar.url if self.user_info.photo_avatar else "{% static '/main/image/avatar.png' %}"
+
     def __str__(self):
         return self.mobile_phone
 
@@ -57,7 +60,7 @@ class UserInfo(models.Model):
         return self.user.mobile_phone
 
     class Meta:
-        verbose_name = 'User Info'
-        verbose_name_plural = 'Users Info'
+        verbose_name = 'Информация о пользователе'
+        verbose_name_plural = 'Информация о пользователях'
         db_table = 'users_info'
         ordering = ['user']

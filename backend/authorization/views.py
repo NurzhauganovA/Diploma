@@ -68,13 +68,13 @@ def enter_email(request):
     if request.method == 'POST':
         email = request.POST.get('email')
 
-        cache_email = send_email(
+        send_email(
             email=email,
             subject='SmartSchool - Verify email',
             message='Your verification code'
         )
 
-        request.session['email'] = cache_email
+        request.session['email'] = email
 
         return redirect('verify-email')
 
@@ -82,22 +82,21 @@ def enter_email(request):
 
 
 def verify_email(request):
-    mobile_phone = str(request.session.get('mobile_phone'))
-    password = str(request.session.get('password'))
-    email = str(request.session.get('email'))
-
-    context = {
-        'email': email
-    }
+    mobile_phone = request.session.get('mobile_phone')
+    password = request.session.get('password')
+    email = request.session.get('email')
 
     if request.method == 'POST':
         body = json.loads(request.body)
         code = body.get('verification_code')
 
-        if verify_account(email=email, code=code):
+        if verify_account(email=email, code=int(code)):
             user = User.objects.filter(mobile_phone=mobile_phone).first()
             user.email = email
             user.save()
+
+            if not user.check_password(password):
+                return JsonResponse({'message': 'Password is incorrect!', 'status': 400})
 
             auth.login(request, user)
 
@@ -105,7 +104,7 @@ def verify_email(request):
 
         return JsonResponse({'message': 'Verification code is incorrect!', 'status': 400})
 
-    return render(request, 'authorization/verify_email.html', context)
+    return render(request, 'authorization/verify_email.html', {'email': email})
 
 
 def logout(request):

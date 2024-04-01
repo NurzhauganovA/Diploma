@@ -5,7 +5,7 @@ services:
     build:
       context: ../..
       dockerfile: docker/dev/Dockerfile-dev
-    container_name: web
+    container_name: smartschool-web
     restart: always
     env_file:
       - envs/.env_web_dev
