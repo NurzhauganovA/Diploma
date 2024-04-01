@@ -78,6 +78,13 @@ body {
     position: absolute;
 }
 
+.logo_container {
+    background-color: #fff;
+    padding: 25px 40px;
+    font-size: 30px;
+    text-transform: uppercase;
+}
+
 .title_block_login_container h1 {
     color: #000;
     font-size: 38px;
@@ -158,7 +165,7 @@ input:valid + .labelline {
     cursor: pointer;
     border-radius: 7px;
     padding: 15px 50px;
-    background-color: #d9d9d9;
+    background-color: #233255;
     border: none;
     font-size: 20px;
     font-weight: 600;

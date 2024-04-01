@@ -78,6 +78,13 @@ body {
     position: absolute;
 }
 
+.logo_container {
+    background-color: #fff;
+    padding: 25px 40px;
+    font-size: 30px;
+    text-transform: uppercase;
+}
+
 .title_block_login_container h1 {
     color: #000;
     font-size: 38px;
@@ -164,6 +171,10 @@ input:valid + .labelline {
     margin-top: 20px;
 }
 
+.remember_me_login_container input[type="checkbox"] {
+    accent-color: #F6AD2B;
+}
+
 .remember_me_login_container h1 {
     color: #838383;
     font-size: 17px;
@@ -182,7 +193,7 @@ input:valid + .labelline {
     cursor: pointer;
     border-radius: 7px;
     padding: 15px 50px;
-    background-color: #d9d9d9;
+    background-color: #233255;
     border: none;
     font-size: 20px;
     font-weight: 600;
@@ -265,14 +276,15 @@ input:valid + .labelline {
 
 .dropdown_menu {
     width: 100px;
-    height: 8px;
+    height: 10px;
     border-radius: 5px;
-    background-color: gray;
+    background-color: #ccc;
     opacity: 0.4;
 }
 
 .dropdown_menu.active {
-    background-color: green;
+    background-color: #17C653;
+    opacity: 1;
 }
 
 .dropdown_menu_text_container {

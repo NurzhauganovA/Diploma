@@ -1,3 +1,6 @@
+__pychache__/
+.idea/
+
 backend/venv
 
 docker/dev/envs

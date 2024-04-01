@@ -3,17 +3,20 @@ from django.db import models
 
 
 class CustomUserManager(UserManager):
-    def create_user(self, login, password=None, is_active=False, **extra_fields):
+    def create_user(self, mobile_phone, password=None, is_active=False, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         extra_fields.setdefault('is_active', is_active)
 
-        user = self.model(mobile_phone=login, **extra_fields)
+        if not mobile_phone:
+            raise ValueError('The mobile phone must be set')
+
+        user = self.model(mobile_phone=mobile_phone, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, login, password=None, **extra_fields):
+    def create_superuser(self, mobile_phone, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -22,7 +25,7 @@ class CustomUserManager(UserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self.create_user(login, password, **extra_fields)
+        return self.create_user(mobile_phone, password, **extra_fields)
 
 
 class User(AbstractUser):
@@ -54,8 +57,30 @@ class User(AbstractUser):
     def __str__(self):
         return self.mobile_phone
 
+    def get_photo(self):
+        return self.user_info.photo_avatar.url
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
         db_table = 'users'
         ordering = ['id']
+
+
+class UserInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_info')
+    photo_avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    birth_date = models.DateField(blank=True, null=True)
+    address = models.CharField(max_length=200, blank=True, null=True)
+    num_of_doc = models.CharField(max_length=20, blank=True, null=True)
+    issued_by = models.CharField(max_length=100, blank=True, null=True)
+    issued_date = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.mobile_phone
+
+    class Meta:
+        verbose_name = 'User Info'
+        verbose_name_plural = 'Users Info'
+        db_table = 'users_info'
+        ordering = ['user']
