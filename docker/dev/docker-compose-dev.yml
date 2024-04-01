@@ -1,7 +1,7 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  web:
+  smartschool-web:
     build:
       context: ../..
       dockerfile: docker/dev/Dockerfile-dev
@@ -18,26 +18,28 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      db:
+      smartschool-db:
         condition: service_healthy
     command: sh -c "/entrypoint.sh"
 
-  db:
+  smartschool-db:
     build:
       context: ../..
       dockerfile: docker/dev/Dockerfile-db-dev
-    image: postgres:15.2-alpine
-    container_name: db
+    image: postgres:16-alpine
+    container_name: smartschool-db
     restart: always
     env_file:
       - envs/.env_db_dev
+    ports:
+      - "7778:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-q"]
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - smartschool_db_data:/var/lib/postgresql/data
       - ./init:/docker-entrypoint-initdb.d
 
 volumes:
-  postgres_data:
+  smartschool_db_data:
   static:
   media:

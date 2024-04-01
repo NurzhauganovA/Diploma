@@ -1,0 +1,33 @@
+.analytics_section_container {
+    display: inline-flex;
+}
+
+.daily_user_analytics_container {
+    width: 600px;
+    height: 500px;
+    padding: 30px;
+    box-shadow: 0 2px 6px 0 #0D0A2C14;
+    border-radius: 20px;
+    margin: 25px;
+}
+
+.title_daily_user_analytics p {
+    color: #9291A5;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.title_daily_user_analytics h1 {
+    color: #1E1B39;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
+}
+
+.map_analytics_container {
+    margin: 40px 25px 25px 25px;
+    padding: 30px;
+    box-shadow: 0 2px 6px 0 #0D0A2C14;
+    border-radius: 20px;
+}
