@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -17,4 +17,4 @@ COPY . .
 COPY ./docker/dev/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]

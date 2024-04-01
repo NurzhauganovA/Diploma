@@ -2,4 +2,4 @@ FROM postgres:latest
 
 COPY . .
 
-COPY docker/dev/init.sql /docker-entrypoint-initdb.d/
+COPY ./docker/dev/init.sql /docker-entrypoint-initdb.d/

@@ -51,14 +51,151 @@ body {
 /* GET STARTED */
 
 
+
+.container {
+    display: flex;
+}
+
 .header_container {
-    width: 100%;
-    height: 100px;
     background-color: #F6AD2B;
+    width: calc(100vw - 400px);
+    position: fixed;
+    top: 0;
+    left: 310px;
+    z-index: 999;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 24px 120px 24px 45px;
+}
+
+.sidebar_container {
+    width: 280px;
+    height: 100vh;
+    background-color: #233255;
     position: fixed;
     top: 0;
+    left: 0;
     z-index: 1000;
+    padding: 40px 16px;
+}
+
+nav {
+    margin-left: 280px;
+}
+
+.school_logo_block_sidebar {
+    display: inline-flex;
+    align-items: center;
+}
+
+.title_school_block {
+    margin-left: 15px;
+}
+
+.main_menu_block_sidebar {
+    margin-top: 45px;
+}
+
+.title_main_menu_block {
+    padding: 14px;
+}
+
+.title_main_menu_block h1 {
+    color: #B9BBC1;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-family: Poppins, sans-serif;
+}
+
+.links_list_main_menu_block {
+    width: 100%;
+    margin-top: 8px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.link_main_menu_block a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    background-color: transparent;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+}
+
+.link_main_menu_block a:hover {
+    background-color: #F6AD2B;
+}
+
+.link_main_menu_block .active {
+    background-color: #F6AD2B;
+}
+
+.title_link_main_menu_block {
+    display: inline-flex;
+    align-items: center;
+}
+
+.title_link_main_menu_block h1 {
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+.title_block_header_container h1 {
+    color: #233255;
+    font-size: 40px;
+    font-weight: 600;
+    font-family: Montserrat, sans-serif;
+    line-height: 1.2;
+}
+
+.info_block_header_container {
+    display: inline-flex;
+    align-items: center;
+}
+
+.selected_school_info_block {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 11px 11px 21px;
+    gap: 21px;
+    background-color: #233255;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    margin-right: 45px;
+}
+
+.selected_school_info_block:hover {
+    cursor: pointer;
+    background-color: #3b5280;
+}
+
+.selected_school_info_block h1 {
+    color: #FFF;
+    font-size: 19px;
+    font-weight: 500;
+    font-family: Montserrat, sans-serif;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.image_profile_info_block {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+main {
+    width: calc(100vw - 315px);
+    margin: 105px 0 0 32px;
 }
