@@ -20,7 +20,7 @@ def login(request):
             messages.error(request, 'User with this phone number does not exist!')
             return redirect('login')
 
-        if user.password != password:
+        if not user.check_password(password):
             messages.error(request, 'Password is incorrect!')
             return redirect('login')
 
