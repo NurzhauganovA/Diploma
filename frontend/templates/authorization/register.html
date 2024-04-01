@@ -54,11 +54,16 @@
                             <div class="labelline">Confirm password</div>
                         </div>
                         <div class="remember_me_login_container">
-                            <input type="checkbox" name="remember_me" id="">
+                            <label for=""></label><input type="checkbox" name="remember_me" id="">
                             <h1>Remember me</h1>
                         </div>
+                        <div class="error_message_container">
+                            {% for message in messages %}
+                                <h1>{{ message }}</h1>
+                            {% endfor %}
+                        </div>
                         <div class="button_block_login_container">
-                            <button type="submit">Sign up</button>
+                            <button type="submit">Continue</button>
                         </div>
                         <div class="not_account_container">
                             <h1>Already have an account? <a href="{% url 'login' %}">Login</a></h1>

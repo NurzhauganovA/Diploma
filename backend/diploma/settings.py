@@ -3,7 +3,6 @@ import os
 
 from pathlib import Path
 
-
 env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,8 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # APPS
-    'main',
     'authorization',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -47,9 +46,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'diploma.urls'
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
 
-print("frontend path:", os.path.join(BASE_DIR, 'frontend'))
+ROOT_URLCONF = 'diploma.urls'
 
 TEMPLATES = [
     {
@@ -136,3 +140,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'authorization.User'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')

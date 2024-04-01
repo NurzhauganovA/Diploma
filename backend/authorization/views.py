@@ -1,12 +1,12 @@
 import json
 
-from django.contrib import messages
-from django.core.mail import send_mail
+from django.contrib import messages, auth
+from django.contrib.auth.models import AnonymousUser
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from .models import User
-from .services import random_generated_code
+from .utils import send_email, verify_account
 
 
 def login(request):
@@ -24,7 +24,10 @@ def login(request):
             messages.error(request, 'Password is incorrect!')
             return redirect('login')
 
+        auth.login(request, user)
+
         return redirect('/')
+
     return render(request, 'authorization/login.html')
 
 
@@ -44,7 +47,7 @@ def register(request):
             messages.error(request, 'User with this phone number already exists!')
             return redirect('register')
 
-        User.objects.create(
+        new_user = User.objects.create(
             full_name=full_name,
             mobile_phone=mobile_phone,
             role=role,
@@ -52,6 +55,10 @@ def register(request):
         )
 
         messages.success(request, 'User created successfully!')
+
+        request.session['mobile_phone'] = mobile_phone
+        request.session['password'] = password
+
         return redirect('enter-email')
 
     return render(request, 'authorization/register.html')
@@ -60,24 +67,45 @@ def register(request):
 def enter_email(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        code = random_generated_code(email)
-        send_mail(
+
+        cache_email = send_email(
+            email=email,
             subject='SmartSchool - Verify email',
-            message=f'Your verification code is: {code}',
-            from_email='',
-            recipient_list=[email],
+            message='Your verification code'
         )
 
+        request.session['email'] = cache_email
+
         return redirect('verify-email')
+
     return render(request, 'authorization/enter_email.html')
 
 
 def verify_email(request):
-    if request.method == 'POST':
-        verification_code = json.loads(request.body).get('verification_code')
+    mobile_phone = str(request.session.get('mobile_phone'))
+    password = str(request.session.get('password'))
+    email = str(request.session.get('email'))
 
-        return JsonResponse({'message': 'Email verified successfully!', 'verification_code': verification_code})
-    return render(request, 'authorization/verify_email.html')
+    context = {
+        'email': email
+    }
+
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        code = body.get('verification_code')
+
+        if verify_account(email=email, code=code):
+            user = User.objects.filter(mobile_phone=mobile_phone).first()
+            user.email = email
+            user.save()
+
+            auth.login(request, user)
+
+            return JsonResponse({'message': 'User verified successfully!'}, status=200)
+
+        return JsonResponse({'message': 'Verification code is incorrect!'}, status=400)
+
+    return render(request, 'authorization/verify_email.html', context)
 
 
 def logout(request):
