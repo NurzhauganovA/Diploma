@@ -2,6 +2,7 @@
 **/__pycache__
 
 backend/venv
+backend/frontend/
 
 docker/dev/envs
 docker/prod/envs

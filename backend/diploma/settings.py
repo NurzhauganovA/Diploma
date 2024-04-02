@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     # APPS
     'authorization',
     'dashboard',
+    'contract',
+    'school'
 ]
 
 MIDDLEWARE = [
