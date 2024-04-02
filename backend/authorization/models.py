@@ -66,8 +66,8 @@ class UserInfo(models.Model):
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_info')
     parent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='parent_info')
-    leave = models.DateField(null=True)
-    reason_leave = models.CharField(max_length=255, null=True)
+    leave = models.DateField(null=True, blank=True)
+    reason_leave = models.CharField(max_length=255, null=True, blank=True)
     stud_class = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, related_name='student_class')
 
     def __str__(self):

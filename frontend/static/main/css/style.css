@@ -77,15 +77,39 @@ body {
     padding: 24px 120px 24px 45px;
 }
 
+@keyframes expandSidebar {
+    0% {
+        width: 80px;
+    }
+    100% {
+        width: 280px;
+    }
+}
+
 .sidebar_container {
-    width: 280px;
+    width: 80px;
     height: 100vh;
     background-color: #233255;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
-    padding: 40px 16px;
+    z-index: 10000;
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.5s ease-in-out;
+    animation: expandSidebar 0.5s ease;
+}
+
+.active_sidebar {
+    display: block;
+    width: 280px !important;
+    padding: 40px 16px !important;
+}
+
+.none_active_sidebar {
+    display: none;
 }
 
 nav {
@@ -118,9 +142,8 @@ nav {
 }
 
 .links_list_main_menu_block {
-    width: 100%;
     margin-top: 8px;
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     gap: 8px;
 }
