@@ -1,5 +1,6 @@
 .idea/
 **/__pycache__
+backend/db.sqlite3
 
 backend/venv
 backend/frontend/

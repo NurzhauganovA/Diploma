@@ -1,27 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from school import SectionActionStatus
-
-
-class Regions(models.TextChoices):
-    BATYS = "Batys", "Западно-Казахстанская область"
-    AQTOBE = "Aqtobe", "Актюбинская область"
-    ATYRAU = "Atyrau", "Атырауская область"
-    MANGYSTAU = "Mangystau", "Мангистауская область"
-    QOSTANAI = "Qostanay", "Костанайская область"
-    SOLTUSTIK = "Soltustik", "Северо-Казахстанская область"
-    PAVLODAR = "Pavlodar", "Павлодарская область"
-    QARAGANDY = "Qaragandy", "Карагандинская область"
-    ULYTAU = "Ulytau", "Улытауская область"
-    QYZYLORDA = "Qyzylorda", "Кызылординская область"
-    TURKISTAN = "Turkistan", "Туркестанская область"
-    ZHAMBYL = "Zhambyl", "Жамбылская область"
-    ALMATY = "Almaty", "Алматинская область"
-    ZHETISU = "Zhetisu", "Жетысуская область"
-    ABAY = "Abay", "Абайская область"
-    SHYGYS = "Shygys", "Восточно-Казахстанская область"
-    AQMOLA = "Aqmola", "Акмолинская область"
+from school import SectionActionStatus, Regions
 
 
 class School(models.Model):
@@ -33,7 +13,7 @@ class School(models.Model):
     direct = models.CharField(max_length=155)
     language = models.CharField(max_length=155)
     country = models.CharField(max_length=155, null=True, blank=True)
-    region = models.CharField(max_length=155, choices=Regions.choices, null=True, blank=True)
+    region = models.CharField(max_length=155, choices=Regions.choices, null=False)
     city = models.CharField(max_length=155, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     bin = models.CharField(max_length=12)
@@ -73,7 +53,7 @@ class Class(models.Model):
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
     class_num = models.IntegerField(null=False)
     class_liter = models.CharField(max_length=10, null=False)
-    description = models.CharField(max_length=255, null=True)
+    description = models.TextField(null=True, blank=True)
     mentor = models.ForeignKey('authorization.User', on_delete=models.SET_NULL, null=True, related_name='class_teacher')
     is_graduated = models.BooleanField(default=False)
     max_class_num = models.PositiveIntegerField(default=11)
@@ -129,7 +109,7 @@ class SubjectSection(models.Model):
 
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False, db_column='subject')
     datetime = models.DateTimeField(null=False)
-    duration = models.DurationField(null=False)
+    duration = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
         return f'{self.subject} - {self.datetime}'

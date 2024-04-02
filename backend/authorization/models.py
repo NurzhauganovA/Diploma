@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 from school.models import Class
+from . import UserRoles
 from .managers import UserManager
 
 
@@ -11,12 +12,6 @@ phone_number_validator = RegexValidator(
     message='Phone number must start with "+7" followed by 10 digits.',
     code='invalid_phone_number'
 )
-
-
-class UserRoles(models.TextChoices):
-    EMPLOYEE = "Employee", "Сотрудник"
-    PARENT = "Parent", "Родитель"
-    STUDENT = "Student", "Ученик"
 
 
 class User(PermissionsMixin, AbstractBaseUser):
@@ -30,7 +25,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = "mobile_phone"
-    REQUIRED_FIELDS = ['role', 'full_name', 'password', 'iin', 'email']
+    REQUIRED_FIELDS = ['role', 'full_name', 'password', 'email']
 
     def clean(self):
         pass
@@ -74,3 +69,11 @@ class Student(models.Model):
     leave = models.DateField(null=True)
     reason_leave = models.CharField(max_length=255, null=True)
     stud_class = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True, related_name='student_class')
+
+    def __str__(self):
+        return self.user.mobile_phone
+
+    class Meta:
+        verbose_name = 'Ученик'
+        verbose_name_plural = 'Ученики'
+        db_table = 'student'
