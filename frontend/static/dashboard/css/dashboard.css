@@ -1,7 +1,10 @@
+.section_container {
+    padding: 0 100px;
+}
+
 .analytics_section_container {
     display: flex;
     justify-content: space-between;
-    padding: 0 120px;
 }
 
 .daily_user_analytics_container {
@@ -10,7 +13,7 @@
     padding: 30px;
     box-shadow: 0 8px 32px 0 #C6C6C6E0;
     border-radius: 20px;
-    margin: 25px;
+    margin: 25px 0;
 }
 
 .title_daily_user_analytics p {
@@ -30,7 +33,7 @@
 }
 
 .map_analytics_container {
-    margin: 40px 25px 25px 25px;
+    margin: 40px 0 25px 0;
     padding: 30px;
     box-shadow: 0 8px 32px 0 #C6C6C6E0;
     border-radius: 20px;
@@ -43,7 +46,7 @@
     padding: 35px 45px;
     box-shadow: 0 8px 32px 0 #C6C6C6E0;
     border-radius: 20px;
-    margin: 25px;
+    margin: 25px 0;
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
@@ -77,6 +80,10 @@
     gap: 10px;
 }
 
+.main_title_overall_users_analytics span i svg {
+    padding-top: -5px;
+}
+
 .main_title_overall_users_analytics span h1 {
     color: #F8285A;
     font-size: 14px;
@@ -102,11 +109,23 @@
     flex-direction: column;
 }
 
-.title_overall_line {
+.title_overall_line,
+.title_heroes_line {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 30px;
+}
+
+.title_overall_line h1, p {
+    font-size: 18px;
+}
+
+.title_heroes_line {
+    margin-bottom: 40px;
+}
+
+.title_heroes_line h1 {
+    font-size: 18px;
 }
 
 .line_analytics_block {
@@ -129,8 +148,8 @@
 }
 
 .hero_analytics_block {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-size: cover;
     background-position: center;

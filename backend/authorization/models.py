@@ -21,6 +21,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     full_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     mobile_phone = models.CharField(max_length=25, unique=True, validators=[phone_number_validator])
+    date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     objects = UserManager()
 
@@ -31,7 +32,10 @@ class User(PermissionsMixin, AbstractBaseUser):
         pass
 
     def get_photo(self):
-        return self.user_info.photo_avatar.url if self.user_info.photo_avatar else "{% static '/main/image/avatar.png' %}"
+        try:
+            return self.user_info.photo_avatar.url
+        except Exception:
+            return "/static/main/image/avatar.png"
 
     def __str__(self):
         return self.mobile_phone
