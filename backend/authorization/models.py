@@ -21,15 +21,12 @@ class User(PermissionsMixin, AbstractBaseUser):
     full_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     mobile_phone = models.CharField(max_length=25, unique=True, validators=[phone_number_validator])
-<<<<<<< HEAD
     date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-=======
     school = models.ManyToManyField(
         School,
         related_name="users",
         null=True,
     )
->>>>>>> a0029294a7f2e20c71b8c045dfeaeb38a010dd77
 
     objects = UserManager()
 
