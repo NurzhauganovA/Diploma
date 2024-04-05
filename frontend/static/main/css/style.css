@@ -64,19 +64,6 @@ body {
     display: flex;
 }
 
-.header_container {
-    background-color: #F6AD2B;
-    width: calc(100vw - 400px);
-    position: fixed;
-    top: 0;
-    left: 310px;
-    z-index: 999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 120px 24px 45px;
-}
-
 @keyframes expandSidebar {
     0% {
         width: 80px;
@@ -113,7 +100,23 @@ body {
 }
 
 nav {
-    margin-left: 280px;
+    width: 100%;
+    margin-left: 80px;
+}
+
+.header_container {
+    width: calc(100% - 80px);
+    background-color: #F6AD2B;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+}
+
+.wrapper_header_container {
+    margin: 24px 120px 24px 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .school_logo_block_sidebar {
@@ -227,6 +230,10 @@ nav {
 }
 
 main {
-    width: calc(100vw - 315px);
-    margin: 105px 0 0 32px;
+    width: 100%;
+    margin-top: 105px;
+}
+
+.wrapper_main_container {
+    margin: 24px 120px 24px 45px;
 }
