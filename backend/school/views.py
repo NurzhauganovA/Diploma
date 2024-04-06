@@ -1,24 +1,20 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import QuerySet
 from django.contrib import messages
 
 from authorization.models import User
 from authorization import UserRoles
+from school.utils import CacheData
 
 
-def get_people(request: HttpRequest) -> None:
+def get_people(request: HttpRequest, pk: int) -> None:
     if request.method == "GET":
-        school_id: int = int(request.GET.get("id", 1))
-        # school_id: int = int(request.user.)
+        cache = CacheData("school", pk)
 
-        if school_id == 0:
-            messages.error(request, "There is no school with this ID.")
-            return redirect("get_people")
-
-        students: QuerySet = User.objects.filter(school__id=school_id, role=UserRoles.STUDENT)
-        parents: QuerySet = User.objects.filter(school__id=school_id, role=UserRoles.PARENT)
-        teachers: QuerySet = User.objects.filter(school__id=school_id, role=UserRoles.EMPLOYEE)
+        students: QuerySet = User.objects.filter(school__id=pk, role=UserRoles.STUDENT)
+        parents: QuerySet = User.objects.filter(school__id=pk, role=UserRoles.PARENT)
+        teachers: QuerySet = User.objects.filter(school__id=pk, role=UserRoles.EMPLOYEE)
 
         context: dict[str, QuerySet] = {
             "students": students,
@@ -26,19 +22,33 @@ def get_people(request: HttpRequest) -> None:
             "teachers": teachers,
         }
 
-        return render(request, "people.html", context)
+        cache.cache_data(context)
+
+        return render(request, "school/people.html", context)
     
-    return render(request, ".html")
+    return JsonResponse({"error": "Not Allowed Method"})
 
 
-def get_more_info(request: HttpRequest) -> None:
+def get_more_info(request: HttpRequest, pk: int) -> None:
     if request.method == "GET":
-        user_id: int = int(request.GET.get("id"))
-
-        user: QuerySet = User.objects.get(id=user_id)
+        cache = CacheData("user", pk)
+        user: User = User.objects.get(id=pk)
 
         user_info = {
-            ""
+            "full_name": user.full_name,
+            "class": user.student_info if hasattr(user, "student_info") else None,
+            "iin": user.user_info.iin,
+            "birth": user.user_info.birth_date.strftime("%d.%m.%Y"),
+            "mobile_phone": user.mobile_phone,
+            "email": user.email,
+            "contracts": user.student_info.contracts.all() if hasattr(user, "student_info") else None,
+            "parents": user.student_info.parent if hasattr(user, "student_info") else None,
         }
+
+        cache.cache_data(user_info)
+
+        return render(request, "school/more_info.html", user_info)
+
+    return JsonResponse({"error": "Not Allowed Method"})
 
 
