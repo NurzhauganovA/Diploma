@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING, Iterable
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils import timezone
 
 from school.models import Class, School
 from . import UserRoles
@@ -36,6 +37,7 @@ class User(PermissionsMixin, AbstractBaseUser):
         related_name="users",
         null=True,
     )
+    login_days = models.JSONField(default=list, null=True, blank=True)
 
     objects = UserManager()
 
@@ -50,6 +52,18 @@ class User(PermissionsMixin, AbstractBaseUser):
             return self.user_info.photo_avatar.url
         except Exception:
             return "/static/main/image/avatar.png"
+        
+    def save_login_days(self):
+        today = timezone.now().date().strftime("%d.%m.%Y")
+
+        if today not in (days := self.login_days):
+            days.append(today)
+
+            if len(days) > 7:
+                self.login_days.pop(0)
+
+            self.save()
+
 
     def __str__(self):
         return self.mobile_phone
