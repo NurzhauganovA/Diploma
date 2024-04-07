@@ -23,20 +23,27 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+]
 
-    # APPS
+ANOTHER_APPS = [
+]
+
+LOCAL_APPS = [
     'authorization',
     'dashboard',
     'contract',
-    'school'
+    'school',
 ]
+
+INSTALLED_APPS = DJANGO_APPS + ANOTHER_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
