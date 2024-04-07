@@ -83,7 +83,6 @@ class DailyUsersService:
 
     def get_daily_users(self) -> WeekLoginCount:
         today = timezone.now().date()
-        print(today)
         result = {}
 
         for day in range(6, -1, -1):

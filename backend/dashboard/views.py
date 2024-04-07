@@ -21,8 +21,4 @@ def home(request):
         'daily_users_analytics': daily_users_analytics,
     }
 
-    print(context)
-    print(context["daily_users_analytics"].user_count)
-    print(context['daily_users_analytics'].week_days)
-
     return render(request, 'dashboard/home.html', context)
