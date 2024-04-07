@@ -14,7 +14,7 @@ def login(request):
         mobile_phone = request.POST.get('mobile_phone')
         password = request.POST.get('password')
 
-        user = User.objects.filter(mobile_phone=mobile_phone).first()
+        user: User = User.objects.filter(mobile_phone=mobile_phone).first()
 
         if user is None:
             messages.error(request, 'User with this phone number does not exist!')
@@ -25,6 +25,7 @@ def login(request):
             return redirect('login')
 
         auth.login(request, user)
+        user.save_login_days()
 
         return redirect('/')
 
