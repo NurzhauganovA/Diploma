@@ -24,9 +24,9 @@ def get_people(request: HttpRequest, pk: int) -> None:
 
         cache.cache_data(context)
 
-        return render(request, "school/people.html", context)
+        return JsonResponse(data={**context, "status": 200})
     
-    return JsonResponse({"error": "Not Allowed Method"})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
 
 def get_more_info(request: HttpRequest, pk: int) -> None:
@@ -47,8 +47,8 @@ def get_more_info(request: HttpRequest, pk: int) -> None:
 
         cache.cache_data(user_info)
 
-        return render(request, "school/more_info.html", user_info)
+        return JsonResponse(data={**user_info, "status": 200})
 
-    return JsonResponse({"error": "Not Allowed Method"})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
 
