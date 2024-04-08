@@ -40,7 +40,6 @@ def get_people(request: HttpRequest, pk: int) -> JsonResponse:
     
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
-
 def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
     if request.method == "GET":
         user: User = User.objects.get(id=pk)
