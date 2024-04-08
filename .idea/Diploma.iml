@@ -6,9 +6,10 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/backend/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.11 (Diploma)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.10 (Diploma) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="apexcharts" level="application" />
     <orderEntry type="library" name="apexcharts" level="application" />
   </component>
 </module>
