@@ -1,15 +1,11 @@
-.section_container {
-    padding: 0 100px;
-}
-
 .analytics_section_container {
     display: flex;
     justify-content: space-between;
 }
 
 .daily_user_analytics_container {
-    width: 600px;
-    height: 420px;
+    width: 520px;
+    height: 370px;
     padding: 30px;
     box-shadow: 0 8px 32px 0 #C6C6C6E0;
     border-radius: 20px;
@@ -26,7 +22,7 @@
 
 .title_daily_user_analytics h1 {
     color: #1E1B39;
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     font-family: Inter, sans-serif;
     line-height: 48px;
@@ -41,8 +37,8 @@
 
 .overall_users_analytics_container,
 .new_customers_analytics_container {
-    width: 370px;
-    height: 250px;
+    width: 320px;
+    height: 230px;
     padding: 35px 45px;
     box-shadow: 0 8px 32px 0 #C6C6C6E0;
     border-radius: 20px;

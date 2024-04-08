@@ -102,10 +102,11 @@ body {
 nav {
     width: 100%;
     margin-left: 80px;
+    padding: 0 45px 120px 0;
 }
 
 .header_container {
-    width: calc(100% - 80px);
+    width: 100%;
     background-color: #F6AD2B;
     position: fixed;
     top: 0;
@@ -113,7 +114,7 @@ nav {
 }
 
 .wrapper_header_container {
-    margin: 24px 120px 24px 45px;
+    margin: 8px 120px 8px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -183,7 +184,7 @@ nav {
 
 .title_block_header_container h1 {
     color: #233255;
-    font-size: 40px;
+    font-size: 25px;
     font-weight: 600;
     font-family: Montserrat, sans-serif;
     line-height: 1.2;
@@ -197,8 +198,8 @@ nav {
 .selected_school_info_block {
     display: inline-flex;
     align-items: center;
-    padding: 11px 11px 11px 21px;
-    gap: 21px;
+    padding: 8px 11px;
+    gap: 11px;
     background-color: #233255;
     border-radius: 8px;
     transition: all 0.3s ease-in-out;
@@ -212,7 +213,7 @@ nav {
 
 .selected_school_info_block h1 {
     color: #FFF;
-    font-size: 19px;
+    font-size: 14px;
     font-weight: 500;
     font-family: Montserrat, sans-serif;
     line-height: 1.2;
@@ -220,8 +221,8 @@ nav {
 }
 
 .image_profile_info_block {
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background-position: center;
     background-size: cover;
@@ -231,9 +232,8 @@ nav {
 
 main {
     width: 100%;
-    margin-top: 105px;
 }
 
 .wrapper_main_container {
-    margin: 24px 120px 24px 45px;
+    padding: 105px 60px 0 60px;
 }
