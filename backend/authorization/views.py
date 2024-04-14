@@ -11,7 +11,7 @@ from django.http.request import HttpRequest
 
 from authorization import UserRoles
 from authorization.models import User
-from authorization.utils import send_email, verify_account, send_link
+from authorization.utils import send_email, verify_account
 
 
 def login(request: HttpRequest):
