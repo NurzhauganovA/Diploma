@@ -9,6 +9,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SmartSchool - Login</title>
+    
 </head>
 <body>
     <section>
@@ -54,7 +55,7 @@
                                 {% endfor %}
                             </div>
                             <div class="button_block_login_container">
-                                <button type="submit">Log in</button>
+                                <button id="loginButton" type="submit">Log in</button>
                             </div>
                             <div class="not_account_container">
                                 <h1>Don't have an account? <a href="{% url 'register' %}">Register</a></h1>
@@ -131,6 +132,12 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.getElementById("loginButton").addEventListener("click", function() {
+            window.location.href = "face_control.html";
+        });
+    </script>
 
     <script src="{% static 'authorization/js/login.js' %}"></script>
 </body>
