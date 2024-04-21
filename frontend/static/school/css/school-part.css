@@ -166,6 +166,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 200px;
 }
 
 .image_block_self_main_user {
@@ -183,6 +184,10 @@ main {
     font-size: 17px;
     font-weight: 600;
     font-family: Montserrat;
+}
+
+.self_main_user_detail_info_block .parent-active {
+    color: #233255;
 }
 
 .self_main_user_detail_info_block p {
@@ -242,4 +247,11 @@ main {
     color: #233255;
     padding-bottom: 7px;
     border-bottom: 3px solid #F6AD2B;
+}
+
+.parent_mobile_phone_info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
 }
