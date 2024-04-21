@@ -1,10 +1,15 @@
+from typing import TYPE_CHECKING, Iterable
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils import timezone
 
 from school.models import Class, School
 from . import UserRoles
 from .managers import UserManager
+
+if TYPE_CHECKING:
+    from contract.models import Contract
 
 
 phone_number_validator = RegexValidator(
@@ -15,21 +20,24 @@ phone_number_validator = RegexValidator(
 
 
 class User(PermissionsMixin, AbstractBaseUser):
+
+    if TYPE_CHECKING:
+        student_info: "Student"
+        user_info: "UserInfo"
+
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     role = models.CharField(max_length=20, choices=UserRoles.choices, default=UserRoles.EMPLOYEE)
     full_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     mobile_phone = models.CharField(max_length=25, unique=True, validators=[phone_number_validator])
-<<<<<<< HEAD
     date_joined = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-=======
     school = models.ManyToManyField(
         School,
         related_name="users",
         null=True,
     )
->>>>>>> a0029294a7f2e20c71b8c045dfeaeb38a010dd77
+    login_days = models.JSONField(default=list, null=True, blank=True)
 
     objects = UserManager()
 
@@ -44,6 +52,18 @@ class User(PermissionsMixin, AbstractBaseUser):
             return self.user_info.photo_avatar.url
         except Exception:
             return "/static/main/image/avatar.png"
+        
+    def save_login_days(self):
+        today = timezone.now().date().strftime("%d.%m.%Y")
+
+        if today not in (days := self.login_days):
+            days.append(today)
+
+            if len(days) > 7:
+                self.login_days.pop(0)
+
+            self.save()
+
 
     def __str__(self):
         return self.mobile_phone
@@ -76,6 +96,10 @@ class UserInfo(models.Model):
 
 
 class Student(models.Model):
+
+    if TYPE_CHECKING:
+        contracts: models.QuerySet[Contract]
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_info')
     parent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='parent_info')
     leave = models.DateField(null=True, blank=True)
@@ -84,6 +108,11 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.mobile_phone
+    
+    def save(self, *args, **kwargs):
+        self.user.role = UserRoles.STUDENT
+        self.user.save(update_fields=("role",))
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Ученик'

@@ -22,6 +22,7 @@
                         <div id="daily_user_analytics_chart"></div>
                     </div>
                 </div>
+
                 <div class="map_analytics_container">
                     <svg width="636" height="367" viewBox="0 0 636 367" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_585_5478)">
@@ -61,6 +62,7 @@
                     </svg>
                 </div>
             </div>
+
             <div class="addition_analytics_container">
                 <div class="overall_users_analytics_container">
                     <div class="title_overall_users_analytics">
@@ -98,10 +100,10 @@
                     <div class="overall_users_analytics_line">
                         <div class="title_overall_line">
                             <h1>{{ overall_users_analytics.difference }} to Goal</h1>
-                            <p>{{ overall_users_analytics.percent }}</p>
+                            <p>{{ overall_users_analytics.percent }}%</p>
                         </div>
                         <div class="line_analytics_block">
-                            <div class="active_line_block"></div>
+                            <div class="active_line_block" style="width: {{ overall_users_analytics.percent }}%"></div>
                         </div>
                     </div>
                 </div>
@@ -174,16 +176,21 @@
     </script>
 
     <script>
+
+        const week_days = {{ daily_users_analytics.week_days | safe }};
+
+        console.log(week_days);
+
         var options = {
             series: [{
                 name: 'users',
-                data: [2105, 1850, 3348, 2700, 2313, 1908, 3271]
+                data: {{ daily_users_analytics.user_count }}
             }],
             chart: {
-                height: 350,
+                height: 300,
                 type: 'area',
                 toolbar: {
-                    show: true
+                    show: false
                 }
             },
             dataLabels: {
@@ -194,11 +201,11 @@
             },
             xaxis: {
                 type: 'category',
-                categories: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+                categories: week_days
             },
             yaxis: {
                 min: 0,
-                max: 5000,
+                max: 10,
                 tickAmount: 5,
             },
             tooltip: {

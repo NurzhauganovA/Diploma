@@ -1,4 +1,6 @@
 from django.utils import timezone
+import datetime
+from decimal import Decimal
 
 from authorization.models import User
 from school.models import School
@@ -34,40 +36,62 @@ class GetLastRegisteredUsersService:
 
 class GetCountNewUsersThisMonthService:
     @staticmethod
-    def get_count_new_users_this_month():
-        this_month = timezone.now().month
+    def get_count_new_users_current_month():
+        current_month = timezone.now().month
+        users = User.objects.filter(date_joined__month=current_month)
 
-        users = User.objects.filter(date_joined__month=this_month)
         return users.count()
 
 
 class GetOverallGoalUsersService:
     @classmethod
-    def set_response_data(cls, overall_users, goal_users, count_before_month, difference_with_before_month):
+    def set_response_data(cls, overall, goal, difference):
         return {
-            'overall_users': overall_users,
-            'goal_users': goal_users,
-            'percent': int(overall_users / goal_users * 100),
-            'difference': goal_users - overall_users if goal_users - overall_users > 0 else 'Выполнено',
-            'difference_with_before_month': difference_with_before_month,
-            'is_upper': True if count_before_month / overall_users * 100 > 100 else False
+            'overall_users': overall,
+            'goal_users': goal,
+            'percent': Decimal(overall / goal * 100).quantize(Decimal(".01")),
+            'difference': goal - overall if goal - overall > 0 else 'Выполнено',
+            'difference_with_before_month': abs(difference),
+            'is_upper': True if difference < 0 else False
         }
 
     @staticmethod
     def get_overall_users_analytics():
-        overall_users = User.objects.all().count()
-        goal_users = 1000
-        count_current_month = User.objects.filter(date_joined__month=timezone.now().month).count()
-        count_before_month = User.objects.filter(date_joined__month=timezone.now().month - 1).count()
+        overall, goal = User.objects.all().count(), 10
 
-        if count_before_month == 0:
-            count_before_month = 1
+        date = timezone.now() - datetime.timedelta(days=30)
+        last_month = User.objects.filter(date_joined__month=date.month).count()
+        current_month = User.objects.filter(date_joined__month=timezone.now().month).count()
 
-        if count_current_month == 0:
-            count_current_month = 1
+        difference = last_month - current_month
 
-        difference_with_before_month = int(count_before_month / count_current_month * 100) - 100
-        if difference_with_before_month < 0:
-            difference_with_before_month = difference_with_before_month - (2 * difference_with_before_month)
+        return GetOverallGoalUsersService.set_response_data(overall, goal, difference)
 
-        return GetOverallGoalUsersService.set_response_data(overall_users, goal_users, count_before_month, difference_with_before_month)
+
+class WeekLoginCount:
+    
+    def __init__(self, user_count: list[int], week_days: list[str]):
+        self.user_count = user_count
+        self.week_days = week_days
+
+
+class DailyUsersService:
+
+    week = {
+        1: "MON", 2: "TUE", 3: "WED", 4: "THU", 5: "FRI", 6: "SAT", 7: "SUN",
+    }
+
+    def get_daily_users(self) -> WeekLoginCount:
+        today = timezone.now().date()
+        result = {}
+
+        for day in range(6, -1, -1):
+            date = today - datetime.timedelta(days=day)
+            result[self.week[date.isoweekday()]] = (
+                User.objects.filter(login_days__icontains=date.strftime("%d.%m.%Y")).count()
+            )
+
+        return WeekLoginCount(
+            user_count=[value for value in result.values()],
+            week_days=[key for key in result.keys()],
+        )

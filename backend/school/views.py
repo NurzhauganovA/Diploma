@@ -1,24 +1,32 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import QuerySet
 from django.contrib import messages
 
 from authorization.models import User
 from authorization import UserRoles
+from school.services import GetSchoolPartData
+from school.utils import CacheData
 
 
-def get_people(request: HttpRequest) -> None:
+def school_part(request: HttpRequest):
+    school_data = GetSchoolPartData(request.user.id).get_school_part()
+    context = {
+        "students": school_data["students"],
+        "parents": school_data["parents"],
+        "teachers": school_data["teachers"],
+    }
+
+    return render(request, "school/school_part.html", context)
+
+
+def get_people(request: HttpRequest, pk: int) -> JsonResponse:
     if request.method == "GET":
-        school_id: int = int(request.GET.get("id", 1))
-        # school_id: int = int(request.user.)
+        cache = CacheData("school", pk)
 
-        if school_id == 0:
-            messages.error(request, "There is no school with this ID.")
-            return redirect("get_people")
-
-        students: QuerySet = User.objects.filter(school__id=school_id, role=UserRoles.STUDENT)
-        parents: QuerySet = User.objects.filter(school__id=school_id, role=UserRoles.PARENT)
-        teachers: QuerySet = User.objects.filter(school__id=school_id, role=UserRoles.EMPLOYEE)
+        students: QuerySet = User.objects.filter(school__id=pk, role=UserRoles.STUDENT)
+        parents: QuerySet = User.objects.filter(school__id=pk, role=UserRoles.PARENT)
+        teachers: QuerySet = User.objects.filter(school__id=pk, role=UserRoles.EMPLOYEE)
 
         context: dict[str, QuerySet] = {
             "students": students,
@@ -26,19 +34,43 @@ def get_people(request: HttpRequest) -> None:
             "teachers": teachers,
         }
 
-        return render(request, "people.html", context)
+        cache.cache_data(context)
+
+        return JsonResponse(data={**context, "status": 200})
     
-    return render(request, ".html")
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
-
-def get_more_info(request: HttpRequest) -> None:
+def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
     if request.method == "GET":
-        user_id: int = int(request.GET.get("id"))
-
-        user: QuerySet = User.objects.get(id=user_id)
-
+        user: User = User.objects.get(id=pk)
+        parent = user.student_info.parent if hasattr(user, "student_info") else None,
+        if parent:
+            parent = parent[0]
+        print(parent)
         user_info = {
-            ""
+            "photo_avatar": user.get_photo(),
+            "full_name": user.full_name if user.full_name else "No data",
+            "class_num": user.student_info.stud_class.class_num if user.student_info else "No data",
+            "class_liter": user.student_info.stud_class.class_liter if user.student_info else "No data",
+            "iin": user.user_info.iin if user.user_info.iin else "No data",
+            "birth": user.user_info.birth_date.strftime("%d.%m.%Y") if user.user_info.birth_date else "No data",
+            "mobile_phone": user.mobile_phone if user.mobile_phone else "No data",
+            "email": user.email if user.email else "No data",
+            # "contracts": user.student_info.contracts.all() if hasattr(user, "student_info") else None,
+            "parent": {
+                "photo_avatar": parent.get_photo() if parent.get_photo() else "No data",
+                "full_name": parent.full_name if parent.full_name else "No data",
+                "iin": parent.user_info.iin if parent.user_info.iin else "No data",
+                "mobile_phone": parent.mobile_phone if parent.mobile_phone else "No data",
+                "id_number": parent.user_info.num_of_doc if parent.user_info.num_of_doc else "No data",
+                "issued_by": parent.user_info.issued_by if parent.user_info.issued_by else "No data",
+                "address": parent.user_info.address if parent.user_info.address else "No data",
+                "email": parent.email if parent.email else "No data",
+            }
         }
+
+        return JsonResponse({'data': user_info, 'status': 200})
+
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
 

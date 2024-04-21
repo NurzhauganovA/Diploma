@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
 
-from authorization.models import Student
 from contract import ContractStatus, ContractPaymentPeriodType
 from school.models import School, Class
+from authorization.models import Student
 
 
 class Discount(models.Model):
@@ -26,7 +26,13 @@ class Discount(models.Model):
 class Contract(models.Model):
     """ Модель контрактов """
 
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True, db_column='student')
+    student = models.ForeignKey(
+        Student, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        db_column='student',
+        related_name="contracts"
+    )
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, db_column='school')
     contract_date = models.DateField()
     contract_date_close = models.DateField(null=True)
