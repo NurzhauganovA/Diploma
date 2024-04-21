@@ -1,6 +1,6 @@
 import json
-import cv2
-import face_recognition
+import cv2 as cv
+import face_recognition as face_rec
 import numpy as np
 
 from django.contrib import messages, auth
@@ -31,9 +31,9 @@ def login(request: HttpRequest):
             return redirect('login')
 
         if user.role == UserRoles.EMPLOYEE:
-            face_control(user)
-            # if face_control(user) != user.full_name:
-            #     return JsonResponse({"error": "THERE IS ERROR"})
+            request.session["employee_id"] = user.id
+
+            return redirect("face_recognition")
 
         auth.login(request, user)
         user.save_login_days()
@@ -177,16 +177,32 @@ def set_new_password(request: HttpRequest):
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
 
-def face_control(user: User):
+def face_recognize(request: HttpRequest):
+    id = request.session["employee_id"]
+    user = User.objects.get(id=id)
 
-    # video_capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    video_capture = cv2.VideoCapture(0)
+    if face_control(user.full_name):
+        auth.login(request, user)
+        user.save_login_days()
 
-    image = face_recognition.load_image_file(user.user_info.photo_avatar)
-    image_encoding = face_recognition.face_encodings(image)[0]
+        return redirect('/')
 
-    know_face_encodings = [image_encoding]
-    know_face_names = [user.full_name]
+    return JsonResponse({'message': 'FAILE, You do not this person!'})
+
+
+def face_control(user_name: str):
+    video_capture = cv.VideoCapture(0)
+
+    users = User.objects.all()
+    know_face_encodings, know_face_names = [], []
+
+    for user in users:
+        if hasattr(user, "user_info") and user.user_info.photo_avatar:
+            image = face_rec.load_image_file(user.user_info.photo_avatar)
+            image_encoding = face_rec.face_encodings(image)[0]
+            know_face_encodings.append(image_encoding)
+            know_face_names.append(user.full_name)
+
 
     face_locations = []
     face_encodings = []
@@ -194,49 +210,53 @@ def face_control(user: User):
     process_this_frame = True
 
     while True:
-        ret, frame = video_capture.read()
+        _, frame = video_capture.read()
 
         if process_this_frame:
-            small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-            rgb_small_frame = small_frame[:, :, ::-1]
+            small_frame = cv.resize(frame, (0, 0), fx=0.25, fy=0.25)
+            rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1])
 
-            face_locations = face_recognition.face_locations(rgb_small_frame)
-            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+            face_locations = face_rec.face_locations(rgb_small_frame)
+            face_encodings = face_rec.face_encodings(rgb_small_frame, face_locations)
 
             face_names = []
             for face_encoding in face_encodings:
 
-                matches = face_recognition.compare_faces(know_face_encodings, face_encoding)
+                matches = face_rec.compare_faces(know_face_encodings, face_encoding, tolerance=0.39)
                 name = "Unkown"
 
-                face_distances = face_recognition.face_distance(know_face_encodings, face_encoding)
+                face_distances = face_rec.face_distance(know_face_encodings, face_encoding)
                 best_match_index = np.argmin(face_distances)
                 if matches[best_match_index]:
                     name = know_face_names[best_match_index]
 
+                print("CHECK:", face_distances, best_match_index, matches)
                 face_names.append(name)
         
         process_this_frame = not process_this_frame
-        # return face_names[0]
-    
-        for (top, right, bottom, left), name in zip(face_locations, face_names):
-            top *= 4
-            right *= 4
-            bottom *= 4
-            left *= 4
 
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-
-            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-            font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
-        cv2.imshow('Video', frame)
-
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if len(face_names) > 0:
             break
+    
+    #     for (top, right, bottom, left), name in zip(face_locations, face_names):
+    #         top *= 4
+    #         right *= 4
+    #         bottom *= 4
+    #         left *= 4
 
-    video_capture.release()
-    cv2.destroyAllWindows()
+    #         cv.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
-    return face_names[0]
+    #         cv.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
+    #         font = cv.FONT_HERSHEY_DUPLEX
+    #         cv.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+    #     cv.imshow('Video', frame)
+
+    #     if cv.waitKey(1) & 0xFF == ord('q'):
+    #         break
+
+    # video_capture.release()
+    # cv.destroyAllWindows()
+
+    result = face_names[0] == user_name
+    return result
