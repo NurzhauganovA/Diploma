@@ -57,7 +57,7 @@ class GetOverallGoalUsersService:
 
     @staticmethod
     def get_overall_users_analytics():
-        overall, goal = User.objects.all().count(), 1_000
+        overall, goal = User.objects.all().count(), 10
 
         date = timezone.now() - datetime.timedelta(days=30)
         last_month = User.objects.filter(date_joined__month=date.month).count()

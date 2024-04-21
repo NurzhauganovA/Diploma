@@ -44,6 +44,8 @@ def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
     if request.method == "GET":
         user: User = User.objects.get(id=pk)
         parent = user.student_info.parent if hasattr(user, "student_info") else None,
+        if parent:
+            parent = parent[0]
         print(parent)
         user_info = {
             "photo_avatar": user.get_photo(),
@@ -56,11 +58,14 @@ def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
             "email": user.email if user.email else "No data",
             # "contracts": user.student_info.contracts.all() if hasattr(user, "student_info") else None,
             "parent": {
-                "photo_avatar": parent.get_photo(),
-                "full_name": parent.full_name,
-                "iin": parent.user_info.iin,
-                "mobile_phone": parent.mobile_phone,
-                "email": parent.email
+                "photo_avatar": parent.get_photo() if parent.get_photo() else "No data",
+                "full_name": parent.full_name if parent.full_name else "No data",
+                "iin": parent.user_info.iin if parent.user_info.iin else "No data",
+                "mobile_phone": parent.mobile_phone if parent.mobile_phone else "No data",
+                "id_number": parent.user_info.num_of_doc if parent.user_info.num_of_doc else "No data",
+                "issued_by": parent.user_info.issued_by if parent.user_info.issued_by else "No data",
+                "address": parent.user_info.address if parent.user_info.address else "No data",
+                "email": parent.email if parent.email else "No data",
             }
         }
 
