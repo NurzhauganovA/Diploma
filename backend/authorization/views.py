@@ -1,13 +1,17 @@
 import json
+import cv2 as cv
+import face_recognition as face_rec
+import numpy as np
 
 from django.contrib import messages, auth
 from django.contrib.auth.models import AnonymousUser
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
 
-from .models import User
-from .utils import send_email, verify_account, send_link
+from authorization import UserRoles
+from authorization.models import User
+from authorization.utils import send_email, verify_account
 
 
 def login(request: HttpRequest):
@@ -16,6 +20,7 @@ def login(request: HttpRequest):
         password = request.POST.get('password')
 
         user: User = User.objects.filter(mobile_phone=mobile_phone).first()
+        print(mobile_phone)
 
         if user is None:
             messages.error(request, 'User with this phone number does not exist!')
@@ -24,6 +29,11 @@ def login(request: HttpRequest):
         if not user.check_password(password):
             messages.error(request, 'Password is incorrect!')
             return redirect('login')
+
+        if user.role == UserRoles.EMPLOYEE:
+            request.session["employee_id"] = user.id
+
+            return redirect("face_recognition")
 
         auth.login(request, user)
         user.save_login_days()
@@ -165,3 +175,88 @@ def set_new_password(request: HttpRequest):
         return redirect("login")
     
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def face_recognize(request: HttpRequest):
+    id = request.session["employee_id"]
+    user = User.objects.get(id=id)
+
+    if face_control(user.full_name):
+        auth.login(request, user)
+        user.save_login_days()
+
+        return redirect('/')
+
+    return JsonResponse({'message': 'FAILE, You do not this person!'})
+
+
+def face_control(user_name: str):
+    video_capture = cv.VideoCapture(0)
+
+    users = User.objects.all()
+    know_face_encodings, know_face_names = [], []
+
+    for user in users:
+        if hasattr(user, "user_info") and user.user_info.photo_avatar:
+            image = face_rec.load_image_file(user.user_info.photo_avatar)
+            image_encoding = face_rec.face_encodings(image)[0]
+            know_face_encodings.append(image_encoding)
+            know_face_names.append(user.full_name)
+
+
+    face_locations = []
+    face_encodings = []
+    face_names = []
+    process_this_frame = True
+
+    while True:
+        _, frame = video_capture.read()
+
+        if process_this_frame:
+            small_frame = cv.resize(frame, (0, 0), fx=0.25, fy=0.25)
+            rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1])
+
+            face_locations = face_rec.face_locations(rgb_small_frame)
+            face_encodings = face_rec.face_encodings(rgb_small_frame, face_locations)
+
+            face_names = []
+            for face_encoding in face_encodings:
+
+                matches = face_rec.compare_faces(know_face_encodings, face_encoding, tolerance=0.39)
+                name = "Unkown"
+
+                face_distances = face_rec.face_distance(know_face_encodings, face_encoding)
+                best_match_index = np.argmin(face_distances)
+                if matches[best_match_index]:
+                    name = know_face_names[best_match_index]
+
+                print("CHECK:", face_distances, best_match_index, matches)
+                face_names.append(name)
+        
+        process_this_frame = not process_this_frame
+
+        if len(face_names) > 0:
+            break
+    
+    #     for (top, right, bottom, left), name in zip(face_locations, face_names):
+    #         top *= 4
+    #         right *= 4
+    #         bottom *= 4
+    #         left *= 4
+
+    #         cv.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+    #         cv.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
+    #         font = cv.FONT_HERSHEY_DUPLEX
+    #         cv.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+    #     cv.imshow('Video', frame)
+
+    #     if cv.waitKey(1) & 0xFF == ord('q'):
+    #         break
+
+    # video_capture.release()
+    # cv.destroyAllWindows()
+
+    result = face_names[0] == user_name
+    return result
