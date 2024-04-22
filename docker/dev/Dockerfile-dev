@@ -6,6 +6,10 @@ ENV TZ=Asia/Almaty
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y \
+    cmake \
+    libgl1-mesa-glx
+
 RUN pip install --upgrade pip
 
 COPY /backend/requirements.txt requirements.txt

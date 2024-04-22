@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.db.models import QuerySet
@@ -7,6 +9,8 @@ from authorization.models import User
 from authorization import UserRoles
 from school.services import GetSchoolPartData
 from school.utils import CacheData
+from contract.models import Contract, ContractStatus, Transaction
+from django.db.models import Sum
 
 
 def school_part(request: HttpRequest):
@@ -46,7 +50,6 @@ def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
         parent = user.student_info.parent if hasattr(user, "student_info") else None,
         if parent:
             parent = parent[0]
-        print(parent)
         user_info = {
             "photo_avatar": user.get_photo(),
             "full_name": user.full_name if user.full_name else "No data",
@@ -74,3 +77,79 @@ def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
 
+def get_contract_info(request: HttpRequest, pk: int) -> JsonResponse:
+    if request.method == "GET":
+        user: User = User.objects.get(id=pk)
+        contracts = user.student_info.contracts.all() if hasattr(user, "student_info") else None
+
+        contract_info = {
+            "contracts": []
+        }
+
+        if contracts:
+            for index, contract in enumerate(contracts):
+                sum_transactions = Transaction.objects.filter(contract=contract).aggregate(Sum('amount'))['amount__sum']
+                if not sum_transactions:
+                    sum_transactions = 0
+
+                contract_info["contracts"].append({
+                    "id": contract.id,
+                    "number": index + 1,
+                    "name": contract.name if contract.name else "No data",
+                    "status": contract.status if contract.status else "No data",
+                    "date": contract.date.strftime("%Y-%m-%d") if contract.date else "No data",
+                    "class": f'{contract.classroom.class_num} "{contract.classroom.class_liter}"' if contract.classroom else "No data",
+                    "edu_year": contract.edu_year if contract.edu_year else "No data",
+                    "amount": contract.final_amount if contract.final_amount else "No data",
+                    "discount": contract.discount.all().first().percent if contract.discount.all() else "No data",
+                    "debt": contract.final_amount - sum_transactions,
+                })
+
+        return JsonResponse({'data': contract_info, 'status': 200})
+
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def get_contract_transactions(request: HttpRequest, pk: int) -> JsonResponse:
+    if request.method == "GET":
+        contract = Contract.objects.get(id=pk)
+        transactions = Transaction.objects.filter(contract=contract)
+
+        transactions_info = {
+            "transactions": []
+        }
+
+        if transactions:
+            for transaction in transactions:
+                transactions_info["transactions"].append({
+                    "id": transaction.id,
+                    "date": transaction.datetime.strftime("%d.%m.%Y") if transaction.datetime else "No data",
+                    "amount": transaction.amount if transaction.amount else "No data",
+                    "description": transaction.description if transaction.description else "No data",
+                    "payment_type": transaction.payment_type if transaction.payment_type else "No data",
+                })
+
+        return JsonResponse({'data': transactions_info, 'status': 200})
+
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def create_transaction(request: HttpRequest, pk: int) -> HttpResponse:
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        contract = Contract.objects.get(id=pk)
+        amount = float(data.get("amount"))
+        date = data.get("date")
+        payment_type = data.get("payment_type")
+
+        Transaction.objects.create(
+            contract=contract,
+            datetime=date,
+            amount=amount,
+            description=contract.name,
+            payment_type=payment_type,
+        )
+
+        return JsonResponse({"status": 200})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
