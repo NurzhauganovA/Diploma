@@ -12,6 +12,7 @@ main {
 .school_part_container {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 20px;
 }
 
@@ -143,7 +144,7 @@ main {
 
 .detail_user_info_container {
     width: 100%;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 30px;
 }
@@ -159,7 +160,7 @@ main {
 }
 
 .self_parent_detail_info_container {
-    background-color: #F6AD2B;
+    display: none;
 }
 
 .self_main_user_detail_info_block {
@@ -254,4 +255,174 @@ main {
     align-items: center;
     gap: 6px;
     margin-top: 10px;
+}
+
+.self_contract_detail_info_container {
+    display: none;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.self_parent_detail_info_container.active {
+    display: flex;
+}
+
+.contract_transaction_main_info {
+    display: none;
+}
+
+.contract_transaction_main_table_info {
+    background-color: #FFF;
+    border-radius: 14px;
+    padding: 20px 15px;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.contract_detail_info_style {
+    background-color: #FFF;
+    border-radius: 14px;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.contract_table_style {
+    width: 100%;
+}
+
+.contract_table_style thead th {
+    text-align: center;
+    padding-bottom: 30px; /* добавляет нижний отступ для заголовков колонок */
+}
+
+.contract_table_style tbody td {
+    text-align: center;
+    padding: 10px 20px; /* добавляет верхний и нижний отступы для ячеек, выравнивая текст внутри по вертикали */
+}
+
+/* Стили для выравнивания иконки с помощью flexbox */
+.contract_table_style td svg {
+    margin: auto; /* центрирование SVG внутри ячейки td */
+}
+
+.contract_table_style h1,
+.contract_table_style p,
+.contract_table_style span {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h2 {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #F6AD2B;
+}
+
+.contract_table_style p {
+    color: #17C653 !important;
+}
+
+.contract_table_style span {
+    color: #C6C6C6 !important;
+}
+
+.contract_table_style h1 {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h1 span {
+    color: #233255 !important;
+    margin-left: 2px;
+}
+
+.add_new_contract_transaction {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 13px 32px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #FFF;
+    background-color: #233255;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.add_new_contract_transaction:hover {
+    opacity: 0.8;
+}
+
+.add_new_contract_transaction_detail_container {
+    display: none;
+    margin-top: 18px !important;
+    padding: 40px 60px;
+}
+
+.title_add_new_contract_transaction {
+    font-size: 24px !important;
+}
+
+.settings_add_new_transaction {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.settings_add_new_transaction:hover {
+    opacity: 0.8;
+}
+
+.settings_add_new_transaction h1 {
+    font-size: 16px !important;
+}
+
+.settings_add_new_transaction div, button {
+    width: 160px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #F6AD2B;
+    color: #FFF;
+    font-size: 14px !important;
+    border-radius: 6px;
+}
+
+.open_transactions_icon.non_active {
+    transform: rotate(180deg);
+}
+
+.amount_of_payment {
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+    font-size: 18px !important;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #233255;
+    border: 1px solid #F6AD2B;
+    border-radius: 6px;
+    padding: 0 10px;
+    outline: none;
+}
+
+.amount_of_payment::placeholder {
+    color: #8d8d8d;
+    font-size: 18px !important;
+    font-weight: 600;
+    font-family: Montserrat;
 }

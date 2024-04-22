@@ -34,8 +34,8 @@ class Contract(models.Model):
         related_name="contracts"
     )
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, db_column='school')
-    contract_date = models.DateField()
-    contract_date_close = models.DateField(null=True)
+    date = models.DateField()
+    date_close = models.DateField(null=True)
     name = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_type = models.CharField(max_length=255, choices=ContractPaymentPeriodType.choices, default=ContractPaymentPeriodType.MONTHLY)
@@ -93,6 +93,7 @@ class Transaction(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=255)
+    payment_type = models.CharField(max_length=255, default="Cash")
 
     def __str__(self):
         return f'{self.contract.name} - {self.amount}'

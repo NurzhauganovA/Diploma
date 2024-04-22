@@ -25,7 +25,8 @@
                 <div class="search_block_user_school_part">
                     <i>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="#999999" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19.6 21L13.3 14.7C12.8 15.1 12.225 15.4167 11.575 15.65C10.925 15.8833 10.2333 16 9.5 16C7.68333 16 6.146 15.3707 4.888 14.112C3.63 12.8533 3.00067 11.316 3 9.5C3 7.68333 3.62933 6.146 4.888 4.888C6.14667 3.63 7.684 3.00067 9.5 3C11.3167 3 12.8543 3.62933 14.113 4.888C15.3717 6.14667 16.0007 7.684 16 9.5C16 10.2333 15.8833 10.925 15.65 11.575C15.4167 12.225 15.1 12.8 14.7 13.3L21 19.6L19.6 21ZM9.5 14C10.75 14 11.8127 13.5627 12.688 12.688C13.5633 11.8133 14.0007 10.7507 14 9.5C14 8.25 13.5627 7.18767 12.688 6.313C11.8133 5.43833 10.7507 5.00067 9.5 5C8.25 5 7.18767 5.43767 6.313 6.313C5.43833 7.18833 5.00067 8.25067 5 9.5C5 10.75 5.43767 11.8127 6.313 12.688C7.18833 13.5633 8.25067 14.0007 9.5 14Z" fill="#999999"/>
+                            <path d="M19.6 21L13.3 14.7C12.8 15.1 12.225 15.4167 11.575 15.65C10.925 15.8833 10.2333 16 9.5 16C7.68333 16 6.146 15.3707 4.888 14.112C3.63 12.8533 3.00067 11.316 3 9.5C3 7.68333 3.62933 6.146 4.888 4.888C6.14667 3.63 7.684 3.00067 9.5 3C11.3167 3 12.8543 3.62933 14.113 4.888C15.3717 6.14667 16.0007 7.684 16 9.5C16 10.2333 15.8833 10.925 15.65 11.575C15.4167 12.225 15.1 12.8 14.7 13.3L21 19.6L19.6 21ZM9.5 14C10.75 14 11.8127 13.5627 12.688 12.688C13.5633 11.8133 14.0007 10.7507 14 9.5C14 8.25 13.5627 7.18767 12.688 6.313C11.8133 5.43833 10.7507 5.00067 9.5 5C8.25 5 7.18767 5.43767 6.313 6.313C5.43833 7.18833 5.00067 8.25067 5 9.5C5 10.75 5.43767 11.8127 6.313 12.688C7.18833 13.5633 8.25067 14.0007 9.5 14Z"
+                                  fill="#999999"/>
                         </svg>
                     </i>
                     <input type="text" name="query" id="user_search" placeholder="Search">
@@ -35,7 +36,8 @@
                         <h1>Number</h1>
                         <i>
                             <svg width="17" height="9" viewBox="0 0 17 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.1351 1L8.56757 8L1 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.1351 1L8.56757 8L1 1" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </i>
                     </div>
@@ -43,7 +45,8 @@
                         <h1>Letter</h1>
                         <i>
                             <svg width="17" height="9" viewBox="0 0 17 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.1351 1L8.56757 8L1 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.1351 1L8.56757 8L1 1" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
                             </svg>
                         </i>
                     </div>
@@ -51,18 +54,19 @@
                 <div class="users_data_school_part_block">
                     <ul class="user_list_data_school_part">
                         {% for student in students %}
-                            <li id="user_list_{{ student.id }}" class="user_data_school_part" onclick="getUserDetailInfo({{ student.id }})">
-                                <div class="image_block_user_data">
-                                    <div class="background_user_avatar_block"
-                                         style="background-image: url('{{ student.get_photo }}');"
-                                    >
-                                    </div>
+                        <li id="user_list_{{ student.id }}" class="user_data_school_part"
+                            onclick="getUserDetailInfo({{ student.id }})">
+                            <div class="image_block_user_data">
+                                <div class="background_user_avatar_block"
+                                     style="background-image: url('{{ student.get_photo }}');"
+                                >
                                 </div>
-                                <div class="main_info_block_user_data">
-                                    <h1>{{ student.full_name }}</h1>
-                                    <p>{{ student.student_info.stud_class.class_num }} "{{ student.student_info.stud_class.class_liter }}"</p>
-                                </div>
-                            </li>
+                            </div>
+                            <div class="main_info_block_user_data">
+                                <h1>{{ student.full_name }}</h1>
+                                <p>{{ student.student_info.stud_class.class_num }} "{{ student.student_info.stud_class.class_liter }}"</p>
+                            </div>
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -78,20 +82,28 @@
                     </div>
                     <div class="self_additional_user_detail_info_block">
                         <div class="user_additional_info_block">
-                            <div><h1>IIN:</h1> <p id="user_iin"></p></div>
-                            <div><h1>Birth:</h1> <p id="user_birth"></p></div>
+                            <div><h1>IIN:</h1>
+                                <p id="user_iin"></p></div>
+                            <div><h1>Birth:</h1>
+                                <p id="user_birth"></p></div>
                             <div>
                                 <i>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2.25 6.75C2.25 15.034 8.966 21.75 17.25 21.75H19.5C20.0967 21.75 20.669 21.5129 21.091 21.091C21.5129 20.669 21.75 20.0967 21.75 19.5V18.128C21.75 17.612 21.399 17.162 20.898 17.037L16.475 15.931C16.035 15.821 15.573 15.986 15.302 16.348L14.332 17.641C14.05 18.017 13.563 18.183 13.122 18.021C11.4849 17.4191 9.99815 16.4686 8.76478 15.2352C7.53141 14.0018 6.58087 12.5151 5.979 10.878C5.817 10.437 5.983 9.95 6.359 9.668L7.652 8.698C8.015 8.427 8.179 7.964 8.069 7.525L6.963 3.102C6.90214 2.85869 6.76172 2.6427 6.56405 2.48834C6.36638 2.33397 6.1228 2.25008 5.872 2.25H4.5C3.90326 2.25 3.33097 2.48705 2.90901 2.90901C2.48705 3.33097 2.25 3.90326 2.25 4.5V6.75Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2.25 6.75C2.25 15.034 8.966 21.75 17.25 21.75H19.5C20.0967 21.75 20.669 21.5129 21.091 21.091C21.5129 20.669 21.75 20.0967 21.75 19.5V18.128C21.75 17.612 21.399 17.162 20.898 17.037L16.475 15.931C16.035 15.821 15.573 15.986 15.302 16.348L14.332 17.641C14.05 18.017 13.563 18.183 13.122 18.021C11.4849 17.4191 9.99815 16.4686 8.76478 15.2352C7.53141 14.0018 6.58087 12.5151 5.979 10.878C5.817 10.437 5.983 9.95 6.359 9.668L7.652 8.698C8.015 8.427 8.179 7.964 8.069 7.525L6.963 3.102C6.90214 2.85869 6.76172 2.6427 6.56405 2.48834C6.36638 2.33397 6.1228 2.25008 5.872 2.25H4.5C3.90326 2.25 3.33097 2.48705 2.90901 2.90901C2.48705 3.33097 2.25 3.90326 2.25 4.5V6.75Z"
+                                              stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
                                     </svg>
                                 </i>
                                 <p id="user_phone"></p>
                             </div>
                             <div>
                                 <i>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M21.75 6.75V17.25C21.75 17.8467 21.5129 18.419 21.091 18.841C20.669 19.2629 20.0967 19.5 19.5 19.5H4.5C3.90326 19.5 3.33097 19.2629 2.90901 18.841C2.48705 18.419 2.25 17.8467 2.25 17.25V6.75M21.75 6.75C21.75 6.15326 21.5129 5.58097 21.091 5.15901C20.669 4.73705 20.0967 4.5 19.5 4.5H4.5C3.90326 4.5 3.33097 4.73705 2.90901 5.15901C2.48705 5.58097 2.25 6.15326 2.25 6.75M21.75 6.75V6.993C21.75 7.37715 21.6517 7.75491 21.4644 8.0903C21.2771 8.42569 21.0071 8.70754 20.68 8.909L13.18 13.524C12.8252 13.7425 12.4167 13.8582 12 13.8582C11.5833 13.8582 11.1748 13.7425 10.82 13.524L3.32 8.91C2.99292 8.70854 2.72287 8.42669 2.53557 8.0913C2.34827 7.75591 2.24996 7.37815 2.25 6.994V6.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21.75 6.75V17.25C21.75 17.8467 21.5129 18.419 21.091 18.841C20.669 19.2629 20.0967 19.5 19.5 19.5H4.5C3.90326 19.5 3.33097 19.2629 2.90901 18.841C2.48705 18.419 2.25 17.8467 2.25 17.25V6.75M21.75 6.75C21.75 6.15326 21.5129 5.58097 21.091 5.15901C20.669 4.73705 20.0967 4.5 19.5 4.5H4.5C3.90326 4.5 3.33097 4.73705 2.90901 5.15901C2.48705 5.58097 2.25 6.15326 2.25 6.75M21.75 6.75V6.993C21.75 7.37715 21.6517 7.75491 21.4644 8.0903C21.2771 8.42569 21.0071 8.70754 20.68 8.909L13.18 13.524C12.8252 13.7425 12.4167 13.8582 12 13.8582C11.5833 13.8582 11.1748 13.7425 10.82 13.524L3.32 8.91C2.99292 8.70854 2.72287 8.42669 2.53557 8.0913C2.34827 7.75591 2.24996 7.37815 2.25 6.994V6.75"
+                                              stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
                                     </svg>
                                 </i>
                                 <p id="user_email"></p>
@@ -99,25 +111,29 @@
                         </div>
                         <div class="change_user_info">
                             <i>
-                                <svg width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19.4163 3.70703L21.5836 1.66458C22.0354 1.23906 22.6482 1 23.2871 1C23.9261 1 24.5389 1.23906 24.9907 1.66458C25.4425 2.0901 25.6963 2.66724 25.6963 3.26902C25.6963 3.8708 25.4425 4.44793 24.9907 4.87346L11.3482 17.7223C10.669 18.3616 9.83141 18.8315 8.91108 19.0896L5.46159 20.0575L6.48937 16.8087C6.76338 15.9419 7.26231 15.1531 7.94111 14.5134L19.4163 3.70703ZM19.4163 3.70703L22.8054 6.89897M20.8783 15.2176V20.965C20.8783 21.6871 20.5737 22.3795 20.0316 22.8901C19.4895 23.4007 18.7543 23.6875 17.9876 23.6875H4.49805C3.73141 23.6875 2.99617 23.4007 2.45407 22.8901C1.91197 22.3795 1.60742 21.6871 1.60742 20.965V8.2602C1.60742 7.53816 1.91197 6.84569 2.45407 6.33513C2.99617 5.82457 3.73141 5.53774 4.49805 5.53774H10.6005" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="27" height="25" viewBox="0 0 27 25" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.4163 3.70703L21.5836 1.66458C22.0354 1.23906 22.6482 1 23.2871 1C23.9261 1 24.5389 1.23906 24.9907 1.66458C25.4425 2.0901 25.6963 2.66724 25.6963 3.26902C25.6963 3.8708 25.4425 4.44793 24.9907 4.87346L11.3482 17.7223C10.669 18.3616 9.83141 18.8315 8.91108 19.0896L5.46159 20.0575L6.48937 16.8087C6.76338 15.9419 7.26231 15.1531 7.94111 14.5134L19.4163 3.70703ZM19.4163 3.70703L22.8054 6.89897M20.8783 15.2176V20.965C20.8783 21.6871 20.5737 22.3795 20.0316 22.8901C19.4895 23.4007 18.7543 23.6875 17.9876 23.6875H4.49805C3.73141 23.6875 2.99617 23.4007 2.45407 22.8901C1.91197 22.3795 1.60742 21.6871 1.60742 20.965V8.2602C1.60742 7.53816 1.91197 6.84569 2.45407 6.33513C2.99617 5.82457 3.73141 5.53774 4.49805 5.53774H10.6005"
+                                          stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </i>
                         </div>
                     </div>
                 </div>
                 <div class="select_user_detail_info_container">
-                    <h1>Contracts</h1>
-                    <h1 class="active">Parents</h1>
+                    <h1 id="contractOpen">Contracts</h1>
+                    <h1 id="parentOpen" class="active">Parents</h1>
                 </div>
-                <div class="self_user_detail_info_container self_parent_detail_info_container">
+                <div id="parentTab" class="self_user_detail_info_container self_parent_detail_info_container active" style="background-color: #F6AD2B">
                     <div class="self_main_user_detail_info_block">
                         <div id="parent_photo_avatar" class="image_block_self_main_user"></div>
                         <h1 id="parent_full_name" class="parent-active"></h1>
                         <div class="parent_mobile_phone_info">
                             <i>
-                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1.25 5.75C1.25 14.034 7.966 20.75 16.25 20.75H18.5C19.0967 20.75 19.669 20.5129 20.091 20.091C20.5129 19.669 20.75 19.0967 20.75 18.5V17.128C20.75 16.612 20.399 16.162 19.898 16.037L15.475 14.931C15.035 14.821 14.573 14.986 14.302 15.348L13.332 16.641C13.05 17.017 12.563 17.183 12.122 17.021C10.4849 16.4191 8.99815 15.4686 7.76478 14.2352C6.53141 13.0018 5.58087 11.5151 4.979 9.878C4.817 9.437 4.983 8.95 5.359 8.668L6.652 7.698C7.015 7.427 7.179 6.964 7.069 6.525L5.963 2.102C5.90214 1.85869 5.76172 1.6427 5.56405 1.48834C5.36638 1.33397 5.1228 1.25008 4.872 1.25H3.5C2.90326 1.25 2.33097 1.48705 1.90901 1.90901C1.48705 2.33097 1.25 2.90326 1.25 3.5V5.75Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1.25 5.75C1.25 14.034 7.966 20.75 16.25 20.75H18.5C19.0967 20.75 19.669 20.5129 20.091 20.091C20.5129 19.669 20.75 19.0967 20.75 18.5V17.128C20.75 16.612 20.399 16.162 19.898 16.037L15.475 14.931C15.035 14.821 14.573 14.986 14.302 15.348L13.332 16.641C13.05 17.017 12.563 17.183 12.122 17.021C10.4849 16.4191 8.99815 15.4686 7.76478 14.2352C6.53141 13.0018 5.58087 11.5151 4.979 9.878C4.817 9.437 4.983 8.95 5.359 8.668L6.652 7.698C7.015 7.427 7.179 6.964 7.069 6.525L5.963 2.102C5.90214 1.85869 5.76172 1.6427 5.56405 1.48834C5.36638 1.33397 5.1228 1.25008 4.872 1.25H3.5C2.90326 1.25 2.33097 1.48705 1.90901 1.90901C1.48705 2.33097 1.25 2.90326 1.25 3.5V5.75Z"
+                                          stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </i>
                             <p id="parent_phone" class="parent-active"></p>
@@ -125,14 +141,21 @@
                     </div>
                     <div class="self_additional_user_detail_info_block">
                         <div class="user_additional_info_block parent_additional_info_block">
-                            <div><h1>IIN:</h1> <p id="parent_iin"></p></div>
-                            <div><h1>ID number:</h1> <p id="parent_id_number"></p></div>
-                            <div><h1>Issued by:</h1> <p id="parent_issued_by"></p></div>
-                            <div><h1>Address:</h1> <p id="parent_address"></p></div>
+                            <div><h1>IIN:</h1>
+                                <p id="parent_iin"></p></div>
+                            <div><h1>ID number:</h1>
+                                <p id="parent_id_number"></p></div>
+                            <div><h1>Issued by:</h1>
+                                <p id="parent_issued_by"></p></div>
+                            <div><h1>Address:</h1>
+                                <p id="parent_address"></p></div>
                             <div>
                                 <i>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M21.75 6.75V17.25C21.75 17.8467 21.5129 18.419 21.091 18.841C20.669 19.2629 20.0967 19.5 19.5 19.5H4.5C3.90326 19.5 3.33097 19.2629 2.90901 18.841C2.48705 18.419 2.25 17.8467 2.25 17.25V6.75M21.75 6.75C21.75 6.15326 21.5129 5.58097 21.091 5.15901C20.669 4.73705 20.0967 4.5 19.5 4.5H4.5C3.90326 4.5 3.33097 4.73705 2.90901 5.15901C2.48705 5.58097 2.25 6.15326 2.25 6.75M21.75 6.75V6.993C21.75 7.37715 21.6517 7.75491 21.4644 8.0903C21.2771 8.42569 21.0071 8.70754 20.68 8.909L13.18 13.524C12.8252 13.7425 12.4167 13.8582 12 13.8582C11.5833 13.8582 11.1748 13.7425 10.82 13.524L3.32 8.91C2.99292 8.70854 2.72287 8.42669 2.53557 8.0913C2.34827 7.75591 2.24996 7.37815 2.25 6.994V6.75" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M21.75 6.75V17.25C21.75 17.8467 21.5129 18.419 21.091 18.841C20.669 19.2629 20.0967 19.5 19.5 19.5H4.5C3.90326 19.5 3.33097 19.2629 2.90901 18.841C2.48705 18.419 2.25 17.8467 2.25 17.25V6.75M21.75 6.75C21.75 6.15326 21.5129 5.58097 21.091 5.15901C20.669 4.73705 20.0967 4.5 19.5 4.5H4.5C3.90326 4.5 3.33097 4.73705 2.90901 5.15901C2.48705 5.58097 2.25 6.15326 2.25 6.75M21.75 6.75V6.993C21.75 7.37715 21.6517 7.75491 21.4644 8.0903C21.2771 8.42569 21.0071 8.70754 20.68 8.909L13.18 13.524C12.8252 13.7425 12.4167 13.8582 12 13.8582C11.5833 13.8582 11.1748 13.7425 10.82 13.524L3.32 8.91C2.99292 8.70854 2.72287 8.42669 2.53557 8.0913C2.34827 7.75591 2.24996 7.37815 2.25 6.994V6.75"
+                                              stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
                                     </svg>
                                 </i>
                                 <p id="parent_email"></p>
@@ -140,12 +163,104 @@
                         </div>
                         <div class="change_parent_info">
                             <i>
-                                <svg width="27" height="25" viewBox="0 0 27 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19.4163 3.70703L21.5836 1.66458C22.0354 1.23906 22.6482 1 23.2871 1C23.9261 1 24.5389 1.23906 24.9907 1.66458C25.4425 2.0901 25.6963 2.66724 25.6963 3.26902C25.6963 3.8708 25.4425 4.44793 24.9907 4.87346L11.3482 17.7223C10.669 18.3616 9.83141 18.8315 8.91108 19.0896L5.46159 20.0575L6.48937 16.8087C6.76338 15.9419 7.26231 15.1531 7.94111 14.5134L19.4163 3.70703ZM19.4163 3.70703L22.8054 6.89897M20.8783 15.2176V20.965C20.8783 21.6871 20.5737 22.3795 20.0316 22.8901C19.4895 23.4007 18.7543 23.6875 17.9876 23.6875H4.49805C3.73141 23.6875 2.99617 23.4007 2.45407 22.8901C1.91197 22.3795 1.60742 21.6871 1.60742 20.965V8.2602C1.60742 7.53816 1.91197 6.84569 2.45407 6.33513C2.99617 5.82457 3.73141 5.53774 4.49805 5.53774H10.6005" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg width="27" height="25" viewBox="0 0 27 25" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.4163 3.70703L21.5836 1.66458C22.0354 1.23906 22.6482 1 23.2871 1C23.9261 1 24.5389 1.23906 24.9907 1.66458C25.4425 2.0901 25.6963 2.66724 25.6963 3.26902C25.6963 3.8708 25.4425 4.44793 24.9907 4.87346L11.3482 17.7223C10.669 18.3616 9.83141 18.8315 8.91108 19.0896L5.46159 20.0575L6.48937 16.8087C6.76338 15.9419 7.26231 15.1531 7.94111 14.5134L19.4163 3.70703ZM19.4163 3.70703L22.8054 6.89897M20.8783 15.2176V20.965C20.8783 21.6871 20.5737 22.3795 20.0316 22.8901C19.4895 23.4007 18.7543 23.6875 17.9876 23.6875H4.49805C3.73141 23.6875 2.99617 23.4007 2.45407 22.8901C1.91197 22.3795 1.60742 21.6871 1.60742 20.965V8.2602C1.60742 7.53816 1.91197 6.84569 2.45407 6.33513C2.99617 5.82457 3.73141 5.53774 4.49805 5.53774H10.6005"
+                                          stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </i>
                         </div>
                     </div>
+                </div>
+                <div id="contractTab" class="self_contract_detail_info_container self_parent_detail_info_container">
+
+                    <div class="contract_detail_info_list_block_container contract_detail_info_style">
+                        <table class="contract_detail_table_container contract_table_style">
+                            <thead>
+                            <tr>
+                                <th><h2>№</h2></th>
+                                <th></th>
+                                <th><h2>Contracts</h2></th>
+                                <th><h2>Class</h2></th>
+                                <th><h2>Academic<br>year</h2></th>
+                                <th><h2>Sum of<br>contracts</h2></th>
+                                <th><h2>Debt</h2></th>
+                                <th><h2>Discounts</h2></th>
+                            </tr>
+                            </thead>
+                            <tbody id="contracts_info"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="contract_transaction_detail_info_list_block_container">
+                        <div class="contract_transaction_main_info">
+                            <div class="contract_transaction_main_table_info">
+                                <table class="contract_transaction_table_container contract_table_style">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th><h2>Date of payment</h2></th>
+                                        <th><h2>Payment amount</h2></th>
+                                        <th><h2>Type of payment</h2></th>
+                                        <th><h2>Comment</h2></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="contract_transactions_info"></tbody>
+                                </table>
+                            </div>
+                            <input type="hidden" id="current_contract_id">
+                            <div class="add_new_contract_transaction" onclick="AddNewTransaction();">Add new one</div>
+                            <div class="add_new_contract_transaction_detail_container contract_detail_info_style">
+                                <div class="title_add_new_contract_transaction">
+                                    <h1>Add New Transaction</h1>
+                                </div>
+                                <div class="amount_of_payment_contract_transaction settings_add_new_transaction">
+                                    <h1>Amount of payment</h1>
+                                    <label>
+                                        <input type="number" id="amount_of_payment" class="amount_of_payment" placeholder="Enter amount">
+                                    </label>
+                                </div>
+                                <div class="date_of_payment_contract_transaction settings_add_new_transaction">
+                                    <h1>Date of payment</h1>
+                                    <div class="choose_date_of_payment">
+                                        <i>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4.75 1V3.25M15.25 1V3.25M1 16.75V5.5C1 4.90326 1.23705 4.33097 1.65901 3.90901C2.08097 3.48705 2.65326 3.25 3.25 3.25H16.75C17.3467 3.25 17.919 3.48705 18.341 3.90901C18.7629 4.33097 19 4.90326 19 5.5V16.75M1 16.75C1 17.3467 1.23705 17.919 1.65901 18.341C2.08097 18.7629 2.65326 19 3.25 19H16.75C17.3467 19 17.919 18.7629 18.341 18.341C18.7629 17.919 19 17.3467 19 16.75M1 16.75V9.25C1 8.65326 1.23705 8.08097 1.65901 7.65901C2.08097 7.23705 2.65326 7 3.25 7H16.75C17.3467 7 17.919 7.23705 18.341 7.65901C18.7629 8.08097 19 8.65326 19 9.25V16.75M10 10.75H10.008V10.758H10V10.75ZM10 13H10.008V13.008H10V13ZM10 15.25H10.008V15.258H10V15.25ZM7.75 13H7.758V13.008H7.75V13ZM7.75 15.25H7.758V15.258H7.75V15.25ZM5.5 13H5.508V13.008H5.5V13ZM5.5 15.25H5.508V15.258H5.5V15.25ZM12.25 10.75H12.258V10.758H12.25V10.75ZM12.25 13H12.258V13.008H12.25V13ZM12.25 15.25H12.258V15.258H12.25V15.25ZM14.5 10.75H14.508V10.758H14.5V10.75ZM14.5 13H14.508V13.008H14.5V13Z"
+                                                      stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                                      stroke-linejoin="round"/>
+                                            </svg>
+                                        </i>
+                                        Choose a date
+                                    </div>
+                                </div>
+                                <div class="type_of_payment_contract_transaction settings_add_new_transaction">
+                                    <h1>Type of payment</h1>
+                                    <div class="choose_type_of_payment">
+                                        Select option
+                                        <i>
+                                            <svg width="16" height="10" viewBox="0 0 16 10" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14.875 1.5625L8 8.4375L1.125 1.5625" stroke="white"
+                                                      stroke-width="1.5" stroke-linecap="round"
+                                                      stroke-linejoin="round"/>
+                                            </svg>
+                                        </i>
+                                    </div>
+                                </div>
+
+                                <div class="settings_add_new_transaction">
+                                    <button class="add_new_transaction_button" style="background-color: #233255;">
+                                        Send payment
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -155,7 +270,170 @@
 {% block scripts %}
 
     <script>
+        document.querySelector('#contractOpen').addEventListener('click', function () {
+            document.querySelector('#contractTab').classList.add('active');
+            document.querySelector('#parentTab').classList.remove('active');
+            document.querySelector('#contractOpen').classList.add('active');
+            document.querySelector('#parentOpen').classList.remove('active');
+        });
+
+        document.querySelector('#parentOpen').addEventListener('click', function () {
+            document.querySelector('#contractTab').classList.remove('active');
+            document.querySelector('#parentTab').classList.add('active');
+            document.querySelector('#contractOpen').classList.remove('active');
+            document.querySelector('#parentOpen').classList.add('active');
+        });
+    </script>
+
+    <script>
+        async function getContractInfo(user_id) {
+            await fetch('/panel/contracts/' + user_id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(response => response.json())
+                .then(async data => {
+                    let contract_data = data.data.contracts;
+                    let status = data.status;
+                    if (status === 200) {
+                        let contract_body = document.querySelector('#contracts_info');
+                        contract_data.forEach((e) => {
+                            document.querySelector('#current_contract_id').value = e.id;
+                            contract_body.innerHTML += `
+                            <tr>
+                                <td>${e.number}</td>
+                                <td>
+                                    <i onclick="getContractTransactionInfo(${e.id})">
+                                        <svg class="open_transactions_icon non_active" width="17" height="10" viewBox="0 0 17 10" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 1L8.5 8.5L1 1" stroke="#233255" stroke-width="2"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </i>
+                                </td>
+                                <td>
+                                    <h1>${e.name}</h1>
+                                    <p>${e.status}</p>
+                                    <span>${e.date}</span>
+                                </td>
+                                <td>
+                                    <h1>${e.class}</h1>
+                                </td>
+                                <td>
+                                    <p>${e.edu_year}</p>
+                                </td>
+                                <td>
+                                    <h1>${e.amount} <span>tg</span></h1>
+                                </td>
+                                <td>
+                                    <h1>${e.debt} <span>tg</span></h1>
+                                </td>
+                                <td>
+                                    <h1>${e.discount} <span>%</span></h1>
+                                </td>
+                            `
+                        })
+                    }
+                })
+        }
+
+        async function getContractTransactionInfo(contract_id) {
+            let transaction_icon = document.querySelector('.open_transactions_icon');
+            let transaction_icon_class = transaction_icon.classList;
+            if (transaction_icon_class.contains('non_active')) {
+                transaction_icon.classList.remove('non_active');
+                transaction_icon.classList.add('active');
+
+                await fetch('/panel/contracts/' + contract_id + '/transactions', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                }).then(response => response.json())
+                    .then(async data => {
+                        let transaction_data = data.data.transactions;
+                        let status = data.status;
+                        if (status === 200) {
+                            document.querySelector('.contract_transaction_main_info').style.display = 'block';
+                            let transaction_body = document.querySelector('#contract_transactions_info');
+                            transaction_body.innerHTML = '';
+                            transaction_data.forEach((e) => {
+                                transaction_body.innerHTML += `
+                                <tr>
+                                    <td>
+                                        <i>
+                                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525" stroke="#233255" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </i>
+                                    </td>
+                                    <td>
+                                        <h1>${e.date}</h1>
+                                    </td>
+                                    <td>
+                                        <h1>${e.amount} tg</h1>
+                                    </td>
+                                    <td>
+                                        <h1>${e.payment_type}</h1>
+                                    </td>
+                                    <td>
+                                        <h1>${e.description}</h1>
+                                    </td>
+                                </tr>
+                            `
+                            })
+                        }
+                    })
+
+            } else {
+                document.querySelector('.contract_transaction_main_info').style.display = 'none';
+                transaction_icon.classList.remove('active');
+                transaction_icon.classList.add('non_active');
+            }
+        }
+
+    </script>
+
+    <script>
+        async function AddNewTransaction() {
+            document.querySelector('.add_new_contract_transaction_detail_container').style.display = 'flex';
+            let contract_id = document.querySelector('#current_contract_id').value;
+
+            document.querySelector('.add_new_transaction_button').addEventListener('click', async function () {
+                let amount = document.querySelector('#amount_of_payment').value;
+                console.log(amount);
+                await fetch('/panel/contracts/' + contract_id + '/create_transaction/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        date: new Date().toJSON(),
+                        payment_type: 'Card',
+                        amount: amount
+                    })
+                }).then(response => response.json())
+                    .then(async data => {
+                        let status = data.status;
+                        if (status === 200) {
+                            window.location.reload();
+                        }
+                    })
+            })
+        }
+    </script>
+
+    <script>
         async function getUserDetailInfo(user_id) {
+            document.querySelector('.detail_user_info_container').style.display = 'flex';
+            document.querySelector('#contracts_info') ? document.querySelector('#contracts_info').innerHTML = '' : null;
+
+            await getContractInfo(user_id);
+
             await fetch('/panel/users/' + user_id, {
                 method: 'GET',
                 headers: {
@@ -167,7 +445,6 @@
                     let user_data = data.data;
                     let status = data.status;
                     if (status === 200) {
-                        console.log(user_data);
                         await setBackgroundColor(user_id);
                         await setUserInfoFromResponseData(user_data);
                         await setParentInfoFromResponseData(user_data);
