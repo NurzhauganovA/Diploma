@@ -29,7 +29,13 @@
                         if (response.code === 302) {
                             window.location.href = response.redirect;
                         } else if (response.code === 403) {
-                            console.log("FORBIDDEN");
+                            code = response.code;
+                            message = response.message;
+                            info = response.info;
+                            button = response.button;
+                            link = response.link;
+                            params = '?code=' + code + '&message=' + message + '&info=' + info + '&button=' + button + '&link=' + link;
+                            window.location.href = response.redirect + params
                         } else {
                             var script = document.createElement('script');
                             script.src = "/static/authorization/js/face_rec.js";

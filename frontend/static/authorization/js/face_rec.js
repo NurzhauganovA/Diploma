@@ -1,7 +1,7 @@
 $(document).ready(function() {
     navigator.mediaDevices.getUserMedia({ video: true })
         .then(function(stream) {
-            var video = document.querySelector('videoElement');
+            var video = document.querySelector('video');
             video.srcObject = stream;
             setInterval(function() {
                 captureAndRecognize(video);

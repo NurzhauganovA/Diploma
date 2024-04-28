@@ -189,7 +189,15 @@ def face_recognize(request: HttpRequest):
 
         return JsonResponse({"redirect": reverse("home"), "code": 302})
 
-    return JsonResponse({'message': 'Forbidden', "code": 403})
+    return JsonResponse(
+        {'message': 'Forbidden', 
+         "code": 403, 
+         "info": "Facial recognition failed", 
+         "button": "Please go back to login",
+         "redirect": reverse("error"),
+         "link": "login",
+         }
+    )
 
 
 def face_control(user_name: str):
@@ -242,3 +250,21 @@ def face_control(user_name: str):
 
     result = face_names[0] == user_name
     return result
+
+
+def errorViews(request: HttpRequest):
+    code = request.GET.get("code")
+    message = request.GET.get("message")
+    info = request.GET.get("info")
+    button = request.GET.get("button")
+    link = request.GET.get("link")
+
+    context = {
+        "code": code,
+        "message": message,
+        "info": info,
+        "button": button,
+        "link": link,
+    }
+
+    return render(request, "authorization/error.html", context)
