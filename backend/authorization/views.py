@@ -8,6 +8,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.http import JsonResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
+from django.urls import reverse
 
 from authorization import UserRoles
 from authorization.models import User
@@ -33,7 +34,8 @@ def login(request: HttpRequest):
         if user.role == UserRoles.EMPLOYEE:
             request.session["employee_id"] = user.id
 
-            return redirect("face_recognition")
+            # return redirect("face_recognition")
+            return render(request, "authorization/face_control.html")
 
         auth.login(request, user)
         user.save_login_days()
@@ -185,9 +187,17 @@ def face_recognize(request: HttpRequest):
         auth.login(request, user)
         user.save_login_days()
 
-        return redirect('/')
+        return JsonResponse({"redirect": reverse("home"), "code": 302})
 
-    return JsonResponse({'message': 'FAILE, You do not this person!'})
+    return JsonResponse(
+        {'message': 'Forbidden', 
+         "code": 403, 
+         "info": "Facial recognition failed", 
+         "button": "Please go back to login",
+         "redirect": reverse("error"),
+         "link": "login",
+         }
+    )
 
 
 def face_control(user_name: str):
@@ -237,26 +247,24 @@ def face_control(user_name: str):
 
         if len(face_names) > 0:
             break
-    
-    #     for (top, right, bottom, left), name in zip(face_locations, face_names):
-    #         top *= 4
-    #         right *= 4
-    #         bottom *= 4
-    #         left *= 4
-
-    #         cv.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-
-    #         cv.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv.FILLED)
-    #         font = cv.FONT_HERSHEY_DUPLEX
-    #         cv.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
-    #     cv.imshow('Video', frame)
-
-    #     if cv.waitKey(1) & 0xFF == ord('q'):
-    #         break
-
-    # video_capture.release()
-    # cv.destroyAllWindows()
 
     result = face_names[0] == user_name
     return result
+
+
+def errorViews(request: HttpRequest):
+    code = request.GET.get("code")
+    message = request.GET.get("message")
+    info = request.GET.get("info")
+    button = request.GET.get("button")
+    link = request.GET.get("link")
+
+    context = {
+        "code": code,
+        "message": message,
+        "info": info,
+        "button": button,
+        "link": link,
+    }
+
+    return render(request, "authorization/error.html", context)

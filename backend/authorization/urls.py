@@ -13,4 +13,5 @@ urlpatterns = [
     path("verify-by-code", views.verify_by_code, name="verify-by-code"),
     path('set-password/', views.set_new_password, name='set_new_password'),
     path('face_recognition/', views.face_recognize, name='face_recognition'),
+    path('error/', views.errorViews, name="error"),
 ]
