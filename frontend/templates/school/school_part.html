@@ -177,16 +177,16 @@
                     <div class="contract_detail_info_list_block_container contract_detail_info_style">
                         <table class="contract_detail_table_container contract_table_style">
                             <thead>
-                            <tr>
-                                <th><h2>№</h2></th>
-                                <th></th>
-                                <th><h2>Contracts</h2></th>
-                                <th><h2>Class</h2></th>
-                                <th><h2>Academic<br>year</h2></th>
-                                <th><h2>Sum of<br>contracts</h2></th>
-                                <th><h2>Debt</h2></th>
-                                <th><h2>Discounts</h2></th>
-                            </tr>
+                                <tr>
+                                    <th><h2>№</h2></th>
+                                    <th></th>
+                                    <th><h2>Contracts</h2></th>
+                                    <th><h2>Class</h2></th>
+                                    <th><h2>Academic<br>year</h2></th>
+                                    <th><h2>Sum of<br>contracts</h2></th>
+                                    <th><h2>Debt</h2></th>
+                                    <th><h2>Discounts</h2></th>
+                                </tr>
                             </thead>
                             <tbody id="contracts_info"></tbody>
                         </table>
@@ -210,6 +210,7 @@
                             </div>
                             <input type="hidden" id="current_contract_id">
                             <div class="add_new_contract_transaction" onclick="AddNewTransaction();">Add new one</div>
+
                             <div class="add_new_contract_transaction_detail_container contract_detail_info_style">
                                 <div class="title_add_new_contract_transaction">
                                     <h1>Add New Transaction</h1>
@@ -250,8 +251,12 @@
                                 </div>
 
                                 <div class="settings_add_new_transaction">
-                                    <button class="add_new_transaction_button" style="background-color: #233255;">
+                                    <button value="add" class="add_new_transaction_button" style="background-color: #233255;">
                                         Send payment
+                                    </button>
+
+                                    <button id="delete_transaction_btn" class="delete_transaction_button" style="background-color: #F04D23; display: none;">
+                                        Delete payment
                                     </button>
                                 </div>
 
@@ -362,9 +367,9 @@
                             transaction_body.innerHTML = '';
                             transaction_data.forEach((e) => {
                                 transaction_body.innerHTML += `
-                                <tr>
+                                <tr data-transaction_id="${e.id}" id="transaction_${e.id}">
                                     <td>
-                                        <i>
+                                        <i class="edit_transaction_btn" onclick="editTransaction(${e.id})">
                                             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525" stroke="#233255" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
@@ -395,27 +400,49 @@
             }
         }
 
-    </script>
+        async function editTransaction(transaction_id) {
+            let deleteTransactionBtn = document.querySelector('.delete_transaction_button');
+            deleteTransactionBtn.style.display = 'inline-flex';
+            let transaction = document.querySelector('#transaction_' + transaction_id);
+            let amount = transaction.querySelector('td:nth-child(3) h1').innerHTML;
+            let payment_type = transaction.querySelector('td:nth-child(4) h1').innerHTML;
+            let description = transaction.querySelector('td:nth-child(5) h1').innerHTML;
 
-    <script>
-        async function AddNewTransaction() {
             document.querySelector('.add_new_contract_transaction_detail_container').style.display = 'flex';
-            let contract_id = document.querySelector('#current_contract_id').value;
-
+            document.querySelector('#amount_of_payment').value = amount.split(' ')[0];
+            document.querySelector('.choose_type_of_payment').innerHTML = payment_type;
+            document.querySelector('.add_new_transaction_button').innerHTML = 'Edit payment';
+            document.querySelector('.add_new_transaction_button').value = 'edit';
             document.querySelector('.add_new_transaction_button').addEventListener('click', async function () {
-                let amount = document.querySelector('#amount_of_payment').value;
-                console.log(amount);
-                await fetch('/panel/contracts/' + contract_id + '/create_transaction/', {
+                if (document.querySelector('.add_new_transaction_button').value === 'edit') {
+                    await fetch('/panel/contracts/' + transaction_id + '/edit_transaction/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            date: new Date().toJSON(),
+                            payment_type: payment_type,
+                            amount: document.querySelector('#amount_of_payment').value,
+                            description: description
+                        })
+                    }).then(response => response.json())
+                        .then(async data => {
+                            let status = data.status;
+                            if (status === 200) {
+                                window.location.reload();
+                            }
+                        })
+                }
+            });
+            deleteTransactionBtn.addEventListener('click', async function () {
+                await fetch('/panel/contracts/' + transaction_id + '/delete_transaction/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                        date: new Date().toJSON(),
-                        payment_type: 'Card',
-                        amount: amount
-                    })
+                    }
                 }).then(response => response.json())
                     .then(async data => {
                         let status = data.status;
@@ -423,6 +450,43 @@
                             window.location.reload();
                         }
                     })
+            });
+        }
+    </script>
+
+    <script>
+        async function AddNewTransaction() {
+            document.querySelector('.delete_transaction_button').display = 'none';
+            let add_transaction_btn = document.querySelector('.add_new_contract_transaction');
+            add_transaction_btn.value = 'add';
+            document.querySelector('.add_new_transaction_button').innerHTML = 'Send payment';
+            document.querySelector('#amount_of_payment').value = '';
+            document.querySelector('.add_new_contract_transaction_detail_container').style.display = 'flex';
+            let contract_id = document.querySelector('#current_contract_id').value;
+
+            document.querySelector('.add_new_transaction_button').addEventListener('click', async function () {
+                let amount = document.querySelector('#amount_of_payment').value;
+
+                if (add_transaction_btn.value === 'add') {
+                    await fetch('/panel/contracts/' + contract_id + '/create_transaction/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            date: new Date().toJSON(),
+                            payment_type: 'Card',
+                            amount: amount
+                        })
+                    }).then(response => response.json())
+                        .then(async data => {
+                            let status = data.status;
+                            if (status === 200) {
+                                window.location.reload();
+                            }
+                        })
+                }
             })
         }
     </script>

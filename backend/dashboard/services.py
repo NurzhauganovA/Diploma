@@ -49,7 +49,7 @@ class GetOverallGoalUsersService:
         return {
             'overall_users': overall,
             'goal_users': goal,
-            'percent': Decimal(overall / goal * 100).quantize(Decimal(".01")),
+            'percent': int(Decimal(overall / goal * 100).quantize(Decimal(".01"))),
             'difference': goal - overall if goal - overall > 0 else 'Выполнено',
             'difference_with_before_month': abs(difference),
             'is_upper': True if difference < 0 else False
@@ -57,7 +57,7 @@ class GetOverallGoalUsersService:
 
     @staticmethod
     def get_overall_users_analytics():
-        overall, goal = User.objects.all().count(), 10
+        overall, goal = User.objects.all().count(), 1000
 
         date = timezone.now() - datetime.timedelta(days=30)
         last_month = User.objects.filter(date_joined__month=date.month).count()

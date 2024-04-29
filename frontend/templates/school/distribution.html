@@ -1,0 +1,197 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'school/css/distribution.css' %}">
+{% endblock %}
+
+{% block title %} SmartSchool - Distribution {% endblock %}
+
+{% block page_title %} Distribution {% endblock %}
+
+{% block content %}
+    <div class="section_container">
+        <div class="distribution_container">
+
+            <!-- LEFT LIST BLOCK -->
+            <div class="users_school_part_container">
+                <div class="users_data_school_part_block">
+                    <button class="add_statement_distribution">Add statement</button>
+                    <div class="user_list_data_school_part">
+                        {% for statement in statements %}
+                            <div class="li_statement_approve_block">
+                                <div id="user_list_{{ student.id }}" class="user_data_school_part">
+                                    <div class="image_block_user_data">
+                                        <div class="background_user_avatar_block"
+                                             style="background-image: url('{{ statement.user.get_photo }}');">
+                                        </div>
+                                    </div>
+                                    <div class="main_info_block_user_data">
+                                        <h1>{{ statement.user.full_name }}</h1>
+                                    </div>
+                                </div>
+                                <div class="statement_approve_block">
+                                    <label>
+                                        <select name="approve_to_class" id="approve_to_class_{{ statement.id }}">
+                                            <option value="">Class</option>
+                                            {% for class in classes %}
+                                                <option value="{{ class.id }}">{{ class.class_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </label>
+                                    <button class="approve_statement" onclick="approveStatement({{ statement.id }})">Approve</button>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="no_statements">
+                                <h1>No statements</h1>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT DETAIL BLOCK -->
+            <div class="distribution_classes_container">
+                <div class="title_of_distribution_classes">
+                    <h1>List of classes</h1>
+                    <button class="add_distribution_class">Add class</button>
+                </div>
+                <div class="distribution_classes_list_block">
+                    <ul class="distribution_ul_classes_list">
+                        {% for class in classes %}
+                            <li class="distribution_class_list_block">
+                                <div class="title_block_distribution_class">
+                                    <div class="main_info_block_distribution_class">
+                                        <h1>Class: <span>{{ class.class_name }}</span></h1>
+                                        <h1>Teacher: <span>{{ class.teacher }}</span></h1>
+                                    </div>
+                                    <div class="edit_distribution_class_block">
+                                        <i>
+                                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525" stroke="#233255" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </i>
+                                    </div>
+                                </div>
+                                <div class="table_data_distribution_class_block">
+                                    <table class="table_distribution_class">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <h1>№</h1>
+                                            </th>
+                                            <th>
+                                                <h1>Full name</h1>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for student in class.students %}
+                                            <tr>
+                                                <td>
+                                                    <h1>{{ forloop.counter }}</h1>
+                                                </td>
+                                                <td class="full_name">
+                                                    <div class="title">
+                                                        <h1>{{ student.full_name }}</h1>
+                                                        <p>{{ student.contract_number }}</p>
+                                                    </div>
+                                                    <i onclick="removeStudentFromClass({{ student.id }})">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M3 6H5H21" stroke="#A30D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="#A30D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M10 11V17" stroke="#A30D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M14 11V17" stroke="#A30D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                    </i>
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td>
+                                                    <h1>...</h1>
+                                                </td>
+                                                <td>
+                                                    <h1>No students</h1>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        console.log("123");
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let blocks = document.querySelectorAll('.li_statement_approve_block');
+
+            blocks.forEach((block, index) => {
+                block.addEventListener('click', function () {
+                    let statementApproveBlock = block.querySelector('.statement_approve_block');
+                    statementApproveBlock.classList.toggle('active');
+                });
+
+                let select = block.querySelector('.statement_approve_block select');
+                select.addEventListener('click', function (event) {
+                    // Предотвращаем всплытие события
+                    event.stopPropagation();
+                });
+            });
+        });
+
+        function approveStatement(student_id) {
+            let select = document.querySelector(`#approve_to_class_${student_id}`);
+            let class_id = select.value;
+
+            if (class_id) {
+                fetch(`/panel/distribution/approve-to-class`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        student_id: student_id,
+                        class_id: class_id
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 200) {
+                            window.location.reload();
+                        }
+                    });
+            }
+        }
+
+        function removeStudentFromClass(student_id) {
+            fetch(`/panel/distribution/remove-from-class`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    student_id: student_id
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 200) {
+                        window.location.reload();
+                    }
+                });
+        }
+    </script>
+{% endblock %}
