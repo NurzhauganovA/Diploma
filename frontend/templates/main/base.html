@@ -48,7 +48,7 @@
                 </div>
                 <ul class="links_list_main_menu_block">
                     <li class="link_main_menu_block">
-                        <a href="{% url 'home' %}" class="active">
+                        <a href="{% url 'home' %}" class="{% if active_page == '/' %} active {% endif %}">
                             <div class="title_link_main_menu_block">
                                 <i>
                                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +65,7 @@
                         </a>
                     </li>
                     <li class="link_main_menu_block">
-                        <a href="{% url 'school-part' %}">
+                        <a href="{% url 'school-part' %}" class="{% if active_page == '/panel/school-part' %} active {% endif %}">
                             <div class="title_link_main_menu_block">
                                 <i>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -84,7 +84,7 @@
                         </a>
                     </li>
                     <li class="link_main_menu_block">
-                        <a href="">
+                        <a href="{% url 'distribution' %}" class="{% if active_page == '/panel/distribution' %} active {% endif %}">
                             <div class="title_link_main_menu_block">
                                 <i>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

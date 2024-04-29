@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from authorization.models import User
 from dashboard.services import GetSchoolRegionsService, GetLastRegisteredUsersService, GetCountNewUsersThisMonthService, \
     GetOverallGoalUsersService, DailyUsersService
 from school.models import School
@@ -7,11 +8,11 @@ from school.models import School
 
 def home(request):
 
-    regions = GetSchoolRegionsService().get_school_regions() # work
-    last_registered_users = GetLastRegisteredUsersService().get_last_registered_users() # work
-    count_last_registered_users = GetCountNewUsersThisMonthService().get_count_new_users_current_month() # work
-    overall_users_analytics = GetOverallGoalUsersService().get_overall_users_analytics() # work
-    daily_users_analytics = DailyUsersService().get_daily_users()
+    regions = GetSchoolRegionsService().get_school_regions()  # work
+    last_registered_users = GetLastRegisteredUsersService().get_last_registered_users()  # work
+    count_last_registered_users = GetCountNewUsersThisMonthService().get_count_new_users_current_month()  # work
+    overall_users_analytics = GetOverallGoalUsersService().get_overall_users_analytics()  # work
+    daily_users_analytics = DailyUsersService().get_daily_users()   # work
 
     context = {
         'regions': regions,

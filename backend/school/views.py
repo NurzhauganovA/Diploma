@@ -1,15 +1,14 @@
 import json
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.db.models import QuerySet
-from django.contrib import messages
 
-from authorization.models import User
+from authorization.models import User, Student
 from authorization import UserRoles
 from school.services import GetSchoolPartData
 from school.utils import CacheData
-from contract.models import Contract, ContractStatus, Transaction
+from contract.models import Contract, Transaction
 from django.db.models import Sum
 
 
@@ -150,6 +149,71 @@ def create_transaction(request: HttpRequest, pk: int) -> HttpResponse:
             description=contract.name,
             payment_type=payment_type,
         )
+
+        return JsonResponse({"status": 200})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def edit_transaction(request: HttpRequest, pk: int) -> HttpResponse:
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        transaction = Transaction.objects.get(id=pk)
+        amount = data.get("amount")
+        date = data.get("date")
+        payment_type = data.get("payment_type")
+
+        amount = int(amount.split(".")[0])
+
+        transaction.amount = amount
+        transaction.datetime = date
+        transaction.payment_type = payment_type
+        transaction.save()
+        print(transaction.amount, transaction.datetime, transaction.payment_type)
+
+        return JsonResponse({"status": 200})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def delete_transaction(request: HttpRequest, pk: int) -> HttpResponse:
+    if request.method == "POST":
+        transaction = Transaction.objects.get(id=pk)
+        transaction.delete()
+
+        return JsonResponse({"status": 200})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def distribution(request: HttpRequest) -> HttpResponse:
+    school_data = GetSchoolPartData(request.user.id).get_school_distribution_statements()
+
+    context = {
+        "statements": school_data["statements"],
+        "classes": school_data["classes"],
+    }
+
+    return render(request, "school/distribution.html", context)
+
+
+def approve_to_class(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        data = json.loads(request.body)
+        print(data)
+
+        student = Student.objects.get(id=data.get("student_id"))
+        student.stud_class_id = data.get("class_id")
+        student.save()
+
+        return JsonResponse({"status": 200})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def remove_from_class(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        data = json.loads(request.body)
+        student = Student.objects.get(id=data.get("student_id"))
+        student.stud_class_id = None
+        student.save()
 
         return JsonResponse({"status": 200})
     return JsonResponse({"error": "Not Allowed Method", "status": 405})

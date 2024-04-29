@@ -1,12 +1,13 @@
 main {
     width: calc(140px - 140px);
-    height: calc(100vh - 15px);
+    height: calc(100vh - 125px);
 }
 
 .wrapper_main_container {
     width: calc(100% - 75px);
-    height: 100vh;
+    min-height: calc(100vh - 110px);
     background-color: #EBEBEB;
+    padding-bottom: 30px;
 }
 
 .school_part_container {
@@ -14,6 +15,7 @@ main {
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
+    padding-bottom: 50px;
 }
 
 .users_school_part_container {
@@ -155,8 +157,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 100px;
     padding: 32px 0;
+    gap: 100px;
 }
 
 .self_parent_detail_info_container {
@@ -200,10 +202,10 @@ main {
 
 .self_additional_user_detail_info_block {
     display: flex;
-    gap: 60px;
 }
 
 .user_additional_info_block {
+    width: 350px;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -297,7 +299,7 @@ main {
     padding-bottom: 30px; /* добавляет нижний отступ для заголовков колонок */
 }
 
-.contract_table_style tbody td {
+.contract_table_style tbody tr td {
     text-align: center;
     padding: 10px 20px; /* добавляет верхний и нижний отступы для ячеек, выравнивая текст внутри по вертикали */
 }
@@ -374,14 +376,14 @@ main {
 }
 
 .settings_add_new_transaction {
+    margin: 12px 0;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    cursor: pointer;
+    align-items: center;
+    gap: 20px;
     transition: all 0.3s ease-in-out;
 }
 
-.settings_add_new_transaction:hover {
+.settings_add_new_transaction button:hover {
     opacity: 0.8;
 }
 
@@ -400,6 +402,8 @@ main {
     color: #FFF;
     font-size: 14px !important;
     border-radius: 6px;
+    border: none;
+    cursor: pointer;
 }
 
 .open_transactions_icon.non_active {
@@ -425,4 +429,8 @@ main {
     font-size: 18px !important;
     font-weight: 600;
     font-family: Montserrat;
+}
+
+.edit_transaction_btn:hover svg {
+    transform: rotate(180deg);
 }
