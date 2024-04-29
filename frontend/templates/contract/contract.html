@@ -34,44 +34,6 @@
         </div>
     </div>
 
-    <!-- <div class="main_container">
-        <div class="main_header">
-            <div class="main_header_container">
-                <div>№</div>
-                <div></div>
-                <div></div>
-                <div>Student's Full Name</div>
-                <div>Date of contract</div>
-                <div>Termination of contract</div>
-                <div>Status</div>
-                <div>Sum of contracts</div>
-                <div></div>
-                <div></div>
-            </div>
-        </div> -->
-        
-        <!-- <div class="main_body">
-            <div class="main_body_container">
-                <ul class="contracts_list">
-                    {% for contract in contracts %}
-                    <li class="contract_item">
-                        <div><p>{{ contract.id }}</p></div>
-                        <div><i class="fa-regular fa-chevron-right"></i></div>
-                        <div><i>pen</i></div>
-                        <div><p>{{ contract.student.user.full_name }}</p></div>
-                        <div><p>{{ contract.contract_date }}</p></div>
-                        <div><p>{{ contract.contract_date_close }}</p></div>
-                        <div><p>{{ contract.status }}</p></div>
-                        <div><p>{{ contract.final_amount }}</p></div>
-                        <div><i>edit</i></div>
-                        <div><i>trash</i></div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div> -->
-        <!-- </div> -->
-
         <div class="contract_main_info">
             <div class="contract_main_table_info">
                 <table class="contract_table_container contract_table_style">
@@ -169,7 +131,7 @@
                 transaction_icon.classList.remove('non_active');
                 transaction_icon.classList.add('active');
 
-                await fetch('/api/contracts/' + contract_id + '/transactions', {
+                await fetch('/api/contracts/app/' + contract_id + '/transactions', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

@@ -35,7 +35,7 @@ def get_contract_transactions(request: HttpRequest, pk: int) -> JsonResponse:
                     "date": transaction.datetime.strftime("%d.%m.%Y") if transaction.datetime else "No data",
                     "amount": transaction.amount if transaction.amount else "No data",
                     "description": transaction.description if transaction.description else "No data",
-                    "payment_type": transaction.payment_type if transaction.payment_type else "No data",
+                    "payment_type": transaction.payment_type if hasattr(transaction, "payment_type") else "CASH",
                 })
 
         return JsonResponse({'data': transactions_info, 'status': 200})

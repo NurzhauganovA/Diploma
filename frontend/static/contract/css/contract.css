@@ -152,7 +152,7 @@
 
 .contract_transaction_main_table_info {
     background-color: #FFF;
-    border-radius: 14px;
+    /* border-radius: 14px; */
     padding: 20px 15px;
     flex-direction: column;
     gap: 50px;
