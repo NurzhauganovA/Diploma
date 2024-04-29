@@ -33,7 +33,7 @@ class Contract(models.Model):
         db_column='student',
         related_name="contracts"
     )
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, db_column='school')
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, db_column='school', related_name="contracts")
     date = models.DateField()
     date_close = models.DateField(null=True)
     name = models.CharField(max_length=255)
@@ -89,7 +89,7 @@ class ContractDayPay(models.Model):
 class Transaction(models.Model):
     """ Модель транзакций """
 
-    contract = models.ForeignKey(Contract, on_delete=models.SET_NULL, null=True, db_column='contract')
+    contract = models.ForeignKey(Contract, on_delete=models.SET_NULL, null=True, db_column='contract', related_name="transactions")
     datetime = models.DateTimeField(default=timezone.now)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=255)
