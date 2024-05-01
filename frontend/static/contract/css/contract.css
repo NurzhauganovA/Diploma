@@ -1,0 +1,216 @@
+.wrapper_main_container {
+    width: calc(100% - 75px);
+    height: 100vh;
+    background-color: #EBEBEB;
+}
+
+#container_section {
+    display: inline;
+}
+
+#upper_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 32px 22px;
+    background-color: #FFF;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+#upper_container label {
+    font-size: 18px;
+    font-family: Montserrat;
+    font-weight: 500;
+}
+
+#entries {
+    font-size: 18px;
+    font-family: Montserrat;
+    font-weight: 500;
+    background-color: #E0E0E0;
+    border-radius: 10px;
+    padding: 7px 5px 7px 5px;
+    border: none;
+}
+
+#left_upper_container > *:not(:last-child) {
+    margin-right: 10px;
+}
+
+#select_academic {
+    background-color: #F6AD2B;
+    font-size: 22px;
+    font-family: Montserrat;
+    font-weight: 500;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    margin-left: -20%;
+    padding: 7px 5px 7px 5px;
+
+}
+
+.contract_main_table_info {
+    background-color: #FFF;
+    padding: 10px 15px;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.contract_table_style {
+    width: 100%;
+}
+
+.contract_table_style thead th {
+    text-align: center;
+    padding-bottom: 30px; /* добавляет нижний отступ для заголовков колонок */
+}
+
+.contract_table_style tbody td {
+    text-align: center;
+    padding: 30px 20px; /* добавляет верхний и нижний отступы для ячеек, выравнивая текст внутри по вертикали */
+}
+
+/* Стили для выравнивания иконки с помощью flexbox */
+.contract_table_style td svg {
+    margin: auto; /* центрирование SVG внутри ячейки td */
+}
+
+.contract_table_style h1,
+.contract_table_style p,
+.contract_table_style span {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h2 {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #F6AD2B;
+}
+
+.contract_table_style p {
+    color: #17C653 !important;
+}
+
+.contract_table_style span {
+    color: #C6C6C6 !important;
+}
+
+.contract_table_style h1 {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h1 span {
+    color: #233255 !important;
+    margin-left: 2px;
+}
+
+#contract_info {
+    font-size: 16px;
+    font-weight: 300;
+    font-family: Montserrat;
+    color: black;
+    margin-top: 20px;
+    padding-left: 40px;
+}
+
+#contract_info h2 {
+    font-size: 16px;
+    font-weight: 300;
+    font-family: Montserrat;
+    color: black;
+}
+
+#contract_info td {
+    margin-left: 20px;
+    padding-right: 20px;
+}
+
+#contract_info tr:nth-child(even) {
+    background-color: #ffffff; /* Четные строки будут белыми */
+}
+
+#contract_info tr:nth-child(odd) {
+    background-color: #FDEFD5; /* Нечетные строки будут оранжевыми */
+}
+
+
+
+.contract_transaction_main_info {
+    display: none;
+}
+
+.contract_transaction_main_table_info {
+    background-color: #FFF;
+    /* border-radius: 14px; */
+    padding: 20px 15px;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.contract_table_style {
+    width: 100%;
+}
+
+.contract_table_style thead th {
+    text-align: center;
+    padding-bottom: 30px; /* добавляет нижний отступ для заголовков колонок */
+}
+
+.contract_table_style tbody td {
+    text-align: center;
+    padding: 10px 20px; /* добавляет верхний и нижний отступы для ячеек, выравнивая текст внутри по вертикали */
+}
+
+/* Стили для выравнивания иконки с помощью flexbox */
+.contract_table_style td svg {
+    margin: auto; /* центрирование SVG внутри ячейки td */
+}
+
+.contract_table_style h1,
+.contract_table_style p,
+.contract_table_style span {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h2 {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #F6AD2B;
+}
+
+.contract_table_style p {
+    color: #17C653 !important;
+}
+
+.contract_table_style span {
+    color: #C6C6C6 !important;
+}
+
+.contract_table_style h1 {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h1 span {
+    color: #233255 !important;
+    margin-left: 2px;
+}
