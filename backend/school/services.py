@@ -29,7 +29,7 @@ class GetSchoolPartData:
 
         students: QuerySet = User.objects.filter(school__id=school_pk, role=UserRoles.STUDENT)
         parents: QuerySet = User.objects.filter(school__id=school_pk, role=UserRoles.PARENT)
-        teachers: QuerySet = User.objects.filter(school__id=school_pk, role=UserRoles.EMPLOYEE)
+        teachers: QuerySet = User.objects.filter(school__id=school_pk, role=UserRoles.TEACHER)
 
         return {
             "students": students,
@@ -62,7 +62,12 @@ class GetSchoolPartData:
             for class_obj in classes
         ]
 
+        teachers = User.objects.filter(school__id=school_pk, role=UserRoles.TEACHER)
+        parents = User.objects.filter(school__id=school_pk, role=UserRoles.PARENT)
+
         return {
             "statements": statements,
             "classes": class_data,
+            "teachers": teachers,
+            "parents": parents
         }
