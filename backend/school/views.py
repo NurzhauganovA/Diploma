@@ -1,11 +1,15 @@
 import json
+import re
 
+from django.contrib import messages
+from django.db import transaction
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.db.models import QuerySet
 
-from authorization.models import User, Student
+from authorization.models import User, Student, UserInfo
 from authorization import UserRoles
+from school.models import Class
 from school.services import GetSchoolPartData
 from school.utils import CacheData
 from contract.models import Contract, Transaction
@@ -190,20 +194,116 @@ def distribution(request: HttpRequest) -> HttpResponse:
     context = {
         "statements": school_data["statements"],
         "classes": school_data["classes"],
+        "teachers": school_data["teachers"],
+        "parents": school_data["parents"],
     }
 
     return render(request, "school/distribution.html", context)
 
 
+def add_new_statement(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        mobile_phone = request.POST.get("statement_phone")
+        email = request.POST.get("statement_email")
+        photo_avatar = request.FILES.get("statement_photo")
+        full_name = request.POST.get("statement_name")
+        birth_date = request.POST.get("statement_birth")
+        iin = request.POST.get("statement_iin")
+        parent = request.POST.get("statement_parent")
+
+        mobile_phone = re.sub(r'\D', '', mobile_phone)
+        if not mobile_phone.startswith('7') and len(mobile_phone) == 11:
+            mobile_phone = '7' + mobile_phone
+
+        if not mobile_phone or not email or not photo_avatar or not full_name or not birth_date or not iin or not parent:
+            messages.error(request, "Some fields are empty")
+            return redirect("distribution")
+
+        elif User.objects.filter(mobile_phone=mobile_phone).exists():
+            messages.error(request, "This user already exists")
+            return redirect("distribution")
+
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "This email already exists")
+            return redirect("distribution")
+
+        elif UserInfo.objects.filter(iin=iin).exists():
+            messages.error(request, "This IIN already exists")
+            return redirect("distribution")
+
+        try:
+            with transaction.atomic():
+                user = User.objects.create_user(
+                    mobile_phone=mobile_phone,
+                    password='default',
+                    role=UserRoles.STUDENT,
+                )
+                user.full_name = full_name
+                user.email = email
+                user.school.add(request.user.school.first())
+                user.set_password("default")
+                user.save()
+
+                user_info = UserInfo.objects.create(
+                    user=user,
+                    photo_avatar=photo_avatar,
+                    birth_date=birth_date,
+                    iin=iin
+                )
+                user_info.save()
+
+                student = Student.objects.create(
+                    user=user,
+                    parent=User.objects.get(id=parent)
+                )
+                student.save()
+
+                messages.success(request, "Statement added successfully")
+        except Exception as e:
+            print(e)
+            messages.error(request, "Something went wrong")
+
+        return redirect("distribution")
+    return redirect("distribution")
+
+
+def add_new_class(request: HttpRequest) -> HttpResponse:
+    if request.method == "POST":
+        class_num = request.POST.get("class_num")
+        class_liter = request.POST.get("class_liter")
+        teacher = request.POST.get("class_teacher")
+        description = request.POST.get("class_description")
+
+        if not class_num or not class_liter or not teacher:
+            messages.error(request, "Some fields are empty")
+            return redirect("distribution")
+
+        elif Class.objects.filter(school=request.user.school.first(), class_num=class_num, class_liter=class_liter).exists():
+            messages.error(request, "This class already exists")
+            return redirect("distribution")
+
+        Class.objects.create(
+            school=request.user.school.first(),
+            class_num=class_num,
+            class_liter=class_liter,
+            mentor=User.objects.get(id=teacher),
+            description=description,
+        )
+        messages.success(request, "Class added successfully")
+
+        return redirect("distribution")
+    return redirect("distribution")
+
+
 def approve_to_class(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         data = json.loads(request.body)
-        print(data)
 
         student = Student.objects.get(id=data.get("student_id"))
         student.stud_class_id = data.get("class_id")
         student.save()
 
+        messages.success(request, "Student added to class successfully")
         return JsonResponse({"status": 200})
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
@@ -215,5 +315,6 @@ def remove_from_class(request: HttpRequest) -> HttpResponse:
         student.stud_class_id = None
         student.save()
 
+        messages.success(request, "Student removed from class successfully")
         return JsonResponse({"status": 200})
     return JsonResponse({"error": "Not Allowed Method", "status": 405})

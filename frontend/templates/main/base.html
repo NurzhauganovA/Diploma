@@ -21,6 +21,41 @@
 </head>
 <body>
 
+
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <!-- ERROR MESSAGE BLOCK -->
+            <div class="error_message_block base_action_message_block">
+                <div class="error_message_block_container base_action_block_container">
+                    <div class="error_message_block_title base_message_block_title">
+                        <h1>ERROR</h1>
+                    </div>
+                    <div class="error_message_block_text base_message_block_text">
+                        <p>{{ message }}</p>
+                    </div>
+                    <div class="error_message_block_button base_message_block_button">
+                        <h1>close</h1>
+                    </div>
+                </div>
+            </div>
+        {% elif message.tags == 'success' %}
+            <!-- SUCCESS MESSAGE BLOCK -->
+            <div class="success_message_block base_action_message_block">
+                <div class="success_message_block_container base_action_block_container">
+                    <div class="success_message_block_title base_message_block_title">
+                        <h1>SUCCESS</h1>
+                    </div>
+                    <div class="success_message_block_text base_message_block_text">
+                        <p>{{ message }}</p>
+                    </div>
+                    <div class="success_message_block_button base_message_block_button">
+                        <h1>close</h1>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
     <div class="container">
         <div class="sidebar_container">
             <div class="school_logo_block_sidebar">
@@ -189,6 +224,13 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        document.querySelectorAll('.base_message_block_button').forEach((item) => {
+            item.addEventListener('click', () => {
+                item.parentElement.style.display = 'none';
+            });
+        });
+    </script>
     <script>
         let sidebar = document.querySelector('.sidebar_container');
         let none_active_sidebar = document.querySelectorAll('.none_active_sidebar');

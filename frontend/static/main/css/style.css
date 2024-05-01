@@ -237,3 +237,88 @@ main {
 .wrapper_main_container {
     padding: 105px 60px 0 60px;
 }
+
+.base_action_message_block {
+    position: absolute;
+    top: 105px;
+    right: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.base_action_block_container {
+    width: 200px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 8px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.error_message_block_container {
+    background-color: #F8D7DA;
+}
+
+.success_message_block_container {
+    background-color: #D4EDDA;
+}
+
+.base_message_block_title h1 {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: Montserrat, sans-serif;
+}
+
+.error_message_block_title h1 {
+    color: #ea1414;
+}
+
+.success_message_block_title h1 {
+    color: #155724;
+}
+
+.base_message_block_text {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: Montserrat, sans-serif;
+}
+
+.error_message_block_text {
+    color: #ea1414;
+}
+
+.success_message_block_text {
+    color: #155724;
+}
+
+.base_message_block_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #233255;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat, sans-serif;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+}
+
+.base_message_block_button h1 {
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat, sans-serif;
+}
+
+.base_message_block_button:hover {
+    opacity: 0.8;
+}
