@@ -9,82 +9,158 @@
 
 {% block page_title %} Contracts {% endblock %}
 
-
-
 {% block content %}
 
-<div class="container mx-auto px-4 py-6 dark:bg-zinc-800" id="container_section">
-
-    <div id="upper_container">
-        <div class="flex space-x-2 items-center" id="left_upper_container">
-            <label>Show</label>
-            <select id="entries">
-                <option>10</option>
-                <option>20</option>
-                <option>50</option>
-            </select>
-            <label>entries</label>
+    <div id="container_section">
+        <div id="upper_container">
+            <div class="flex space-x-2 items-center" id="left_upper_container">
+                <label>Show</label>
+                <select id="entries">
+                    <option>10</option>
+                    <option>20</option>
+                    <option>50</option>
+                </select>
+                <label>entries</label>
+            </div>
+            <div id="academic_container">
+                <select id="select_academic">
+                    <option>Academic year</option>
+                    <option>2022/2023</option>
+                    <option>2023/2024</option>
+                </select>
+            </div>
         </div>
-        <div id="academic_container">
-            <select id="select_academic">
-                <option>Academic year</option>
-                <option>2022/2023</option>
-                <option>2023/2024</option>
-            </select>
-        </div>
-    </div>
 
         <div class="contract_main_info">
             <div class="contract_main_table_info">
                 <table class="contract_table_container contract_table_style">
                     <thead>
-                    <tr>
-                        <th><h2>№</h2></th>
-                        <th></th>
-                        <th></th>
-                        <th><h2>Student's Full Name</h2></th>
-                        <th><h2>Date of contract</h2></th>
-                        <th><h2>Termination of contract</h2></th>
-                        <th><h2>Status</h2></th>
-                        <th><h2>Sum of contracts</h2></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
+                        <tr>
+                            <th><h2>№</h2></th>
+                            <th></th>
+                            <th></th>
+                            <th><h2>Student's Full Name</h2></th>
+                            <th><h2>Date of contract</h2></th>
+                            <th><h2>Termination of<br>contract</h2></th>
+                            <th><h2>Status</h2></th>
+                            <th><h2>Sum of contracts</h2></th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody id="contract_info">
-                        {% for contract in contracts %}
-                            <tr>
-                                <td><h2>#{{ contract.id }}</h2></td>
-                                <td>
-                                    <div onclick="getContractTransactionInfo({{ contract.id }})">
-                                        <i>
-                                            <svg class="open_transactions_icon non_active" width="17" height="10" viewBox="0 0 17 10" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                           <path d="M16 1L8.5 8.5L1 1" stroke="#233255" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round"/>
-                                       </svg>
-                                        </i>
+                    {% for contract in contracts %}
+                        <tr id="contract_tr_object" class="contract-data">
+                            <td><h2>#{{ forloop.counter }}</h2></td>
+                            <td>
+                                <div onclick="toggleContractDetails({{ contract.id }})">
+                                    <i>
+                                        <svg id="open_transactions_{{ contract.id }}" class="open_transactions_icon" width="17" height="10"
+                                             viewBox="0 0 17 10" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16 1L8.5 8.5L1 1" stroke="#233255" stroke-width="2"
+                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </i>
+                                </div>
+                            </td>
+                            <td><i>
+                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525"
+                                          stroke="#233255" stroke-width="1.5" stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </i></td>
+                            <td><h2>{{ contract.student.user.full_name }}</h2></td>
+                            <td><h2>{{ contract.date|date:"d.m.Y" }}</h2></td>
+                            <td><h2>{% if contract.date_close %}{{ contract.date_close|date:"d.m.Y" }}{% endif %}</h2></td>
+                            <td><h2 class="contract_status_{{ contract.status }} contract_status_base_style">{{ contract.status }}</h2></td>
+                            <td><h2>{{ contract.final_amount }}</h2></td>
+                            <td>
+                                <i>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 6H5H21" stroke="#5240D1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="#5240D1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M10 11V17" stroke="#5240D1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M14 11V17" stroke="#5240D1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </i>
+                            </td>
+                        </tr>
+
+                        <tr class="contract_details_main_container" id="contract_details_{{ contract.id }}" style="display: none">
+                            <td class="contract_details_info_container" colspan="6">
+                                <div class="header_title_block_contract_details">
+                                    <h1 class="active">Transactions</h1>
+                                    <h1>Accruals</h1>
+                                </div>
+                                <div class="main_block_contract_details">
+                                    <div class="contract_transaction_info">
+                                        <table class="contract_table_style">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th><h2>Date of payment</h2></th>
+                                                <th><h2>Payment amount</h2></th>
+                                                <th><h2>Type of payment</h2></th>
+                                                <th><h2>Comment</h2></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="contract_transactions_data">
+                                                {% for transaction in contract.transactions.all %}
+                                                    <tr>
+                                                        <td>
+                                                            <i>
+                                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525"
+                                                                          stroke="#233255" stroke-width="1.5"
+                                                                          stroke-linecap="round"
+                                                                          stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </i>
+                                                        </td>
+                                                        <td><h2>{{ transaction.datetime|date:"d.m.Y" }}</h2></td>
+                                                        <td><h2>{{ transaction.amount }}</h2></td>
+                                                        <td><h2>{{ transaction.payment_type }}</h2></td>
+                                                        <td><h2>{{ transaction.description }}</h2></td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="5"><h2>No transactions</h2></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </td>
-                                <td><i>
-                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525" stroke="#233255" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg></i></td>
-                                <td><h2>{{ contract.student.user.full_name }}</h2></td>
-                                <td><h2>{{ contract.contract_date }}</h2></td>
-                                <td><h2>{{ contract.contract_date_close }}</h2></td>
-                                <td><h2>{{ contract.status }}</h2></td>
-                                <td><h2>{{ contract.final_amount }}</h2></td>
-                                <td><i>
-                                    <svg width="27" height="25" viewBox="0 0 27 25" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                   <path d="M19.4163 3.70703L21.5836 1.66458C22.0354 1.23906 22.6482 1 23.2871 1C23.9261 1 24.5389 1.23906 24.9907 1.66458C25.4425 2.0901 25.6963 2.66724 25.6963 3.26902C25.6963 3.8708 25.4425 4.44793 24.9907 4.87346L11.3482 17.7223C10.669 18.3616 9.83141 18.8315 8.91108 19.0896L5.46159 20.0575L6.48937 16.8087C6.76338 15.9419 7.26231 15.1531 7.94111 14.5134L19.4163 3.70703ZM19.4163 3.70703L22.8054 6.89897M20.8783 15.2176V20.965C20.8783 21.6871 20.5737 22.3795 20.0316 22.8901C19.4895 23.4007 18.7543 23.6875 17.9876 23.6875H4.49805C3.73141 23.6875 2.99617 23.4007 2.45407 22.8901C1.91197 22.3795 1.60742 21.6871 1.60742 20.965V8.2602C1.60742 7.53816 1.91197 6.84569 2.45407 6.33513C2.99617 5.82457 3.73141 5.53774 4.49805 5.53774H10.6005"
-                                         stroke="black" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                               </svg>
-                                </i></td>
-                                <td><i>trash</i></td>
-                            </tr>
-                        {% endfor %}
+                                    <div class="contract_accruals_info" style="display: none;">
+                                        <table class="">
+                                            <thead>
+                                            <tr>
+                                                <th><h2>№</h2></th>
+                                                <th><h2>Month</h2></th>
+                                                <th><h2>Accrual amount</h2></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="contract_accruals_data">
+                                                {% for accrual in contract.accruals.all %}
+                                                    <tr>
+                                                        <td><h2>#{{ forloop.counter }}</h2></td>
+                                                        <td><h2>{{ accrual.date }}</h2></td>
+                                                        <td><h2>{{ accrual.amount }}</h2></td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="3"><h2>No accruals</h2></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -104,19 +180,20 @@
                         <tbody id="contract_transactions_info"></tbody>
                     </table>
                 </div>
-
-    <!-- <div class="flex justify-between items-center mt-4">
-        <div class="flex space-x-1">
-            <button class="px-3 py-1 text-zinc-700 dark:text-zinc-300 border rounded-md">Previous</button>
-            <button class="px-3 py-1 text-white bg-blue-500 border border-blue-500 dark:border-blue-400 rounded-md">1</button>
-            <button class="px-3 py-1 text-zinc-700 dark:text-zinc-300 border rounded-md">2</button>
-            <button class="px-3 py-1 text-zinc-700 dark:text-zinc-300 border rounded-md">3</button>
-            <button class="px-3 py-1 text-zinc-700 dark:text-zinc-300 border rounded-md">Next</button>
+            </div>
         </div>
-    </div> -->
 
-</div>
+        <div class="pagination_container">
+            <div class="pagination_list_block">
+                <h1>Previous</h1>
+                <p class="active">1</p>
+                <p>2</p>
+                <p>3</p>
+                <h1>Next</h1>
+            </div>
+        </div>
 
+    </div>
 
 
 {% endblock %}
@@ -124,59 +201,51 @@
 
 {% block scripts %}
     <script>
-        async function getContractTransactionInfo(contract_id) {
-            let transaction_icon = document.querySelector('.open_transactions_icon');
-            let transaction_icon_class = transaction_icon.classList;
-            if (transaction_icon_class.contains('non_active')) {
-                transaction_icon.classList.remove('non_active');
-                transaction_icon.classList.add('active');
+        const headers = document.querySelectorAll('.header_title_block_contract_details h1');
 
-                await fetch('/api/contracts/app/' + contract_id + '/transactions', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
+        // Для каждого заголовка добавляем обработчик события клика
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const parentContractDetails = header.closest('.contract_details_info_container');
+                parentContractDetails.querySelectorAll('.header_title_block_contract_details h1').forEach(h => h.classList.remove('active'));
+                header.classList.add('active');
+                const blocks = parentContractDetails.querySelectorAll('.contract_transaction_info, .contract_accruals_info');
+                console.log(blocks);
+                blocks.forEach(block => {
+                    if (block.classList.contains('contract_transaction_info')) {
+                        block.style.display = header.textContent === 'Transactions' ? 'block' : 'none';
+                    } else {
+                        block.style.display = header.textContent === 'Accruals' ? 'block' : 'none';
                     }
-                }).then(response => response.json())
-                    .then(async data => {
-                        let transaction_data = data.data.transactions;
-                        let status = data.status;
-                        if (status === 200) {
-                            document.querySelector('.contract_transaction_main_info').style.display = 'block';
-                            let transaction_body = document.querySelector('#contract_transactions_info');
-                            transaction_body.innerHTML = '';
-                            transaction_data.forEach((e) => {
-                                transaction_body.innerHTML += `
-                                <tr>
-                                    <td>
-                                        <i>
-                                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525" stroke="#233255" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </i>
-                                    </td>
-                                    <td>
-                                        <h1>${e.date}</h1>
-                                    </td>
-                                    <td>
-                                        <h1>${e.amount} tg</h1>
-                                    </td>
-                                    <td>
-                                        <h1>${e.payment_type}</h1>
-                                    </td>
-                                    <td>
-                                        <h1>${e.description}</h1>
-                                    </td>
-                                </tr>
-                            `
-                            })
-                        }
-                    })
+                });
+            });
+        });
 
+        // По умолчанию показываем блок транзакций для каждого контракта
+        document.querySelectorAll('.contract_transaction_info').forEach(block => {
+            block.style.display = 'block';
+        });
+    </script>
+
+    <script>
+        let contract_tr = document.querySelectorAll('#contract_tr_object');
+        contract_tr.forEach((tr, index) => {
+            if (index % 2 === 0) {
+                tr.classList.add('even');
             } else {
-                document.querySelector('.contract_transaction_main_info').style.display = 'none';
-                transaction_icon.classList.remove('active');
-                transaction_icon.classList.add('non_active');
+                tr.classList.add('odd');
+            }
+        });
+
+        async function toggleContractDetails(contractId) {
+            let contractDetails = document.getElementById('contract_details_' + contractId);
+            let openTransactions = document.getElementById('open_transactions_' + contractId);
+            if (contractDetails.style.display === 'none') {
+                openTransactions.classList.add('non_active');
+                contractDetails.style.display = '';
+            } else {
+                openTransactions.classList.remove('non_active');
+                contractDetails.style.display = 'none';
             }
         }
     </script>

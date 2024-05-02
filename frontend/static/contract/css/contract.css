@@ -1,21 +1,30 @@
+main {
+    width: calc(140px - 140px);
+    height: calc(100vh - 125px);
+}
+
 .wrapper_main_container {
     width: calc(100% - 75px);
-    height: 100vh;
+    min-height: calc(100vh - 110px);
     background-color: #EBEBEB;
+    padding-bottom: 30px;
+}
+
+.contract_part_container {
+    padding-bottom: 50px;
 }
 
 #container_section {
-    display: inline;
+    padding: 32px 0;
+    background-color: #FFF;
+    border-radius: 14px;
 }
 
 #upper_container {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
-    padding: 32px 22px;
-    background-color: #FFF;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
+    align-items: center;
+    padding: 0 40px;
 }
 
 #upper_container label {
@@ -25,12 +34,12 @@
 }
 
 #entries {
-    font-size: 18px;
+    font-size: 14px;
     font-family: Montserrat;
     font-weight: 500;
     background-color: #E0E0E0;
     border-radius: 10px;
-    padding: 7px 5px 7px 5px;
+    padding: 8px 5px 8px 9px;
     border: none;
 }
 
@@ -38,43 +47,70 @@
     margin-right: 10px;
 }
 
+#left_upper_container label {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+}
+
 #select_academic {
     background-color: #F6AD2B;
-    font-size: 22px;
+    font-size: 14px;
     font-family: Montserrat;
-    font-weight: 500;
+    font-weight: 600;
     color: #FFFFFF;
     border: none;
-    border-radius: 10px;
-    margin-left: -20%;
-    padding: 7px 5px 7px 5px;
+    border-radius: 8px;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
 
+#select_academic:hover {
+    opacity: 0.8;
 }
 
 .contract_main_table_info {
     background-color: #FFF;
-    padding: 10px 15px;
+    padding: 10px 0;
     flex-direction: column;
     gap: 50px;
 }
 
 .contract_table_style {
     width: 100%;
+    border-collapse: collapse;
+}
+
+.contract_table_style th, .contract_table_style td {
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #233255;
 }
 
 .contract_table_style thead th {
-    text-align: center;
-    padding-bottom: 30px; /* добавляет нижний отступ для заголовков колонок */
+    padding: 20px 10px;
 }
 
-.contract_table_style tbody td {
-    text-align: center;
-    padding: 30px 20px; /* добавляет верхний и нижний отступы для ячеек, выравнивая текст внутри по вертикали */
+.contract_table_style thead th h2 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    font-family: Montserrat;
+    color: #F6AD2B !important;
 }
 
-/* Стили для выравнивания иконки с помощью flexbox */
+.contract_table_style th, .contract_table_style td {
+    text-align: center;
+    vertical-align: middle;
+}
+
 .contract_table_style td svg {
-    margin: auto; /* центрирование SVG внутри ячейки td */
+    display: block;
+    margin: auto;
 }
 
 .contract_table_style h1,
@@ -125,8 +161,8 @@
 }
 
 #contract_info h2 {
-    font-size: 16px;
-    font-weight: 300;
+    font-size: 14px;
+    font-weight: 500;
     font-family: Montserrat;
     color: black;
 }
@@ -135,16 +171,6 @@
     margin-left: 20px;
     padding-right: 20px;
 }
-
-#contract_info tr:nth-child(even) {
-    background-color: #ffffff; /* Четные строки будут белыми */
-}
-
-#contract_info tr:nth-child(odd) {
-    background-color: #FDEFD5; /* Нечетные строки будут оранжевыми */
-}
-
-
 
 .contract_transaction_main_info {
     display: none;
@@ -164,7 +190,7 @@
 
 .contract_table_style thead th {
     text-align: center;
-    padding-bottom: 30px; /* добавляет нижний отступ для заголовков колонок */
+    padding-bottom: 30px;
 }
 
 .contract_table_style tbody td {
@@ -186,13 +212,6 @@
     color: #233255;
 }
 
-.contract_table_style h2 {
-    font-size: 16px;
-    font-weight: 600;
-    font-family: Montserrat;
-    color: #F6AD2B;
-}
-
 .contract_table_style p {
     color: #17C653 !important;
 }
@@ -205,7 +224,7 @@
     display: flex;
     align-items: center;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     font-family: Montserrat;
     color: #233255;
 }
@@ -213,4 +232,99 @@
 .contract_table_style h1 span {
     color: #233255 !important;
     margin-left: 2px;
+}
+
+.open_transactions_icon.non_active {
+    transform: rotate(180deg);
+}
+
+.header_title_block_contract_details {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
+    gap: 30px;
+}
+
+.header_title_block_contract_details h1 {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #233255;
+    line-height: 12.8px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+}
+
+.header_title_block_contract_details h1.active {
+    border-bottom: 2px solid #F6AD2B;
+    padding-bottom: 6px;
+}
+
+.contract_transactions_data tr:nth-child(even),
+.contract_accruals_data tr:nth-child(even) {
+    background-color: #FFFFFF;
+}
+
+.contract_transactions_data tr:nth-child(odd),
+.contract_accruals_data tr:nth-child(odd) {
+    background-color: #F9FAFC;
+}
+
+.contract-data.even {
+    background-color: #FDEFD5;
+}
+
+.contract-data.odd {
+    background-color: #FFFFFF;
+}
+
+.contract_details_info_container .contract_details_main_container {
+    padding-left: 50px;
+}
+
+.pagination_list_block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination_list_block h1 {
+    color: #9E9E9E;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: Montserrat;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.pagination_list_block h1:hover {
+    text-decoration: underline;
+}
+
+.pagination_list_block p {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: Montserrat;
+    background-color: #E0E0E0;
+    color: #000;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.pagination_list_block p.active {
+    background-color: #233255;
+    color: #FFF;
+}
+
+.pagination_list_block p:hover {
+    background-color: #F6AD2B;
+    color: #FFF;
 }
