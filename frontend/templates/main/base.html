@@ -224,6 +224,24 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+        async function changeFormatContractSum() {
+            let numbers = document.querySelectorAll('#contract_formatted_amount');
+            console.log(numbers);
+            numbers.forEach((num) => {
+                let numValue = parseFloat(num.textContent.replace(',', '')); // Преобразуем строку в число, удаляем возможные запятые
+                let formattedNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(numValue);
+                let parts = formattedNumber.split('.');
+                if (parts.length === 1) {
+                    formattedNumber += '.00';
+                }
+                num.textContent = formattedNumber;
+            });
+        }
+        changeFormatContractSum();
+    </script>
+
     <script>
         document.querySelectorAll('.base_message_block_button').forEach((item) => {
             item.addEventListener('click', () => {
@@ -231,6 +249,7 @@
             });
         });
     </script>
+
     <script>
         let sidebar = document.querySelector('.sidebar_container');
         let none_active_sidebar = document.querySelectorAll('.none_active_sidebar');
@@ -248,6 +267,7 @@
             sidebar.classList.remove('active_sidebar');
         });
     </script>
+
     {% block scripts %}{% endblock %}
 
 </body>

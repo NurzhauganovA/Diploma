@@ -51,7 +51,7 @@
                 </div>
                 <div class="contract_data_form_block">
                     <h1>Sum of contract:</h1>
-                    <input type="text" name="contract_sum_data" id="contract_sum_input" value="910000.00">
+                    <input type="text" name="contract_sum_data" id="contract_sum_input" value="">
                 </div>
                 <div class="contract_data_form_block">
                     <h1>Status:</h1>
@@ -160,7 +160,7 @@
                             <td><h2>{{ contract.date|date:"d.m.Y" }}</h2></td>
                             <td><h2>{% if contract.date_close %}{{ contract.date_close|date:"d.m.Y" }}{% endif %}</h2></td>
                             <td><h2 class="contract_status_{{ contract.status }} contract_status_base_style">{{ contract.status }}</h2></td>
-                            <td><h2>{{ contract.final_amount }}</h2></td>
+                            <td><h2 id="contract_formatted_amount">{{ contract.final_amount }}</h2></td>
                             <td>
                                 <i>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
