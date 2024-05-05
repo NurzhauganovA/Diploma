@@ -263,9 +263,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -310,7 +307,7 @@
                             <tr>
                                 <td>${e.number}</td>
                                 <td>
-                                    <i onclick="getContractTransactionInfo(${e.id})">
+                                    <i onclick="getContractTransactionInfo(${e.id}, this)">
                                         <svg class="open_transactions_icon non_active" width="17" height="10" viewBox="0 0 17 10" fill="none"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M16 1L8.5 8.5L1 1" stroke="#233255" stroke-width="2"
@@ -344,8 +341,8 @@
                 })
         }
 
-        async function getContractTransactionInfo(contract_id) {
-            let transaction_icon = document.querySelector('.open_transactions_icon');
+        async function getContractTransactionInfo(contract_id, iconElement) {
+            let transaction_icon = iconElement.querySelector('svg');
             let transaction_icon_class = transaction_icon.classList;
             if (transaction_icon_class.contains('non_active')) {
                 transaction_icon.classList.remove('non_active');

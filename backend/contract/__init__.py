@@ -4,9 +4,9 @@ from django.db import models
 class ContractPaymentPeriodType(models.TextChoices):
     """ Типы периодов оплаты контрактов """
 
-    MONTHLY = 'MONTHLY', 'Ежемесячно'
-    QUARTERLY = 'QUARTERLY', 'Ежеквартально'
-    ANNUAL = 'ANNUAL', 'Ежегодно'
+    MONTHLY = 'Monthly', 'Ежемесячно'
+    QUARTERLY = 'Quarterly', 'Ежеквартально'
+    ANNUAL = 'Annual', 'Ежегодно'
 
 
 class ContractStatus(models.TextChoices):
