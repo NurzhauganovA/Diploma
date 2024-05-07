@@ -35,7 +35,7 @@ class Contract(models.Model):
     )
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, db_column='school', related_name="contracts")
     date = models.DateField()
-    date_close = models.DateField(null=True)
+    date_close = models.DateField(null=True, blank=True)
     name = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_type = models.CharField(max_length=255, choices=ContractPaymentPeriodType.choices, default=ContractPaymentPeriodType.MONTHLY)

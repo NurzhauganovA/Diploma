@@ -4,17 +4,17 @@ from django.db import models
 class ContractPaymentPeriodType(models.TextChoices):
     """ Типы периодов оплаты контрактов """
 
-    MONTHLY = 'MONTHLY', 'Ежемесячно'
-    QUARTERLY = 'QUARTERLY', 'Ежеквартально'
-    ANNUAL = 'ANNUAL', 'Ежегодно'
+    MONTHLY = 'Monthly', 'Ежемесячно'
+    QUARTERLY = 'Quarterly', 'Ежеквартально'
+    ANNUAL = 'Annual', 'Ежегодно'
 
 
 class ContractStatus(models.TextChoices):
     """ Статусы контрактов """
 
-    FORMED = 'FORMED', 'Сформирован'
-    CONSIDERATION = 'CONSIDERATION', 'На рассмотрении'
-    SIGNED = 'SIGNED', 'Подписан'
-    FINISHED = 'FINISHED', 'Завершен'
-    CANCELED = 'CANCELED', 'Отменен'
-    DISSOLVED = 'DISSOLVED', 'Расторгнут'
+    FORMED = 'Formed', 'Сформирован'
+    CONSIDERATION = 'Consideration', 'На рассмотрении'
+    SIGNED = 'Signed', 'Подписан'
+    FINISHED = 'Finished', 'Завершен'
+    CANCELED = 'Canceled', 'Отменен'
+    DISSOLVED = 'Dissolved', 'Расторгнут'

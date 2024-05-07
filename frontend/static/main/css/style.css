@@ -322,3 +322,41 @@ main {
 .base_message_block_button:hover {
     opacity: 0.8;
 }
+
+.contract_status_base_style {
+    border-radius: 22px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 15px;
+}
+
+.contract_status_Formed {
+    color: #d720d7 !important;
+    background-color: #f3e6f3;
+}
+
+.contract_status_Consideration {
+    color: #FFC107 !important;
+    background-color: #FFF8E1;
+}
+
+.contract_status_Finished {
+    color: #2CED6E !important;
+    background-color: #E6FCEF;
+}
+
+.contract_status_Canceled {
+    color: #FF0000 !important;
+    background-color: #FFF8E1;
+}
+
+.contract_status_Dissolved {
+    color: #000000 !important;
+    background-color: #FFF8E1;
+}
+
+.contract_status_Signed {
+    color: #007BFF !important;
+    background-color: #E1F5FE;
+}
