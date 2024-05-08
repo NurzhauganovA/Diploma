@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from school import SectionActionStatus, Regions
 
@@ -99,7 +100,7 @@ class Subject(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _('Прдемет')
+        verbose_name = _('Предмет')
         verbose_name_plural = _('Предметы')
         db_table = 'subject'
 
@@ -110,6 +111,8 @@ class SubjectSection(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False, db_column='subject')
     datetime = models.DateTimeField(null=False)
     duration = models.PositiveSmallIntegerField(default=1)
+    cabinet = models.CharField(max_length=155, null=False)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.subject} - {self.datetime}'
@@ -136,3 +139,111 @@ class SectionAction(models.Model):
         verbose_name = _('Посещение раздела')
         verbose_name_plural = _('Посещения разделов')
         db_table = 'section_attendance'
+
+
+class SectionHomework(models.Model):
+    """ Модель домашнего задания раздела """
+
+    section = models.ForeignKey(SubjectSection, on_delete=models.CASCADE, null=False)
+    files = models.FileField(upload_to='homework/', null=True, blank=True)
+    datetime = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=False)
+    deadline = models.DateTimeField(null=False)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.section} - {self.deadline}'
+
+    class Meta:
+        verbose_name = _('Домашнее задание')
+        verbose_name_plural = _('Домашние задания')
+        db_table = 'section_homework'
+
+
+class SectionHomeworkAnswer(models.Model):
+    """ Модель ответа на домашнее задание """
+
+    homework = models.ForeignKey(SectionHomework, on_delete=models.CASCADE, null=False)
+    student = models.ForeignKey('authorization.Student', on_delete=models.CASCADE, null=False)
+    files = models.FileField(upload_to='homework/answers/', null=True, blank=True)
+    datetime = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=False)
+
+    def __str__(self):
+        return f'{self.homework} - {self.student}'
+
+    class Meta:
+        verbose_name = _('Ответ на домашнее задание')
+        verbose_name_plural = _('Ответы на домашние задания')
+        db_table = 'section_homework_answer'
+
+
+class SectionHomeworkGrade(models.Model):
+    """ Модель оценки домашнего задания """
+
+    homework = models.ForeignKey(SectionHomework, on_delete=models.CASCADE, null=False)
+    student = models.ForeignKey('authorization.Student', on_delete=models.CASCADE, null=False)
+    grade = models.PositiveSmallIntegerField(null=False)
+    datetime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.homework} - {self.student}'
+
+    class Meta:
+        verbose_name = _('Оценка домашнего задания')
+        verbose_name_plural = _('Оценки домашних заданий')
+        db_table = 'section_homework_grade'
+
+
+class SectionTests(models.Model):
+    """ Модель тестов раздела """
+
+    section = models.ForeignKey(SubjectSection, on_delete=models.CASCADE, null=False)
+    files = models.FileField(upload_to='tests/', null=True, blank=True)
+    datetime = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=False)
+    deadline = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.section} - {self.deadline}'
+
+    class Meta:
+        verbose_name = _('Тест')
+        verbose_name_plural = _('Тесты')
+        db_table = 'section_tests'
+
+
+class SectionTestsAnswer(models.Model):
+    """ Модель ответа на тест """
+
+    test = models.ForeignKey(SectionTests, on_delete=models.CASCADE, null=False)
+    student = models.ForeignKey('authorization.Student', on_delete=models.CASCADE, null=False)
+    files = models.FileField(upload_to='tests/answers/', null=True, blank=True)
+    datetime = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=False)
+
+    def __str__(self):
+        return f'{self.test} - {self.student}'
+
+    class Meta:
+        verbose_name = _('Ответ на тест')
+        verbose_name_plural = _('Ответы на тесты')
+        db_table = 'section_tests_answer'
+
+
+class SectionTestsGrade(models.Model):
+    """ Модель оценки теста """
+
+    test = models.ForeignKey(SectionTests, on_delete=models.CASCADE, null=False)
+    student = models.ForeignKey('authorization.Student', on_delete=models.CASCADE, null=False)
+    grade = models.PositiveSmallIntegerField(null=False)
+    datetime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.test} - {self.student}'
+
+    class Meta:
+        verbose_name = _('Оценка теста')
+        verbose_name_plural = _('Оценки тестов')
+        db_table = 'section_tests_grade'

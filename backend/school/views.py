@@ -9,11 +9,12 @@ from django.db.models import QuerySet
 
 from authorization.models import User, Student, UserInfo
 from authorization import UserRoles
-from school.models import Class
+from school.models import Class, SectionHomework, SectionHomeworkAnswer
 from school.services import GetSchoolPartData
 from school.utils import CacheData
 from contract.models import Contract, Transaction
 from django.db.models import Sum
+from django.utils import timezone
 
 
 def school_part(request: HttpRequest):
@@ -316,5 +317,63 @@ def remove_from_class(request: HttpRequest) -> HttpResponse:
         student.save()
 
         messages.success(request, "Student removed from class successfully")
+        return JsonResponse({"status": 200})
+    return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def get_student_today_homeworks(request) -> JsonResponse:
+    homeworks = SectionHomework.objects.filter(
+        section__subject__classroom=Student.objects.get(user=request.user).stud_class,
+        datetime__date=timezone.now().date()
+    )
+    print("today homeworks", homeworks)
+
+    data = []
+
+    for homework in homeworks:
+        data.append({
+            'id': homework.id,
+            'title': homework.description,
+            'subject': homework.section.subject.name,
+            'is_done': SectionHomeworkAnswer.objects.filter(
+                homework=homework,
+                student=Student.objects.get(user=request.user)
+            ).exists()
+        })
+
+    return JsonResponse({'data': data, 'status': 200})
+
+
+def get_student_future_homeworks(request) -> JsonResponse:
+    homeworks = SectionHomework.objects.filter(
+        section__subject__classroom=Student.objects.get(user=request.user).stud_class,
+        datetime__gt=timezone.now()
+    )
+    data = []
+
+    for homework in homeworks:
+        data.append({
+            'id': homework.id,
+            'title': homework.description,
+            'subject': homework.section.subject.name,
+            'is_done': SectionHomeworkAnswer.objects.filter(
+                homework=homework,
+                student=Student.objects.get(user=request.user)
+            ).exists()
+        })
+
+    return JsonResponse({'data': data, 'status': 200})
+
+
+def change_homework_status(request: HttpRequest, pk: int) -> JsonResponse:
+    if request.method == "POST":
+        homework = SectionHomework.objects.get(id=pk)
+        student = Student.objects.get(user=request.user)
+
+        if SectionHomeworkAnswer.objects.filter(homework=homework, student=student).exists():
+            SectionHomeworkAnswer.objects.filter(homework=homework, student=student).delete()
+        else:
+            SectionHomeworkAnswer.objects.create(homework=homework, student=student)
+
         return JsonResponse({"status": 200})
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
