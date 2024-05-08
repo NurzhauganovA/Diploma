@@ -18,7 +18,7 @@ DEBUG = True
 SECRET_KEY = 'django-insecure-jd+njmoly76v66hqo+xrigzfyhjn#&h%i+hrc7xz$ix6!kes@5'
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'smartschools.kz']
 
 
 # Application definition
@@ -167,3 +167,5 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 CSRF_TRUSTED_ORIGINS = ['https://smartschools.kz', 'https://smartschools.kz']
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
