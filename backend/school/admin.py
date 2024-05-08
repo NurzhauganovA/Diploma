@@ -1,7 +1,20 @@
 from django.contrib import admin
 
-from school.models import School, SchoolRequisites, Class, OurSchools, Subject, SubjectSection, SectionAction, \
-    SectionHomework, SectionHomeworkAnswer, SectionHomeworkGrade, SectionTests, SectionTestsAnswer, SectionTestsGrade
+from school.models import (
+    School,
+    SchoolRequisites,
+    Class,
+    OurSchools,
+    Subject,
+    SubjectSection,
+    SectionAction,
+    SectionHomework,
+    SectionHomeworkAnswer,
+    SectionHomeworkGrade,
+    SectionTests,
+    SectionTestsAnswer,
+    SectionTestsGrade,
+)
 
 admin.site.register(School)
 admin.site.register(SchoolRequisites)

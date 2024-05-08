@@ -45,22 +45,29 @@ def get_people(request: HttpRequest, pk: int) -> JsonResponse:
         cache.cache_data(context)
 
         return JsonResponse(data={**context, "status": 200})
-    
+
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
 
 def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
     if request.method == "GET":
         user: User = User.objects.get(id=pk)
-        parent = user.student_info.parent if hasattr(user, "student_info") else None,
+        parent = (user.student_info.parent if hasattr(user, "student_info") else None,)
         if parent:
             parent = parent[0]
         user_info = {
             "photo_avatar": user.get_photo(),
             "full_name": user.full_name if user.full_name else "No data",
-            "class_num": user.student_info.stud_class.class_num if user.student_info else "No data",
-            "class_liter": user.student_info.stud_class.class_liter if user.student_info else "No data",
+            "class_num": user.student_info.stud_class.class_num
+            if user.student_info
+            else "No data",
+            "class_liter": user.student_info.stud_class.class_liter
+            if user.student_info
+            else "No data",
             "iin": user.user_info.iin if user.user_info.iin else "No data",
-            "birth": user.user_info.birth_date.strftime("%d.%m.%Y") if user.user_info.birth_date else "No data",
+            "birth": user.user_info.birth_date.strftime("%d.%m.%Y")
+            if user.user_info.birth_date
+            else "No data",
             "mobile_phone": user.mobile_phone if user.mobile_phone else "No data",
             "email": user.email if user.email else "No data",
             # "contracts": user.student_info.contracts.all() if hasattr(user, "student_info") else None,
@@ -68,15 +75,23 @@ def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
                 "photo_avatar": parent.get_photo() if parent.get_photo() else "No data",
                 "full_name": parent.full_name if parent.full_name else "No data",
                 "iin": parent.user_info.iin if parent.user_info.iin else "No data",
-                "mobile_phone": parent.mobile_phone if parent.mobile_phone else "No data",
-                "id_number": parent.user_info.num_of_doc if parent.user_info.num_of_doc else "No data",
-                "issued_by": parent.user_info.issued_by if parent.user_info.issued_by else "No data",
-                "address": parent.user_info.address if parent.user_info.address else "No data",
+                "mobile_phone": parent.mobile_phone
+                if parent.mobile_phone
+                else "No data",
+                "id_number": parent.user_info.num_of_doc
+                if parent.user_info.num_of_doc
+                else "No data",
+                "issued_by": parent.user_info.issued_by
+                if parent.user_info.issued_by
+                else "No data",
+                "address": parent.user_info.address
+                if parent.user_info.address
+                else "No data",
                 "email": parent.email if parent.email else "No data",
-            }
+            },
         }
 
-        return JsonResponse({'data': user_info, 'status': 200})
+        return JsonResponse({"data": user_info, "status": 200})
 
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
@@ -84,32 +99,46 @@ def get_more_info(request: HttpRequest, pk: int) -> JsonResponse:
 def get_contract_info(request: HttpRequest, pk: int) -> JsonResponse:
     if request.method == "GET":
         user: User = User.objects.get(id=pk)
-        contracts = user.student_info.contracts.all() if hasattr(user, "student_info") else None
+        contracts = (
+            user.student_info.contracts.all() if hasattr(user, "student_info") else None
+        )
 
-        contract_info = {
-            "contracts": []
-        }
+        contract_info = {"contracts": []}
 
         if contracts:
             for index, contract in enumerate(contracts):
-                sum_transactions = Transaction.objects.filter(contract=contract).aggregate(Sum('amount'))['amount__sum']
+                sum_transactions = Transaction.objects.filter(
+                    contract=contract
+                ).aggregate(Sum("amount"))["amount__sum"]
                 if not sum_transactions:
                     sum_transactions = 0
 
-                contract_info["contracts"].append({
-                    "id": contract.id,
-                    "number": index + 1,
-                    "name": contract.name if contract.name else "No data",
-                    "status": contract.status if contract.status else "No data",
-                    "date": contract.date.strftime("%Y-%m-%d") if contract.date else "No data",
-                    "class": f'{contract.classroom.class_num} "{contract.classroom.class_liter}"' if contract.classroom else "No data",
-                    "edu_year": contract.edu_year if contract.edu_year else "No data",
-                    "amount": contract.final_amount if contract.final_amount else "No data",
-                    "discount": contract.discount.all().first().percent if contract.discount.all() else "No data",
-                    "debt": contract.final_amount - sum_transactions,
-                })
+                contract_info["contracts"].append(
+                    {
+                        "id": contract.id,
+                        "number": index + 1,
+                        "name": contract.name if contract.name else "No data",
+                        "status": contract.status if contract.status else "No data",
+                        "date": contract.date.strftime("%Y-%m-%d")
+                        if contract.date
+                        else "No data",
+                        "class": f'{contract.classroom.class_num} "{contract.classroom.class_liter}"'
+                        if contract.classroom
+                        else "No data",
+                        "edu_year": contract.edu_year
+                        if contract.edu_year
+                        else "No data",
+                        "amount": contract.final_amount
+                        if contract.final_amount
+                        else "No data",
+                        "discount": contract.discount.all().first().percent
+                        if contract.discount.all()
+                        else "No data",
+                        "debt": contract.final_amount - sum_transactions,
+                    }
+                )
 
-        return JsonResponse({'data': contract_info, 'status': 200})
+        return JsonResponse({"data": contract_info, "status": 200})
 
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
@@ -119,21 +148,29 @@ def get_contract_transactions(request: HttpRequest, pk: int) -> JsonResponse:
         contract = Contract.objects.get(id=pk)
         transactions = Transaction.objects.filter(contract=contract)
 
-        transactions_info = {
-            "transactions": []
-        }
+        transactions_info = {"transactions": []}
 
         if transactions:
             for transaction in transactions:
-                transactions_info["transactions"].append({
-                    "id": transaction.id,
-                    "date": transaction.datetime.strftime("%d.%m.%Y") if transaction.datetime else "No data",
-                    "amount": transaction.amount if transaction.amount else "No data",
-                    "description": transaction.description if transaction.description else "No data",
-                    "payment_type": transaction.payment_type if transaction.payment_type else "No data",
-                })
+                transactions_info["transactions"].append(
+                    {
+                        "id": transaction.id,
+                        "date": transaction.datetime.strftime("%d.%m.%Y")
+                        if transaction.datetime
+                        else "No data",
+                        "amount": transaction.amount
+                        if transaction.amount
+                        else "No data",
+                        "description": transaction.description
+                        if transaction.description
+                        else "No data",
+                        "payment_type": transaction.payment_type
+                        if transaction.payment_type
+                        else "No data",
+                    }
+                )
 
-        return JsonResponse({'data': transactions_info, 'status': 200})
+        return JsonResponse({"data": transactions_info, "status": 200})
 
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
@@ -190,7 +227,9 @@ def delete_transaction(request: HttpRequest, pk: int) -> HttpResponse:
 
 
 def distribution(request: HttpRequest) -> HttpResponse:
-    school_data = GetSchoolPartData(request.user.id).get_school_distribution_statements()
+    school_data = GetSchoolPartData(
+        request.user.id
+    ).get_school_distribution_statements()
 
     context = {
         "statements": school_data["statements"],
@@ -212,11 +251,19 @@ def add_new_statement(request: HttpRequest) -> HttpResponse:
         iin = request.POST.get("statement_iin")
         parent = request.POST.get("statement_parent")
 
-        mobile_phone = re.sub(r'\D', '', mobile_phone)
-        if not mobile_phone.startswith('7') and len(mobile_phone) == 11:
-            mobile_phone = '7' + mobile_phone
+        mobile_phone = re.sub(r"\D", "", mobile_phone)
+        if not mobile_phone.startswith("7") and len(mobile_phone) == 11:
+            mobile_phone = "7" + mobile_phone
 
-        if not mobile_phone or not email or not photo_avatar or not full_name or not birth_date or not iin or not parent:
+        if (
+            not mobile_phone
+            or not email
+            or not photo_avatar
+            or not full_name
+            or not birth_date
+            or not iin
+            or not parent
+        ):
             messages.error(request, "Some fields are empty")
             return redirect("distribution")
 
@@ -236,7 +283,7 @@ def add_new_statement(request: HttpRequest) -> HttpResponse:
             with transaction.atomic():
                 user = User.objects.create_user(
                     mobile_phone=mobile_phone,
-                    password='default',
+                    password="default",
                     role=UserRoles.STUDENT,
                 )
                 user.full_name = full_name
@@ -246,16 +293,12 @@ def add_new_statement(request: HttpRequest) -> HttpResponse:
                 user.save()
 
                 user_info = UserInfo.objects.create(
-                    user=user,
-                    photo_avatar=photo_avatar,
-                    birth_date=birth_date,
-                    iin=iin
+                    user=user, photo_avatar=photo_avatar, birth_date=birth_date, iin=iin
                 )
                 user_info.save()
 
                 student = Student.objects.create(
-                    user=user,
-                    parent=User.objects.get(id=parent)
+                    user=user, parent=User.objects.get(id=parent)
                 )
                 student.save()
 
@@ -279,7 +322,11 @@ def add_new_class(request: HttpRequest) -> HttpResponse:
             messages.error(request, "Some fields are empty")
             return redirect("distribution")
 
-        elif Class.objects.filter(school=request.user.school.first(), class_num=class_num, class_liter=class_liter).exists():
+        elif Class.objects.filter(
+            school=request.user.school.first(),
+            class_num=class_num,
+            class_liter=class_liter,
+        ).exists():
             messages.error(request, "This class already exists")
             return redirect("distribution")
 
@@ -324,45 +371,47 @@ def remove_from_class(request: HttpRequest) -> HttpResponse:
 def get_student_today_homeworks(request) -> JsonResponse:
     homeworks = SectionHomework.objects.filter(
         section__subject__classroom=Student.objects.get(user=request.user).stud_class,
-        datetime__date=timezone.now().date()
+        datetime__date=timezone.now().date(),
     )
     print("today homeworks", homeworks)
 
     data = []
 
     for homework in homeworks:
-        data.append({
-            'id': homework.id,
-            'title': homework.description,
-            'subject': homework.section.subject.name,
-            'is_done': SectionHomeworkAnswer.objects.filter(
-                homework=homework,
-                student=Student.objects.get(user=request.user)
-            ).exists()
-        })
+        data.append(
+            {
+                "id": homework.id,
+                "title": homework.description,
+                "subject": homework.section.subject.name,
+                "is_done": SectionHomeworkAnswer.objects.filter(
+                    homework=homework, student=Student.objects.get(user=request.user)
+                ).exists(),
+            }
+        )
 
-    return JsonResponse({'data': data, 'status': 200})
+    return JsonResponse({"data": data, "status": 200})
 
 
 def get_student_future_homeworks(request) -> JsonResponse:
     homeworks = SectionHomework.objects.filter(
         section__subject__classroom=Student.objects.get(user=request.user).stud_class,
-        datetime__gt=timezone.now()
+        datetime__gt=timezone.now(),
     )
     data = []
 
     for homework in homeworks:
-        data.append({
-            'id': homework.id,
-            'title': homework.description,
-            'subject': homework.section.subject.name,
-            'is_done': SectionHomeworkAnswer.objects.filter(
-                homework=homework,
-                student=Student.objects.get(user=request.user)
-            ).exists()
-        })
+        data.append(
+            {
+                "id": homework.id,
+                "title": homework.description,
+                "subject": homework.section.subject.name,
+                "is_done": SectionHomeworkAnswer.objects.filter(
+                    homework=homework, student=Student.objects.get(user=request.user)
+                ).exists(),
+            }
+        )
 
-    return JsonResponse({'data': data, 'status': 200})
+    return JsonResponse({"data": data, "status": 200})
 
 
 def change_homework_status(request: HttpRequest, pk: int) -> JsonResponse:
@@ -370,8 +419,12 @@ def change_homework_status(request: HttpRequest, pk: int) -> JsonResponse:
         homework = SectionHomework.objects.get(id=pk)
         student = Student.objects.get(user=request.user)
 
-        if SectionHomeworkAnswer.objects.filter(homework=homework, student=student).exists():
-            SectionHomeworkAnswer.objects.filter(homework=homework, student=student).delete()
+        if SectionHomeworkAnswer.objects.filter(
+            homework=homework, student=student
+        ).exists():
+            SectionHomeworkAnswer.objects.filter(
+                homework=homework, student=student
+            ).delete()
         else:
             SectionHomeworkAnswer.objects.create(homework=homework, student=student)
 

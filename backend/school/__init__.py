@@ -26,13 +26,13 @@ class Regions(models.TextChoices):
 
 
 class SectionActionStatus(models.TextChoices):
-    """ Статус посещения раздела """
+    """Статус посещения раздела"""
 
-    ATTENDED = 'Attended', 'Посещено'
-    ABSENT = 'Absent', 'Отсутствие'
-    PERMITTED = 'Permitted', 'Разрешено'
-    LATE = 'Late', 'Опоздание'
-    LEFT = 'Left', 'Покинул занятие'
+    ATTENDED = "Attended", "Посещено"
+    ABSENT = "Absent", "Отсутствие"
+    PERMITTED = "Permitted", "Разрешено"
+    LATE = "Late", "Опоздание"
+    LEFT = "Left", "Покинул занятие"
 
     @classmethod
     def get_choices(cls):

@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from contract.models import Discount, Contract, ContractMonthPay, ContractDayPay, Transaction, ContractFile
+from contract.models import (
+    Discount,
+    Contract,
+    ContractMonthPay,
+    ContractDayPay,
+    Transaction,
+    ContractFile,
+)
 
 
 admin.site.register(Discount)
