@@ -14,4 +14,5 @@ urlpatterns = [
         views.get_contract_transactions,
         name="transactions",
     ),
+    path("app/contracts/export", views.get_contracts_export, name="export_contract"),
 ]

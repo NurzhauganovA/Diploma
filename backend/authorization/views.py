@@ -4,7 +4,7 @@ import face_recognition as face_rec
 import numpy as np
 
 from django.contrib import messages, auth
-from django.http import JsonResponse, HttpRequest
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.http.request import HttpRequest
 from django.urls import reverse

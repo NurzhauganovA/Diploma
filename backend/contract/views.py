@@ -9,6 +9,7 @@ from django.http.request import HttpRequest
 from school.services import GetSchoolPartData
 from school.models import School
 from contract.models import Contract, Transaction
+from contract.services import report_response, _get_contracts_list
 
 
 def get_all_contracts(req: HttpRequest):
@@ -117,3 +118,20 @@ def get_contract_transactions(request: HttpRequest, pk: int) -> JsonResponse:
         return JsonResponse({"data": transactions_info, "status": 200})
 
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
+
+
+def get_contracts_export(request: HttpRequest):
+    school = School.objects.get(id=GetSchoolPartData(request.user.id).get_school_pk())
+    contracts = school.contracts.all()
+    data = _get_contracts_list(contracts)
+    columns = [
+        "Full name",
+        "Date",
+        "Termination",
+        "Amount",
+        "Status",
+        "Payment Type",
+        "Discounts",
+    ]
+
+    return report_response(data, columns, "Contracts", "Contracts.xlsx")
