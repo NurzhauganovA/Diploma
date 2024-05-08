@@ -19,4 +19,8 @@ urlpatterns = [
 
     path("distribution/approve-to-class", views.approve_to_class, name="approve_to_class"),
     path("distribution/remove-from-class", views.remove_from_class, name="remove_from_class"),
+
+    path("homeworks", views.get_student_today_homeworks, name="homeworks"),
+    path("homeworks/future", views.get_student_future_homeworks, name="homeworks"),
+    path("homeworks/<int:pk>/change_status/", views.change_homework_status, name="change_homework_status"),
 ]
