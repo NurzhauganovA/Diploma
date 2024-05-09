@@ -5,6 +5,9 @@ from decimal import Decimal
 from authorization.models import User, Student
 from school import SectionActionStatus
 from school.models import School, SubjectSection, SectionAction
+from datetime import timezone as tz, timedelta
+
+KZ = tz(timedelta(hours=5), "Kazakhstan")
 
 
 class GetSchoolRegionsService:
@@ -142,7 +145,7 @@ class SchoolScheduleService:
         for section in this_week_sections.filter(
             datetime__week_day=start_of_week.weekday() + week_day
         ):
-            formatted_time = self._format_time_range(section.datetime, section.duration)
+            formatted_time = self._format_time_range(section.datetime.astimezone(KZ), section.duration)
             schedule.append((section, formatted_time))
 
         return schedule

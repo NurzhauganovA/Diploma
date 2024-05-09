@@ -10,6 +10,7 @@ from school.services import GetSchoolPartData
 from school.models import School
 from contract.models import Contract, Transaction
 from contract.services import report_response, _get_contracts_list
+from contract.tasks import async_export_report_task
 
 
 def get_all_contracts(req: HttpRequest):
@@ -116,7 +117,6 @@ def get_contract_transactions(request: HttpRequest, pk: int) -> JsonResponse:
                 )
 
         return JsonResponse({"data": transactions_info, "status": 200})
-
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
 
@@ -133,5 +133,18 @@ def get_contracts_export(request: HttpRequest):
         "Payment Type",
         "Discounts",
     ]
+    if request.GET.get("type", None) is None:
+        email = request.user.email
+        async_export_report_task.apply_async(
+            kwargs={
+                "queryset": data,
+                "columns": columns,
+                "sheet_name": "Contracts",
+                "filename": "Contracts.xlsx",
+                "email": email,
+            }
+        )
+
+        return JsonResponse({"status": 201, "info": "Contracts report is creating, it will send to your email soon!"})
 
     return report_response(data, columns, "Contracts", "Contracts.xlsx")

@@ -1,4 +1,5 @@
 import pandas as pd
+
 from django.http import HttpResponse
 from django.db.models import QuerySet
 from typing import Any
@@ -7,6 +8,7 @@ try:
     from io import BytesIO as IO
 except ImportError:
     from io import StringIO as IO
+
 
 
 def export_dataframe(df: pd.core.frame.DataFrame, sheet_name: str | None = None):
@@ -40,6 +42,13 @@ def report_response(
     file = export_dataframe(df, sheet_name)
 
     return prepare_response(file, filename)
+
+
+def _prepare_dataframe(data, columns: list) -> pd.core.frame.DataFrame:
+    df_output = pd.DataFrame(data)
+    if not df_output.empty:
+        df_output.columns = columns
+    return df_output
 
 
 def _get_contracts_list(queries: QuerySet) -> list[dict[str, Any]]:
