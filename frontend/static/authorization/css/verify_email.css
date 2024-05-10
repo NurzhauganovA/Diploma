@@ -54,52 +54,59 @@ body {
 .background_container {
     width: 100vw;
     height: 100vh;
-    background-color: #cccc;
+    background-color: #FFF;
     position: absolute;
+    overflow: hidden;
+}
+
+.background_container i {
+    position: absolute;
+    z-index: 1;
+}
+
+.first_background_container {
+    top: 0;
+}
+
+.second_background_container {
+    top: 0;
+    right: 0;
+}
+
+.third_background_container {
+    bottom: -130px;
+    right: 0 !important;
 }
 
 .main_container {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
     position: absolute;
+    z-index: 2;
+}
+
+.logo_container {
+    margin-left: 200px;
 }
 
 .login_container {
-    padding: 75px;
+    padding: 85px 60px 100px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #fff;
     border-radius: 26px;
-    right: 150px;
+    right: 200px;
     position: absolute;
 }
 
-.logo_container {
-    background-color: #fff;
-    padding: 25px 40px;
-    font-size: 30px;
-    text-transform: uppercase;
-}
-
 .title_block_login_container h1 {
-    color: #000;
-    font-size: 38px;
+    color: #233255;
+    font-size: 32px;
     font-weight: 600;
     font-family: Gilroy, sans-serif;
-}
-
-.choice_whom_login_container {
-    width: calc(100% - 6px);
-    display: flex;
-    justify-content: center;
-    margin: 42px 0 54px 0;
-    background-color: #838383;
-    border-radius: 7px;
-    padding: 5px 3px;
 }
 
 .form_block_login_container {
@@ -107,37 +114,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.input_block_login_container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-}
-
-.input_block_login_container input {
-    width: 400px;
-    padding: 20px 15px;
-    margin-top: 24px;
-    border-radius: 7px;
-    border: none;
-    outline: none;
-    background-color: #233255;
-    position: relative;
-    z-index: 5;
-    font-size: 18px;
-}
-
-.labelline {
-    position: absolute;
-    margin-top: 41px;
-    margin-left: 20px;
-    color: #838383;
-    z-index: 9999;
-    font-size: 18px;
-    font-family: Gilroy, sans-serif;
-    padding: 0 5px;
 }
 
 input:focus,
@@ -158,7 +134,7 @@ input:valid + .labelline {
 .button_block_login_container {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 45px;
 }
 
 .button_block_login_container button {
@@ -167,7 +143,7 @@ input:valid + .labelline {
     padding: 15px 50px;
     background-color: #233255;
     border: none;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: #fff;
 }
@@ -219,11 +195,11 @@ input:valid + .labelline {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 15px;
 }
 
 .enter_email_description_text h1 {
-    max-width: 400px;
+    max-width: 375px;
     font-size: 18px;
     color: #838383;
     font-weight: 600;
@@ -242,14 +218,14 @@ input:valid + .labelline {
 .otp-card-inputs {
     margin: 35px 0 15px 0;
     display: grid;
-    gap: 30px;
+    gap: 25px;
     justify-content: center;
     grid-template-columns: repeat(4, auto);
 }
 
 .otp-card-inputs input {
-    width: 50px;
-    height: 55px;
+    width: 40px;
+    height: 40px;
     border: 1px solid #233255;
     border-radius: 6px;
     text-align: center;

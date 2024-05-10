@@ -51,43 +51,63 @@ body {
 /* GET STARTED */
 
 
+
+
 .background_container {
     width: 100vw;
     height: 100vh;
-    background-color: #cccc;
+    background-color: #FFF;
     position: absolute;
+    overflow: hidden;
+}
+
+.background_container i {
+    position: absolute;
+    z-index: 1;
+}
+
+.first_background_container {
+    top: 0;
+}
+
+.second_background_container {
+    top: 0;
+    right: 0;
+}
+
+.third_background_container {
+    bottom: -130px;
+    right: 0 !important;
 }
 
 .main_container {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
     position: absolute;
+    z-index: 2;
+}
+
+.logo_container {
+    margin-left: 200px;
 }
 
 .login_container {
-    padding: 75px;
+    padding: 75px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #fff;
     border-radius: 26px;
-    right: 150px;
+    right: 200px;
     position: absolute;
 }
 
-.logo_container {
-    background-color: #fff;
-    padding: 25px 40px;
-    font-size: 30px;
-    text-transform: uppercase;
-}
 
 .title_block_login_container h1 {
     color: #000;
-    font-size: 38px;
+    font-size: 32px;
     font-weight: 600;
     font-family: Gilroy, sans-serif;
 }
@@ -96,7 +116,7 @@ body {
     width: calc(100% - 6px);
     display: flex;
     justify-content: center;
-    margin: 42px 0 54px 0;
+    margin: 42px 0 38px 0;
     background-color: #233255;
     border-radius: 7px;
     padding: 5px 3px;
@@ -107,9 +127,10 @@ body {
     justify-content: center;
     margin: 0 5px;
     width: 33%; !important;
-    padding: 8px 20px;
+    padding: 8px 15px;
     font-size: 19px;
     font-weight: 500;
+    font-family: Gilroy, sans-serif;
     color: #fff;
     border-radius: 7px;
 }
@@ -138,7 +159,7 @@ body {
 }
 
 .input_block_login_container input {
-    width: 400px;
+    width: 365px;
     padding: 15px;
     margin-top: 24px;
     border-radius: 7px;
@@ -192,8 +213,8 @@ input:valid + .labelline {
 }
 
 .forgot_password_container a {
-    color: #838383;
-    font-size: 15px;
+    color: #F6AD2B;
+    font-size: 19px;
     font-weight: 500;
     font-family: Gilroy, sans-serif;
 }
@@ -205,16 +226,17 @@ input:valid + .labelline {
 .button_block_login_container {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 35px;
 }
 
 .button_block_login_container button {
+    width: 100%;
     cursor: pointer;
     border-radius: 7px;
-    padding: 15px 50px;
-    background-color: #F6AD2B;
+    padding: 15px 0;
+    background-color: #233255;
     border: none;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: #fff;
 }
@@ -222,13 +244,14 @@ input:valid + .labelline {
 .not_account_container {
     display: flex;
     justify-content: center;
-    margin: 24px 0;
+    margin: 40px 0 24px 0;
 }
 
 .not_account_container h1 {
-    color: #838383;
+    color: #B7B7B7;
     font-size: 19px;
-    font-weight: 500;
+    font-weight: 600;
+    font-family: Gilroy, sans-serif;
 }
 
 .not_account_container a {
