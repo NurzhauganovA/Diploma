@@ -11,7 +11,7 @@ function openPage(pageName, elmnt, color) {
   }
   document.getElementById(pageName).style.display = "block";
   elmnt.style.backgroundColor = color;
-  elmnt.style.color = "#838383";
+  elmnt.style.color = "#FFFFFF";
 }
 
 document.getElementById("defaultOpen").click();
