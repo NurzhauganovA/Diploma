@@ -366,6 +366,21 @@
 {% endblock %}
 
 {% block scripts %}
+
+    <script>
+        console.log("123");
+        fetch('/notifications/get', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            }
+        }).then(response => response.json())
+        .then(data => {
+            console.log("notifications:", data);
+        })
+    </script>
+
     <script>
         let getStudentHomeworksRunning = false;
         let getStudentFutureHomeworksRunning = false;

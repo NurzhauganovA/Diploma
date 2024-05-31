@@ -34,6 +34,7 @@ DJANGO_APPS = [
 ]
 
 ANOTHER_APPS = [
+    'channels',
 ]
 
 LOCAL_APPS = [
@@ -41,6 +42,7 @@ LOCAL_APPS = [
     'dashboard',
     'contract',
     'school',
+    'notification',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + ANOTHER_APPS + LOCAL_APPS
@@ -84,6 +86,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'diploma.wsgi.application'
 
+ASGI_APPLICATION = 'diploma.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('redis', 6379)],
+        },
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
