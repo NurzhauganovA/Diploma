@@ -226,6 +226,55 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // URL для подключения к WebSocket
+            const url = window.location.hostname + ':8001';
+            const wsUrl = 'ws://' + url + '/ws/notification/';
+            const notificationSocket = new WebSocket(wsUrl);
+
+            // Обработка открытия соединения
+            notificationSocket.onopen = function (e) {
+                console.log('WebSocket connection established.');
+            };
+
+            // Обработка ошибок
+            notificationSocket.onerror = function (error) {
+                console.error('WebSocket Error:', error);
+            };
+
+            // Обработка закрытия соединения
+            notificationSocket.onclose = function (e) {
+                console.log('WebSocket connection closed.');
+            };
+
+            // Обработка входящих сообщений
+            notificationSocket.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                if (data.type === 'chat_message') {
+                    console.log('Notification received:', data.message);
+                    displayNotification(data.message);
+                }
+            };
+
+            // Функция для отображения уведомлений
+            function displayNotification(message) {
+                // Создание элемента для отображения уведомления
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.textContent = message;
+
+                // Добавление уведомления в тело страницы
+                document.body.appendChild(notification);
+
+                // Удаление уведомления через 5 секунд
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
+            }
+        });
+    </script>
+
+    <script>
         async function changeFormatContractSum() {
             let numbers = document.querySelectorAll('#contract_formatted_amount');
             console.log(numbers);

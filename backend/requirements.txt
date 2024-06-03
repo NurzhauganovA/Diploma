@@ -6,6 +6,7 @@ click==8.1.7
 # notification
 channels==4.1.0
 channels-redis==4.2.0
+daphne==4.1.2
 
 Django==5.0.2
 django-environ==0.11.2

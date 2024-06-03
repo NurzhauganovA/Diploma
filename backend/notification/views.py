@@ -17,8 +17,16 @@ def send_notification(sender, receiver, title, message):
 
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
+        f'notification_{receiver.id}',
         {
-            'message': message
+            'type': 'send_notification',
+            'notification': {
+                'id': notification.id,
+                'from_who': notification.from_who.mobile_phone,
+                'title': notification.title,
+                'body': notification.body,
+                'created_at': notification.created_at
+            }
         }
     )
     print(f'Notification sent')

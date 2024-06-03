@@ -20,6 +20,24 @@ def home(request):
     overall_users_analytics = GetOverallGoalUsersService().get_overall_users_analytics()  # work
     daily_users_analytics = DailyUsersService().get_daily_users()  # work
 
+    instance = SectionHomeworkGrade.objects.create(
+        homework=SectionHomework.objects.first(),
+        student=Student.objects.get(user=User.objects.filter(mobile_phone="+77076098760").first()),
+        grade=5
+    )
+
+    teacher = instance.homework.section.subject.teacher
+    student = instance.student.user
+    subject = instance.homework.section.subject.name
+    grade = instance.grade
+
+    body = f"Вам выставлена оценка по предмету {subject}"
+    text = f"""
+                Оценка: {grade}.
+                Ответственный учитель: {teacher.mobile_phone}.
+                """
+    send_notification(teacher, student, body, text)
+
     context = {
         'regions': regions,
         'last_registered_users': last_registered_users,
@@ -55,24 +73,6 @@ def student_dashboard(request):
         'not_completed': total_tests - done_total_tests,
         'percent': int(done_total_tests / total_tests * 100) if total_tests != 0 else 0
     }
-
-    instance = SectionHomeworkGrade.objects.create(
-        homework=SectionHomework.objects.first(),
-        student=Student.objects.get(user=request.user),
-        grade=5
-    )
-
-    teacher = instance.homework.section.subject.teacher
-    student = instance.student.user
-    subject = instance.homework.section.subject.name
-    grade = instance.grade
-
-    body = f"Вам выставлена оценка по предмету {subject}"
-    text = f"""
-            Оценка: {grade}.
-            Ответственный учитель: {teacher.mobile_phone}.
-            """
-    # send_notification(teacher, student, body, text)
 
     context = {
         'school_schedule': school_schedule_context,
