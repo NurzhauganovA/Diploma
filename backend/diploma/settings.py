@@ -17,7 +17,7 @@ DEBUG = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-jd+njmoly76v66hqo+xrigzfyhjn#&h%i+hrc7xz$ix6!kes@5'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'smartschools.kz']
 
 # Application definition
 
@@ -171,3 +171,4 @@ EMAIL_HOST_PASSWORD = "sdudiploma2024"  # env('EMAIL_HOST_PASSWORD')
 CSRF_TRUSTED_ORIGINS = ['https://smartschools.kz', 'https://smartschools.kz']
 
 COMPRESS_OFFLINE = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
