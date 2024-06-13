@@ -360,3 +360,28 @@ main {
     color: #007BFF !important;
     background-color: #E1F5FE;
 }
+
+
+.user_extension_block {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    z-index: 9999;
+    top: 75px;
+    right: 120px;
+    background-color: #233255;
+    border-radius: 6px;
+}
+
+.extension_list {
+    padding: 15px 40px;
+    color: #FFF;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: Montserrat, sans-serif;
+}
+
+.extension_list:hover {
+    cursor: pointer;
+    background-color: #F6AD2B;
+}

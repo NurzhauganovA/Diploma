@@ -18,6 +18,7 @@ class School(models.Model):
     city = models.CharField(max_length=155, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     bin = models.CharField(max_length=12)
+    short_name = models.CharField(max_length=155)
 
     def __str__(self):
         return self.name

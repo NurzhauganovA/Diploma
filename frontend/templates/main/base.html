@@ -207,9 +207,15 @@
                         </div>
                         <div class="profile_info_block">
                             <div class="image_profile_info_block"
-                                style="background-image: url('{{ user.get_photo }}')"></div>
+                                 style="background-image: url('{{ user.get_photo }}')"
+                                 onclick="openUserExtensionBlock();"
+                            ></div>
                         </div>
                     </div>
+                </div>
+                <div class="user_extension_block">
+                    <a href="{% url 'profile' %}" class="extension_list" style="border-radius: 6px 6px 0 0;">Profile</a>
+                    <a href="{% url 'logout' %}" class="extension_list" style="border-radius: 0 0 6px 6px;">Logout</a>
                 </div>
             </div>
 
@@ -226,11 +232,68 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script>
+        async function openUserExtensionBlock() {
+            let userExtensionBlock = document.querySelector('.user_extension_block');
+            if (userExtensionBlock.style.display === 'flex') {
+                userExtensionBlock.style.display = 'none';
+            } else {
+                userExtensionBlock.style.display = 'flex';
+            }
+        }
+    </script>
+
+    <script>
+        console.log(12345);
+        document.addEventListener("DOMContentLoaded", function () {
+            const wsUrl = 'ws://' + window.location.host + '/ws/notification/';
+            const notificationSocket = new WebSocket(wsUrl);
+            console.log("Notification socket created:", notificationSocket);
+
+            notificationSocket.onopen = function (e) {console.log('WebSocket connection established.');
+                const message = {
+                    'message': 'Hello, world!'
+                };
+                notificationSocket.send(JSON.stringify(message));
+            };
+
+            notificationSocket.onerror = function (error) {
+                console.error('WebSocket Error:', error);
+            };
+
+            notificationSocket.onclose = function (e) {
+                console.log('WebSocket connection closed.');
+            };
+
+            notificationSocket.onmessage = function (e) {
+                console.log('Notification:', e);
+                const data = JSON.parse(e.data);
+                console.log('Notification received:', data);
+                // if (data.type === 'chat_message') {
+                //     console.log('Notification received:', data.message);
+                //     displayNotification(data.message);
+                // }
+            };
+
+            function displayNotification(message) {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.textContent = message;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
+            }
+        });
+    </script>
+
+    <script>
         async function changeFormatContractSum() {
             let numbers = document.querySelectorAll('#contract_formatted_amount');
             console.log(numbers);
             numbers.forEach((num) => {
-                let numValue = parseFloat(num.textContent.replace(',', '')); // Преобразуем строку в число, удаляем возможные запятые
+                let numValue = parseFloat(num.textContent.replace(',', ''));
                 let formattedNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(numValue);
                 let parts = formattedNumber.split('.');
                 if (parts.length === 1) {

@@ -64,7 +64,6 @@ class User(PermissionsMixin, AbstractBaseUser):
 
             self.save()
 
-
     def __str__(self):
         return self.mobile_phone
 
@@ -84,6 +83,19 @@ class UserInfo(models.Model):
     issued_by = models.CharField(max_length=100, blank=True, null=True)
     issued_date = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=1, blank=True, null=True)
+
+    def empty_fields(self):
+        fields = [
+            self.photo_avatar,
+            self.birth_date,
+            self.address,
+            self.iin,
+            self.user.full_name,
+            self.user.email,
+            self.user.mobile_phone
+        ]
+        empty_count = len([field for field in fields if not field])
+        return empty_count
 
     def __str__(self):
         return self.user.mobile_phone

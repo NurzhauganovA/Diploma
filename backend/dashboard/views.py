@@ -4,8 +4,9 @@ from authorization.models import User, Student
 from dashboard.services import GetSchoolRegionsService, GetLastRegisteredUsersService, GetCountNewUsersThisMonthService, \
     GetOverallGoalUsersService, DailyUsersService, GetCurrentWeekDays, SchoolScheduleService, \
     SchoolSectionAttendanceService
+from notification.views import get_notifications, send_notification
 from school.models import School, SubjectSection, SectionAction, SectionHomework, SectionHomeworkAnswer, SectionTests, \
-    SectionTestsAnswer
+    SectionTestsAnswer, SectionHomeworkGrade
 from django.http import JsonResponse
 
 
@@ -31,6 +32,7 @@ def home(request):
 
 
 def student_dashboard(request):
+    notifications = get_notifications(request)
     school_schedule_context = SchoolScheduleService(request.user).get_school_schedule()
     attendance_context = SchoolSectionAttendanceService(request.user).get_section_attendance()
 
@@ -60,6 +62,13 @@ def student_dashboard(request):
         'homeworks': homeworks,
         'tests': tests,
         'total_subjects': SubjectSection.objects.filter(subject__classroom=Student.objects.get(user=request.user).stud_class).count(),
+        'notifications': notifications,
     }
+
+    instance = SectionHomeworkGrade.objects.create(
+        homework=SectionHomework.objects.first(),
+        student=Student.objects.get(user=User.objects.filter(mobile_phone="+77076098760").first()),
+        grade=5
+    )
 
     return render(request, 'dashboard/student_dashboard.html', context)
