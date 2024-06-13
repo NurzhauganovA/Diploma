@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block links %}
-    <link rel="stylesheet" href="{% static 'authorization/css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'authorization/css/my_contracts.css' %}">
 {% endblock %}
 
-{% block title %} SmartSchool - Profile {% endblock %}
+{% block title %} SmartSchool - My contracts {% endblock %}
 
-{% block page_title %} Profile {% endblock %}
+{% block page_title %} My contracts {% endblock %}
 
 {% block content %}
     <div class="section_container">
@@ -124,77 +124,149 @@
                     </div>
 
                     <div class="account_page_tabcontent_list">
-                        <a href="{% url 'profile' %}" class="account_page_overview tabcontent active">Overview</a>
+                        <a href="{% url 'profile' %}" class="account_page_overview tabcontent">Overview</a>
                         <a href="{% url 'edit_profile' %}" class="account_page_settings tabcontent">Settings</a>
-                        <a href="{% url 'my_contracts' %}" class="account_page_contracts tabcontent">Contracts</a>
+                        <a href="{% url 'my_contracts' %}" class="account_page_contracts tabcontent active">Contracts</a>
                     </div>
 
                 </div>
 
                 <div class="profile_detail_profile_redactor_block">
                     <div class="title_profile_detail_redactor_block">
-                        <h1>Profile Details</h1>
-                        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+                        <h1>Contract Details</h1>
                     </div>
                     <div class="main_information_profile_detail_block">
-                        <div class="profile_detail_info">
-                            <p>Full Name</p>
-                            <h1>{{ user.full_name }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Email</p>
-                            <h1>{{ user.email }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Mobile phone</p>
-                            <h1>{{ user.mobile_phone }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Country</p>
-                            <h1>Kazakhstan</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Birth date</p>
-                            <h1>{{ user.user_info.birth_date }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>IIN</p>
-                            <h1>{{ user.user_info.iin }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Address</p>
-                            <h1>{{ user.user_info.address }}</h1>
-                        </div>
+
+                        <div class="contract_main_info">
+            <div class="contract_main_table_info">
+                <table class="contract_table_container contract_table_style">
+                    <thead>
+                        <tr>
+                            <th><h2>№</h2></th>
+                            <th><h2>Student's Full Name</h2></th>
+                            <th><h2>Date of contract</h2></th>
+                            <th><h2>Termination of<br>contract</h2></th>
+                            <th><h2>Status</h2></th>
+                            <th><h2>Sum of contracts</h2></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="contract_info">
+                    {% for contract in contracts %}
+                        <tr id="contract_tr_object" class="contract-data">
+                            <td><h2>#{{ forloop.counter }}</h2></td>
+                            <td><h2>{{ contract.student.user.full_name }}</h2></td>
+                            <td><h2>{{ contract.date|date:"d.m.Y" }}</h2></td>
+                            <td><h2>{% if contract.date_close %}{{ contract.date_close|date:"d.m.Y" }}{% endif %}</h2></td>
+                            <td><h2 class="contract_status_{{ contract.status }} contract_status_base_style">{{ contract.status }}</h2></td>
+                            <td><h2 id="contract_formatted_amount">{{ contract.final_amount }}</h2></td>
+                            <td>
+                                <i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                    </svg>
+                                </i>
+                            </td>
+                        </tr>
+
+                        <tr class="contract_details_main_container" id="contract_details_{{ contract.id }}" style="display: none">
+                            <td class="contract_details_info_container" colspan="6">
+                                <div class="header_title_block_contract_details">
+                                    <h1 class="active">Transactions</h1>
+                                    <h1>Accruals</h1>
+                                </div>
+                                <div class="main_block_contract_details">
+                                    <div class="contract_transaction_info">
+                                        <table class="contract_table_style">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th><h2>Date of payment</h2></th>
+                                                <th><h2>Payment amount</h2></th>
+                                                <th><h2>Type of payment</h2></th>
+                                                <th><h2>Comment</h2></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="contract_transactions_data">
+                                                {% for transaction in contract.transactions.all %}
+                                                    <tr>
+                                                        <td>
+                                                            <i>
+                                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M15.862 3.48725L17.549 1.79925C17.9007 1.44757 18.3777 1.25 18.875 1.25C19.3723 1.25 19.8493 1.44757 20.201 1.79925C20.5527 2.15092 20.7502 2.6279 20.7502 3.12525C20.7502 3.62259 20.5527 4.09957 20.201 4.45125L5.832 18.8202C5.30332 19.3486 4.65137 19.737 3.935 19.9502L1.25 20.7502L2.05 18.0652C2.26328 17.3489 2.65163 16.6969 3.18 16.1682L15.863 3.48725H15.862ZM15.862 3.48725L18.5 6.12525"
+                                                                          stroke="#233255" stroke-width="1.5"
+                                                                          stroke-linecap="round"
+                                                                          stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </i>
+                                                        </td>
+                                                        <td><h2>{{ transaction.datetime|date:"d.m.Y" }}</h2></td>
+                                                        <td><h2>{{ transaction.amount }}</h2></td>
+                                                        <td><h2>{{ transaction.payment_type }}</h2></td>
+                                                        <td><h2>{{ transaction.description }}</h2></td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="5"><h2>No transactions</h2></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="contract_accruals_info" style="display: none;">
+                                        <table class="">
+                                            <thead>
+                                            <tr>
+                                                <th><h2>№</h2></th>
+                                                <th><h2>Month</h2></th>
+                                                <th><h2>Accrual amount</h2></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="contract_accruals_data">
+                                                {% for accrual in contract.accruals.all %}
+                                                    <tr>
+                                                        <td><h2>#{{ forloop.counter }}</h2></td>
+                                                        <td><h2>{{ accrual.date }}</h2></td>
+                                                        <td><h2>{{ accrual.amount }}</h2></td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="3"><h2>No accruals</h2></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="contract_transaction_main_info">
+                <div class="contract_transaction_main_table_info">
+                    <table class="contract_transaction_table_container contract_table_style">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th><h2>Date of payment</h2></th>
+                            <th><h2>Payment amount</h2></th>
+                            <th><h2>Type of payment</h2></th>
+                            <th><h2>Comment</h2></th>
+                        </tr>
+                        </thead>
+                        <tbody id="contract_transactions_info"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
                     </div>
                 </div>
-
-                {% if articles.count > 0 %}
-                    <div class="my_articles_profile_block">
-                        <div class="title_my_articles_profile_block">
-                            <h1>My Articles</h1>
-                            <a href="">Create Article</a>
-                        </div>
-                        <ul class="list_my_articles_profile_block">
-                            {% for article in articles %}
-                                <li class="article_profile_block">
-                                    <div class="main_information_article_profile_block">
-                                        <div class="cover_image_article_profile_block" style="background-image: url('{{ article.image.url }}')"></div>
-                                        <div class="title_article_profile_block">
-                                            <h1>{{ article.title }}</h1>
-                                            <p>{{ article.created_date|date:"d M Y" }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="description_article_profile_block">
-                                        <p>{{ article.summary }}</p>
-                                    </div>
-                                    <div class="button_article_profile_block">
-                                        <a href="">Read More</a>
-                                    </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
 
             </div>
         </div>

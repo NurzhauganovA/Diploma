@@ -5,9 +5,9 @@
     <link rel="stylesheet" href="{% static 'authorization/css/profile.css' %}">
 {% endblock %}
 
-{% block title %} SmartSchool - Profile {% endblock %}
+{% block title %} SmartSchool - Edit Profile {% endblock %}
 
-{% block page_title %} Profile {% endblock %}
+{% block page_title %} Edit Profile {% endblock %}
 
 {% block content %}
     <div class="section_container">
@@ -124,8 +124,8 @@
                     </div>
 
                     <div class="account_page_tabcontent_list">
-                        <a href="{% url 'profile' %}" class="account_page_overview tabcontent active">Overview</a>
-                        <a href="{% url 'edit_profile' %}" class="account_page_settings tabcontent">Settings</a>
+                        <a href="{% url 'profile' %}" class="account_page_overview tabcontent">Overview</a>
+                        <a href="{% url 'edit_profile' %}" class="account_page_settings tabcontent active">Settings</a>
                         <a href="{% url 'my_contracts' %}" class="account_page_contracts tabcontent">Contracts</a>
                     </div>
 
@@ -134,38 +134,75 @@
                 <div class="profile_detail_profile_redactor_block">
                     <div class="title_profile_detail_redactor_block">
                         <h1>Profile Details</h1>
-                        <a href="{% url 'edit_profile' %}">Edit Profile</a>
                     </div>
-                    <div class="main_information_profile_detail_block">
-                        <div class="profile_detail_info">
-                            <p>Full Name</p>
-                            <h1>{{ user.full_name }}</h1>
+                    <form method="POST" enctype="multipart/form-data" class="form_update_user_info">
+                        {% csrf_token %}
+                        <div class="main_information_profile_detail_block">
+                            <div class="profile_detail_info">
+                                <div class="company_logo_form_block">
+                                    <div class="title_company_logo_form_block">
+                                        <h1>Avatar</h1>
+                                        <i style="margin-left: 10px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#5e6778" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                            </svg>
+                                        </i>
+                                    </div>
+                                    <div class="image_user_avatar_block">
+                                        <div class="image_company_logo_form_block">
+                                            {% if not profile.avatar %}
+                                                <div class="default_image_image_company_logo" style="background-image: url('https://preview.keenthemes.com/metronic8/demo16/assets/media/svg/files/blank-image-dark.svg')"></div>
+                                            {% else %}
+                                                <div class="default_image_image_company_logo" style="background-image: url('{{ profile.avatar.url }}')"></div>
+                                            {% endif %}
+                                            <label class="change_image_company_logo" for="avatar">
+                                                <input type="file" name="photo_avatar" class="inputTag" id="avatar">
+                                                <svg id="imageName" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#5e6778" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                                </svg>
+                                            </label>
+                                        </div>
+                                        <div class="attention_text_validate_company_logo">
+                                            <p>Allowed file types: png, jpg, jpeg.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="profile_detail_info">
+                                <p>Full Name</p>
+                                <input type="text" name="full_name" value="{{ user.full_name }}">
+                            </div>
+                            <div class="profile_detail_info">
+                                <p>Email</p>
+                                <input type="email" name="email" value="{{ user.email }}">
+                            </div>
+                            <div class="profile_detail_info">
+                                <p>Mobile phone</p>
+                                <input type="text" name="mobile_phone" value="{{ user.mobile_phone }}">
+                            </div>
+                            <div class="profile_detail_info">
+                                <p>Country</p>
+                                <input type="text" name="country" value="Kazakhstan" disabled>
+                            </div>
+                            <div class="profile_detail_info">
+                                <p>Birth date</p>
+                                <input type="date" name="birth_date" value="{{ user.user_info.birth_date|date:"d m Y" }}" id="birth_date">
+                            </div>
+                            <div class="profile_detail_info">
+                                <p>IIN</p>
+                                <input type="text" name="iin" value="{{ user.user_info.iin }}" maxlength="12">
+                            </div>
+                            <div class="profile_detail_info">
+                                <p>Address</p>
+                                <input type="text" name="address" value="{{ user.user_info.address }}">
+                            </div>
                         </div>
-                        <div class="profile_detail_info">
-                            <p>Email</p>
-                            <h1>{{ user.email }}</h1>
+                        <div class="save_button_profile_detail_block">
+                            <a href="{% url 'profile' %}">Cancel</a>
+                            <button type="submit">Save</button>
                         </div>
-                        <div class="profile_detail_info">
-                            <p>Mobile phone</p>
-                            <h1>{{ user.mobile_phone }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Country</p>
-                            <h1>Kazakhstan</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Birth date</p>
-                            <h1>{{ user.user_info.birth_date }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>IIN</p>
-                            <h1>{{ user.user_info.iin }}</h1>
-                        </div>
-                        <div class="profile_detail_info">
-                            <p>Address</p>
-                            <h1>{{ user.user_info.address }}</h1>
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
                 {% if articles.count > 0 %}
@@ -202,5 +239,19 @@
 {% endblock %}
 
 {% block scripts %}
+
+    <script>
+        // Предполагаем, что вы получаете дату в формате "d m Y" из шаблона Django
+        const birthDateStr = "{{ user.user_info.birth_date|date:'d m Y' }}";
+
+        // Функция для преобразования строки даты в формат YYYY-MM-DD
+        function convertDateFormat(dateStr) {
+            const [day, month, year] = dateStr.split(' ');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+
+        // Преобразование и установка значения в input
+        document.getElementById('birth_date').value = convertDateFormat(birthDateStr);
+    </script>
 
 {% endblock %}

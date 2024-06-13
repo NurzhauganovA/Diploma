@@ -668,3 +668,214 @@
 .save_button_profile_detail_block button:hover {
     background-color: #F6AD2B;
 }
+
+.contract_main_table_info {
+    background-color: #FFF;
+    padding: 10px 0;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.contract_table_style {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.contract_table_style th, .contract_table_style td {
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style thead th {
+    padding: 20px 10px;
+}
+
+.contract_table_style thead th h2 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    font-family: Montserrat;
+    color: #F6AD2B !important;
+}
+
+.contract_table_style th, .contract_table_style td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.contract_table_style td svg {
+    display: block;
+    margin: auto;
+}
+
+.contract_table_style h1,
+.contract_table_style p,
+.contract_table_style span {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h2 {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #F6AD2B;
+}
+
+.contract_table_style p {
+    color: #17C653 !important;
+}
+
+.contract_table_style span {
+    color: #C6C6C6 !important;
+}
+
+.contract_table_style h1 {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h1 span {
+    color: #233255 !important;
+    margin-left: 2px;
+}
+
+#contract_info {
+    font-size: 16px;
+    font-weight: 300;
+    font-family: Montserrat;
+    color: black;
+    margin-top: 20px;
+    padding-left: 40px;
+}
+
+#contract_info h2 {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: black;
+}
+
+#contract_info td {
+    margin-left: 20px;
+    padding-right: 20px;
+}
+
+.contract_transaction_main_info {
+    display: none;
+}
+
+.contract_transaction_main_table_info {
+    background-color: #FFF;
+    /* border-radius: 14px; */
+    padding: 20px 15px;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.contract_table_style {
+    width: 100%;
+}
+
+.contract_table_style thead th {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.contract_table_style tbody td {
+    text-align: center;
+    padding: 10px 20px; /* добавляет верхний и нижний отступы для ячеек, выравнивая текст внутри по вертикали */
+}
+
+/* Стили для выравнивания иконки с помощью flexbox */
+.contract_table_style td svg {
+    margin: auto; /* центрирование SVG внутри ячейки td */
+}
+
+.contract_table_style h1,
+.contract_table_style p,
+.contract_table_style span {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style p {
+    color: #17C653 !important;
+}
+
+.contract_table_style span {
+    color: #C6C6C6 !important;
+}
+
+.contract_table_style h1 {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #233255;
+}
+
+.contract_table_style h1 span {
+    color: #233255 !important;
+    margin-left: 2px;
+}
+
+.open_transactions_icon.non_active {
+    transform: rotate(180deg);
+}
+
+.header_title_block_contract_details {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
+    gap: 30px;
+}
+
+.header_title_block_contract_details h1 {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: Montserrat;
+    color: #233255;
+    line-height: 12.8px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+}
+
+.header_title_block_contract_details h1.active {
+    border-bottom: 2px solid #F6AD2B;
+    padding-bottom: 6px;
+}
+
+.contract_transactions_data tr:nth-child(even),
+.contract_accruals_data tr:nth-child(even) {
+    background-color: #FFFFFF;
+}
+
+.contract_transactions_data tr:nth-child(odd),
+.contract_accruals_data tr:nth-child(odd) {
+    background-color: #F9FAFC;
+}
+
+.contract-data.even {
+    background-color: #FDEFD5;
+}
+
+.contract-data.odd {
+    background-color: #FFFFFF;
+}
+
+.contract_details_info_container .contract_details_main_container {
+    padding-left: 50px;
+}

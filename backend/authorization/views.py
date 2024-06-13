@@ -154,6 +154,79 @@ def profile(request: HttpRequest):
     return render(request, 'authorization/profile.html', context)
 
 
+def edit_profile(request: HttpRequest):
+    user = request.user
+    user_profile = UserInfo.objects.get(user=user)
+
+    if request.method == 'POST':
+        photo_avatar = request.FILES.get('photo_avatar')
+        email = request.POST.get('email')
+        mobile_phone = request.POST.get('mobile_phone')
+        address = request.POST.get('address')
+        iin = request.POST.get('iin')
+        birth_date = request.POST.get('birth_date')
+        full_name = request.POST.get('full_name')
+
+        if User.objects.filter(email=email).exclude(id=user_profile.user.id):
+            messages.error(request, 'User with this email already exists!')
+            user_profile.user.email = user.email
+
+        if User.objects.filter(mobile_phone=mobile_phone).exclude(id=user_profile.user.id):
+            messages.error(request, 'User with this phone number already exists!')
+            user_profile.user.mobile_phone = user.mobile_phone
+
+        if UserInfo.objects.filter(iin=iin).exclude(id=user_profile.id):
+            messages.error(request, 'User with this IIN already exists!')
+            user_profile.iin = user_profile.iin
+        else:
+            user_profile.iin = iin
+
+        user_profile.photo_avatar = photo_avatar
+        user_profile.address = address
+        user_profile.birth_date = birth_date
+        user_profile.user.full_name = full_name
+
+        user_profile.save()
+        user_profile.user.save()
+
+        return redirect('profile')
+
+    courses_count = SectionAction.objects.filter(student__user=user).values('section__subject').distinct().count()
+    contracts_count = Contract.objects.filter(student__user=user).count()
+    completion_percentage = int(100 - (user_profile.empty_fields() / 5 * 100))
+
+    context = {
+        'user': user,
+        'courses_count': courses_count,
+        'debt_sum': '990800',
+        'contracts_count': contracts_count,
+        'completion_percentage': completion_percentage
+    }
+
+    return render(request, 'authorization/edit_profile.html', context)
+
+
+def my_contracts(request: HttpRequest):
+    user = request.user
+    user_profile = UserInfo.objects.get(user=user)
+    contracts = Contract.objects.filter(student__user=user)
+
+    courses_count = SectionAction.objects.filter(student__user=user).values('section__subject').distinct().count()
+    contracts_count = Contract.objects.filter(student__user=user).count()
+    completion_percentage = int(100 - (user_profile.empty_fields() / 5 * 100))
+
+    context = {
+        'user': user,
+        'courses_count': courses_count,
+        'debt_sum': '990800',
+        'contracts_count': contracts_count,
+        'completion_percentage': completion_percentage,
+        'contracts': contracts
+    }
+
+    return render(request, 'authorization/my_contracts.html', context)
+
+
 def forgot_password(request: HttpRequest):
 
     if request.method == "POST":
