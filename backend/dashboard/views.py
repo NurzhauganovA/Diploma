@@ -20,24 +20,6 @@ def home(request):
     overall_users_analytics = GetOverallGoalUsersService().get_overall_users_analytics()  # work
     daily_users_analytics = DailyUsersService().get_daily_users()  # work
 
-    instance = SectionHomeworkGrade.objects.create(
-        homework=SectionHomework.objects.first(),
-        student=Student.objects.get(user=User.objects.filter(mobile_phone="+77076098760").first()),
-        grade=5
-    )
-
-    teacher = instance.homework.section.subject.teacher
-    student = instance.student.user
-    subject = instance.homework.section.subject.name
-    grade = instance.grade
-
-    body = f"Вам выставлена оценка по предмету {subject}"
-    text = f"""
-                Оценка: {grade}.
-                Ответственный учитель: {teacher.mobile_phone}.
-                """
-    send_notification(teacher, student, body, text)
-
     context = {
         'regions': regions,
         'last_registered_users': last_registered_users,
@@ -82,5 +64,11 @@ def student_dashboard(request):
         'total_subjects': SubjectSection.objects.filter(subject__classroom=Student.objects.get(user=request.user).stud_class).count(),
         'notifications': notifications,
     }
+
+    instance = SectionHomeworkGrade.objects.create(
+        homework=SectionHomework.objects.first(),
+        student=Student.objects.get(user=User.objects.filter(mobile_phone="+77076098760").first()),
+        grade=5
+    )
 
     return render(request, 'dashboard/student_dashboard.html', context)

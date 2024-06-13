@@ -12,8 +12,10 @@ from django.urls import reverse
 from django.urls import reverse
 
 from authorization import UserRoles
-from authorization.models import User
+from authorization.models import User, UserInfo
 from authorization.utils import send_email, verify_account
+from contract.models import Contract
+from school.models import SectionAction
 
 
 def login(request: HttpRequest):
@@ -124,7 +126,32 @@ def verify_email(request: HttpRequest):
 
 
 def logout(request: HttpRequest):
-    return render(request, 'logout.html')
+    auth.logout(request)
+    return redirect('login')
+
+
+def profile(request: HttpRequest):
+    user = request.user
+    user_profile = UserInfo.objects.get(user=user)
+
+    if isinstance(user, AnonymousUser):
+        return redirect('login')
+
+    # count of courses with group by subject
+
+    courses_count = SectionAction.objects.filter(student__user=user).values('section__subject').distinct().count()
+    contracts_count = Contract.objects.filter(student__user=user).count()
+    completion_percentage = int(100 - (user_profile.empty_fields() / 5 * 100))
+
+    context = {
+        'user': user,
+        'courses_count': courses_count,
+        'debt_sum': '990800',
+        'contracts_count': contracts_count,
+        'completion_percentage': completion_percentage
+    }
+
+    return render(request, 'authorization/profile.html', context)
 
 
 def forgot_password(request: HttpRequest):

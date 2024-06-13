@@ -1,5 +1,6 @@
 import json
 import re
+from sqlite3 import Date
 
 from django.contrib import messages
 from django.db import transaction
@@ -9,10 +10,11 @@ from django.db.models import QuerySet
 
 from authorization.models import User, Student, UserInfo
 from authorization import UserRoles
+from contract.services.contract import CreateContractService
 from school.models import Class, SectionHomework, SectionHomeworkAnswer
 from school.services import GetSchoolPartData
 from school.utils import CacheData
-from contract.models import Contract, Transaction
+from contract.models import Contract, Transaction, ContractDayPay, ContractMonthPay
 from django.db.models import Sum
 from django.utils import timezone
 
@@ -304,8 +306,17 @@ def approve_to_class(request: HttpRequest) -> HttpResponse:
         student.stud_class_id = data.get("class_id")
         student.save()
 
+        print("student:", student)
+        auto_create_contract = CreateContractService(
+            student.id,
+            student.stud_class.school.id,
+            Date(timezone.now().year - 1, 9, 1)
+        )
+        auto_create_contract.contract_auto_create()
+
         messages.success(request, "Student added to class successfully")
         return JsonResponse({"status": 200})
+
     return JsonResponse({"error": "Not Allowed Method", "status": 405})
 
 

@@ -207,9 +207,15 @@
                         </div>
                         <div class="profile_info_block">
                             <div class="image_profile_info_block"
-                                style="background-image: url('{{ user.get_photo }}')"></div>
+                                 style="background-image: url('{{ user.get_photo }}')"
+                                 onclick="openUserExtensionBlock();"
+                            ></div>
                         </div>
                     </div>
+                </div>
+                <div class="user_extension_block">
+                    <a href="{% url 'profile' %}" class="extension_list" style="border-radius: 6px 6px 0 0;">Profile</a>
+                    <a href="{% url 'logout' %}" class="extension_list" style="border-radius: 0 0 6px 6px;">Logout</a>
                 </div>
             </div>
 
@@ -226,47 +232,55 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // URL для подключения к WebSocket
-            const url = window.location.hostname + ':8001';
-            const wsUrl = 'ws://' + url + '/ws/notification/';
-            const notificationSocket = new WebSocket(wsUrl);
+        async function openUserExtensionBlock() {
+            let userExtensionBlock = document.querySelector('.user_extension_block');
+            if (userExtensionBlock.style.display === 'flex') {
+                userExtensionBlock.style.display = 'none';
+            } else {
+                userExtensionBlock.style.display = 'flex';
+            }
+        }
+    </script>
 
-            // Обработка открытия соединения
-            notificationSocket.onopen = function (e) {
-                console.log('WebSocket connection established.');
+    <script>
+        console.log(12345);
+        document.addEventListener("DOMContentLoaded", function () {
+            const wsUrl = 'ws://' + window.location.host + '/ws/notification/';
+            const notificationSocket = new WebSocket(wsUrl);
+            console.log("Notification socket created:", notificationSocket);
+
+            notificationSocket.onopen = function (e) {console.log('WebSocket connection established.');
+                const message = {
+                    'message': 'Hello, world!'
+                };
+                notificationSocket.send(JSON.stringify(message));
             };
 
-            // Обработка ошибок
             notificationSocket.onerror = function (error) {
                 console.error('WebSocket Error:', error);
             };
 
-            // Обработка закрытия соединения
             notificationSocket.onclose = function (e) {
                 console.log('WebSocket connection closed.');
             };
 
-            // Обработка входящих сообщений
             notificationSocket.onmessage = function (e) {
+                console.log('Notification:', e);
                 const data = JSON.parse(e.data);
-                if (data.type === 'chat_message') {
-                    console.log('Notification received:', data.message);
-                    displayNotification(data.message);
-                }
+                console.log('Notification received:', data);
+                // if (data.type === 'chat_message') {
+                //     console.log('Notification received:', data.message);
+                //     displayNotification(data.message);
+                // }
             };
 
-            // Функция для отображения уведомлений
             function displayNotification(message) {
-                // Создание элемента для отображения уведомления
                 const notification = document.createElement('div');
                 notification.className = 'notification';
                 notification.textContent = message;
 
-                // Добавление уведомления в тело страницы
                 document.body.appendChild(notification);
 
-                // Удаление уведомления через 5 секунд
                 setTimeout(() => {
                     notification.remove();
                 }, 5000);
@@ -279,7 +293,7 @@
             let numbers = document.querySelectorAll('#contract_formatted_amount');
             console.log(numbers);
             numbers.forEach((num) => {
-                let numValue = parseFloat(num.textContent.replace(',', '')); // Преобразуем строку в число, удаляем возможные запятые
+                let numValue = parseFloat(num.textContent.replace(',', ''));
                 let formattedNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(numValue);
                 let parts = formattedNumber.split('.');
                 if (parts.length === 1) {

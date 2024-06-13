@@ -19,7 +19,7 @@ def send_notification(sender, receiver, title, message):
     async_to_sync(channel_layer.group_send)(
         f'notification_{receiver.id}',
         {
-            'type': 'send_notification',
+            'type': 'chat_message',
             'notification': {
                 'id': notification.id,
                 'from_who': notification.from_who.mobile_phone,
